@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Throwable;
 
 class CategoryController extends Controller
 {
@@ -16,12 +17,13 @@ class CategoryController extends Controller
 
     public function categoryForm()
     {
-        $categories=Category::all();
+        $categories = Category::all();
         return view('backend.pages.category.categoryForm', compact('categories'));
     }
 
     public function submitCategoryForm(Request $request)
     {
+        //Validation
         $checkValidation = Validator::make($request->all(), [
             'category_name' => 'required',
             // 'category_image' => 'required',
@@ -32,6 +34,7 @@ class CategoryController extends Controller
             return redirect()->back();
         }
 
+        //Store Data
         Category::create([
             'category_name' => $request->category_name,
             'parent_id' => $request->parent_name,
@@ -64,10 +67,17 @@ class CategoryController extends Controller
     //Delete
     public function categoryDelete($id)
     {
-        $deleteCategory = Category::find($id);
-        $deleteCategory->delete();
+        try {
 
-        notify()->success("Delete Successful.");
-        return redirect()->back();
+            $deleteCategory = Category::find($id);
+            $deleteCategory->delete();
+
+            notify()->success("Delete Successful.");
+            return redirect()->back();
+        } catch (Throwable $ex) {
+
+            notify()->error("This Category Has Product, You Cannot Delete It");
+            return redirect()->back();
+        }
     }
 }

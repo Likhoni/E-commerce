@@ -94,7 +94,7 @@
                     Setting
                 </a>
 
-                <a class="nav-link collapsed" href="#">
+                <a class="nav-link collapsed" href="{{route('admin.logout')}}">
                     <div class="sb-nav-link-icon">
                     <i class="fas fa-sign-out-alt" style="color: #DC143C;"></i> <!-- Red Sign Out Icon -->
                     </div>
