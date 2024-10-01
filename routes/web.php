@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HomeController as FrontendHomeController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+
+
 
 Route::get('/',[HomeController::class,'home'])->name('homepage');
 
@@ -24,3 +27,5 @@ Route::post('/submit/product/form',[ProductController::class,'SubmitProductForm'
 Route::get('/product/edit/{id}',[ProductController::class,'productEdit'])->name('admin.product.edit');
 Route::put('/product/update/{id}',[ProductController::class,'productUpdate'])->name('admin.product.update');
 Route::get('/product/delete/{id}',[ProductController::class,'productDelete'])->name('admin.product.delete');
+
+Route::get('/website',[FrontendHomeController::class,'frontendHome'])->name('frontend.homepage');
