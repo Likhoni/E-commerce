@@ -23,7 +23,7 @@
 
                     <div class="form-group">
                         <label for=""><strong>Discount</strong></label>
-                        <input required value="{{$editCategory->discount}}" name="discount" type="number" class="form-control" id="" placeholder="">
+                        <input value="{{$editCategory->discount}}" name="discount" type="number" class="form-control" id="" placeholder="">
                     </div><br>
 
                     <button type="submit" class="btn btn-primary">Update</button>

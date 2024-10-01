@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<style type="text/css"> .notify{ z-index: 1000000; margin-top: 4%; } </style>
 @notifyCss
 <head>
     <meta charset="utf-8" />

@@ -61,7 +61,7 @@ class CategoryController extends Controller
             'discount' => $request->discount
         ]);
         notify()->success("Update Successful.");
-        return redirect()->route('category.list');
+        return redirect()->route('admin.category.list');
     }
 
     //Delete
