@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    //backend
     public function adminLogin()
     {
         return view('backend.pages.adminLogin');
@@ -40,4 +41,17 @@ class UserController extends Controller
         return redirect()->route('admin.login');
 
     }
+
+
+    //frontend
+    public function frontendSignUp()
+    {
+        return view('frontend.pages.signup');
+    }
+
+    public function frontendSignIn()
+    {
+        return view('frontend.pages.signin');
+    }
+
 }

@@ -5,7 +5,14 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HomeController as FrontendHomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserController as FrontendUserController;
 use Illuminate\Support\Facades\Route;
+
+
+//frontend
+Route::get('/', [FrontendHomeController::class, 'frontendHome'])->name('frontend.homepage');
+Route::get('/sign-up', [FrontendUserController::class, 'frontendSignUp'])->name('frontend.sign.up');
+Route::get('/sign-in', [FrontendUserController::class, 'frontendSignIn'])->name('frontend.sign.in');
 
 //Backend: Admin Panel
 Route::group(['prefix' => 'admin'], function () {
@@ -37,8 +44,3 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/product/delete/{id}', [ProductController::class, 'productDelete'])->name('admin.product.delete');
     });
 });
-
-
-//frontend
-Route::get('/', [HomeController::class, 'frontendHome'])->name('frontend.homepage');
-
