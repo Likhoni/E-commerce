@@ -25,7 +25,7 @@
                     Product
                 </a>
 
-                <a class="nav-link collapsed" href="#">
+                <a class="nav-link collapsed" href="{{route('admin.customer.list')}}">
                     <div class="sb-nav-link-icon">
                         <i class="fas fa-user" style="color: #FFC107;"></i>
                     </div>

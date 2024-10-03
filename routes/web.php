@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HomeController as FrontendHomeController;
 use App\Http\Controllers\ProductController;
@@ -35,10 +36,20 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/product/edit/{id}', [ProductController::class, 'productEdit'])->name('admin.product.edit');
         Route::put('/product/update/{id}', [ProductController::class, 'productUpdate'])->name('admin.product.update');
         Route::get('/product/delete/{id}', [ProductController::class, 'productDelete'])->name('admin.product.delete');
+
+        //Customer
+        Route::get('/customer/list', [CustomerController::class, 'customerList'])->name('admin.customer.list');
+        Route::get('/customer/form', [CustomerController::class, 'customerForm'])->name('admin.customer.form');
+        Route::post('/submit/customer/form', [CustomerController::class, 'SubmitCustomerForm'])->name('admin.submit.customer.form');
+
+        Route::get('/customer/edit/{id}', [CustomerController::class, 'customerEdit'])->name('admin.customer.edit');
+        Route::put('/customer/update/{id}', [CustomerController::class, 'customerUpdate'])->name('admin.customer.update');
+        Route::get('/customer/delete/{id}', [CustomerController::class, 'customerDelete'])->name('admin.customer.delete');
+
     });
 });
 
 
 //frontend
-Route::get('/', [HomeController::class, 'frontendHome'])->name('frontend.homepage');
+Route::get('/', [FrontendHomeController::class, 'frontendHome'])->name('frontend.homepage');
 
