@@ -37,3 +37,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/product/delete/{id}', [ProductController::class, 'productDelete'])->name('admin.product.delete');
     });
 });
+
+
+//frontend
+Route::get('/', [HomeController::class, 'frontendHome'])->name('frontend.homepage');
+
