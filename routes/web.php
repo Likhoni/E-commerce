@@ -38,3 +38,7 @@ Route::group(['prefix' => 'admin'], function () {
     });
 });
 
+
+//frontend
+Route::get('/', [HomeController::class, 'frontendHome'])->name('frontend.homepage');
+
