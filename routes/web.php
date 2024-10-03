@@ -37,3 +37,4 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/product/delete/{id}', [ProductController::class, 'productDelete'])->name('admin.product.delete');
     });
 });
+
