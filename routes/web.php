@@ -10,7 +10,7 @@ use App\Http\Controllers\UserController as FrontendUserController;
 use Illuminate\Support\Facades\Route;
 
 
-//frontend
+//frontend panel
 
 //User Login Logout
 Route::get('/', [FrontendHomeController::class, 'frontendHome'])->name('frontend.homepage');
