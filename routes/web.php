@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\Route;
 
 
 //frontend
+
+//User Login Logout
 Route::get('/', [FrontendHomeController::class, 'frontendHome'])->name('frontend.homepage');
 Route::get('/sign-up', [FrontendUserController::class, 'frontendSignUp'])->name('frontend.sign.up');
+Route::post('/do/sign-up', [FrontendUserController::class, 'frontendDoSignup'])->name('frontend.do.sign.up');
 Route::get('/sign-in', [FrontendUserController::class, 'frontendSignIn'])->name('frontend.sign.in');
 
 //Backend: Admin Panel
@@ -54,13 +57,4 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/customer/delete/{id}', [CustomerController::class, 'customerDelete'])->name('admin.customer.delete');
 
     });
-<<<<<<< HEAD
 });
-
-
-//frontend
-Route::get('/', [FrontendHomeController::class, 'frontendHome'])->name('frontend.homepage');
-
-=======
-});
->>>>>>> 0d61c5a374498b9f3040e857abebe2ccdfcaf0c9
