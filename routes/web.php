@@ -12,7 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Frontend\FrontendUserController;
 use App\Http\Controllers\Frontend\FrontendHomeController;
 
-//frontend
+//frontend or website
 Route::get('/', [FrontendHomeController::class, 'frontendHome'])->name('frontend.homepage');
 Route::get('/sign-up', [FrontendUserController::class, 'frontendSignUp'])->name('frontend.sign.up');
 Route::post('/do/sign-up', [FrontendUserController::class, 'frontendDoSignup'])->name('frontend.do.sign.up');
