@@ -11,13 +11,5 @@ class HomeController extends Controller
         return view('backend.pages.dashboard');
 
     }
-    
-    //frontend
-    
-    public function frontendHome(){
-        return view('frontend.pages.homePage');
-
-    }
-
 
 }

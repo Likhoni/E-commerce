@@ -29,7 +29,7 @@ class CustomerController extends Controller
             'email' => 'required',
             'phone_number' => 'required',
             'password' => 'required',
-            
+             
         ]);
         
         if ($checkValidation->fails()) {
