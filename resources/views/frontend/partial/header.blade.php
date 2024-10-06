@@ -6,7 +6,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-6">
-						<div class="top_nav_left">free shipping on all u.s orders over $50</div>
+						<!-- <div class="top_nav_left">free shipping on all u.s orders over $50</div> -->
 					</div>
 					<div class="col-md-6 text-right">
 						<div class="top_nav_right">
@@ -38,16 +38,40 @@
 										<li><a href="#">Spanish</a></li>
 									</ul>
 								</li>
+
 								<li class="account">
+								
+									@guest('customerGuard')
 									<a href="#">
-										My Account
+										Add Account
 										<i class="fa fa-angle-down"></i>
 									</a>
+									@endguest
+									
+									@auth('customerGuard')
+
+									<a href="#">
+										{{auth('customerGuard')->user()->first_name}}
+										{{auth('customerGuard')->user()->last_name}}
+										<i class="fa fa-angle-down"></i>
+									</a>
+
+									@endauth
+
 									<ul class="account_selection">
-										<li><a href="{{route('frontend.sign.in')}}"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+										@guest('customerGuard')
 										<li><a href="{{route('frontend.sign.up')}}"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+										<li><a href="{{route('frontend.sign.in')}}"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+										@endguest
+
+										@auth('customerGuard')
+										<li><a href="#"><i class="fa fa-profile" aria-hidden="true"></i>View Profile</a></li>
+										<li><a href="{{route('frontend.sign.out')}}"><i class="fa fa-sign-out" aria-hidden="true"></i>Sign Out</a></li>
+										@endauth
 									</ul>
+
 								</li>
+
 							</ul>
 						</div>
 					</div>

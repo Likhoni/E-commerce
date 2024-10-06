@@ -75,28 +75,42 @@
 
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                     <div class="sb-nav-link-icon">
-                    <i class="fas fa-chart-bar" style="color: #4682B4;"></i> <!-- Steel Blue Report Icon -->
+                        <i class="fas fa-chart-bar" style="color: #4682B4;"></i> <!-- Steel Blue Report Icon -->
                     </div>
                     Report
                 </a>
 
                 <a class="nav-link collapsed" href="#">
                     <div class="sb-nav-link-icon">
-                    <i class="fas fa-percentage" style="color: #FF6347;"></i>
+                        <i class="fas fa-percentage" style="color: #FF6347;"></i>
                     </div>
                     Discount
                 </a>
 
+                <a class="nav-link collapsed" href="{{route('admin.role.list')}}">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-user" style="color: #FF6347;"></i>
+                    </div>
+                    Role
+                </a>
+
+                <a class="nav-link collapsed" href="{{route('admin.user.list')}}">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-user" style="color: #FF6347;"></i>
+                    </div>
+                    User
+                </a>
+
                 <a class="nav-link collapsed" href="#">
                     <div class="sb-nav-link-icon">
-                    <i class="fas fa-cog" style="color: #808080;"></i> <!-- Grey Setting Icon -->
+                        <i class="fas fa-cog" style="color: #808080;"></i> <!-- Grey Setting Icon -->
                     </div>
                     Setting
                 </a>
 
                 <a class="nav-link collapsed" href="{{route('admin.logout')}}">
                     <div class="sb-nav-link-icon">
-                    <i class="fas fa-sign-out-alt" style="color: #DC143C;"></i> <!-- Red Sign Out Icon -->
+                        <i class="fas fa-sign-out-alt" style="color: #DC143C;"></i> <!-- Red Sign Out Icon -->
                     </div>
                     Sign-Out
                 </a>

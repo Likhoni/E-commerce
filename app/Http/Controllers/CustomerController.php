@@ -28,9 +28,10 @@ class CustomerController extends Controller
             'last_name' => 'required',
             'email' => 'required',
             'phone_number' => 'required',
-            // 'customer_image' => 'required'
-            'address' => 'required'
+            'password' => 'required',
+             
         ]);
+        
         if ($checkValidation->fails()) {
             notify()->error($checkValidation->getMessageBag());
             return redirect()->back();
@@ -40,11 +41,13 @@ class CustomerController extends Controller
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
+            'password' => bcrypt($request->password),
             'phone_number' => $request->phone_number,
             'image' => $request->customer_image,
-            'address' => $request->address
+            'address' => $request->address,
+            'status' => $request->status
         ]);
-        notify()->success("customer reg successful.");
+        notify()->success("customer registered successfully.");
         return redirect()->back();
     }
 

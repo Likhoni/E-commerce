@@ -1,0 +1,82 @@
+<?php
+
+namespace App\Http\Controllers\Frontend;
+
+use App\Http\Controllers\Controller;
+use App\Models\Customer;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+class FrontendUserController extends Controller
+{
+    public function frontendSignUp()
+    {
+        return view('frontend.pages.signup');
+    }
+
+    public function frontendDoSignup(Request $request)
+    {
+        //Validation
+        $checkValidation = Validator::make($request->all(), [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            // 'phone_number' => 'required',
+            // 'customer_image' => 'required'
+            // 'address' => 'required'
+        ]);
+        if ($checkValidation->fails()) {
+            notify()->error($checkValidation->getMessageBag());
+            return redirect()->back();
+        }
+
+        Customer::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'phone_number' => $request->phone_number,
+            'image' => $request->customer_image,
+            'address' => $request->address
+        ]);
+        notify()->success("Registration Successful");
+        return redirect()->route('frontend.homepage');
+    }
+
+    public function frontendSignIn()
+    {
+        return view('frontend.pages.signin');
+    }
+
+    public function frontendDoSignIn(Request $request)
+    {
+
+        $customerInput = ['email' => $request->email, 'password' => $request->password];
+        $checkLogin = auth()->guard('customerGuard')->attempt($customerInput);
+
+        //Validation
+        $checkValidation = Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+        if ($checkValidation->fails()) {
+            notify()->error("Invalid Credentials.");
+            return redirect()->back();
+        }
+
+        if ($checkLogin) {
+            notify()->success("Sign-In Successful.");
+            return redirect()->route('frontend.homepage');
+        }
+
+        notify()->error("Invalid Credentials.");
+        return redirect()->back();
+    }
+
+    public function frontendSignOut(){
+        auth('customerGuard')->logout();
+        notify()->success("Sign-Out Successful.");
+        return redirect()->route('frontend.homepage');
+    }
+}
