@@ -11,6 +11,13 @@
                     Dashboard
                 </a>
 
+                <a class="nav-link collapsed" href="">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-layer-group" style="color: #6f42c1;"></i>
+                    </div>
+                    Collection
+                </a>
+
                 <a class="nav-link collapsed" href="{{route('admin.category.list')}}">
                     <div class="sb-nav-link-icon">
                         <i class="fas fa-th-large" style="color: #6f42c1;"></i>
@@ -27,7 +34,7 @@
 
                 <a class="nav-link collapsed" href="{{route('admin.customer.list')}}">
                     <div class="sb-nav-link-icon">
-                        <i class="fas fa-user" style="color: #FFC107;"></i>
+                        <i class="fas fa-user-tag" style="color: #FFC107;"></i>
                     </div>
                     Customer
                 </a>
@@ -89,14 +96,14 @@
 
                 <a class="nav-link collapsed" href="{{route('admin.role.list')}}">
                     <div class="sb-nav-link-icon">
-                        <i class="fas fa-user" style="color: #FF6347;"></i>
+                        <i class="fas fa-id-badge" style="color: #4CAF50;"></i>
                     </div>
                     Role
                 </a>
 
                 <a class="nav-link collapsed" href="{{route('admin.user.list')}}">
                     <div class="sb-nav-link-icon">
-                        <i class="fas fa-user" style="color: #FF6347;"></i>
+                        <i class="fas fa-user" style="color: #4682B4;"></i>
                     </div>
                     User
                 </a>
