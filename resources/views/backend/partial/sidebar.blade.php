@@ -11,7 +11,7 @@
                     Dashboard
                 </a>
 
-                <a class="nav-link collapsed" href="">
+                <a class="nav-link collapsed" href="{{route('admin.collection.list')}}">
                     <div class="sb-nav-link-icon">
                         <i class="fas fa-layer-group" style="color: #6f42c1;"></i>
                     </div>

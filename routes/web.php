@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
@@ -35,6 +36,16 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/logout', [UserController::class, 'adminLogout'])->name('admin.logout');
 
         Route::get('/', [HomeController::class, 'home'])->name('homepage');
+
+        //Collection
+        Route::get('/collection/list', [CollectionController::class, 'collectionList'])->name('admin.collection.list');
+        Route::get('/collection/form', [CollectionController::class, 'collectionForm'])->name('admin.collection.form');
+        Route::post('/submit/collection/form', [CollectionController::class, 'submitCollectionForm'])->name('admin.submit.collection.form');
+
+        Route::get('/collection/edit/{id}', [CollectionController::class, 'collectionEdit'])->name('admin.collection.edit');
+        Route::put('/collection/update/{id}', [CollectionController::class, 'collectionUpadte'])->name('admin.collection.update');
+        Route::get('/collection/delete/{id}', [CollectionController::class, 'collectionDelete'])->name('admin.collection.delete');
+
         //Category
         Route::get('/category/list', [CategoryController::class, 'categoryList'])->name('admin.category.list');
         Route::get('/category/form', [CategoryController::class, 'categoryForm'])->name('admin.category.form');
