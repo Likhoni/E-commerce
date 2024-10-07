@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\Frontend\FrontendUserController;
 use App\Http\Controllers\Frontend\FrontendHomeController;
+use App\Http\Controllers\OrderController;
 
 //frontend or website
 Route::get('/', [FrontendHomeController::class, 'frontendHome'])->name('frontend.homepage');
@@ -60,16 +61,26 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/customer/edit/{id}', [CustomerController::class, 'customerEdit'])->name('admin.customer.edit');
         Route::put('/customer/update/{id}', [CustomerController::class, 'customerUpdate'])->name('admin.customer.update');
         Route::get('/customer/delete/{id}', [CustomerController::class, 'customerDelete'])->name('admin.customer.delete');
+        
+        //Order
+        Route::get('/order/list', [OrderController::class, 'orderList'])->name('admin.order.list');
+        Route::get('/order/form', [OrderController::class, 'orderForm'])->name('admin.order.form');
+        Route::post('/submit/order/form', [OrderController::class, 'SubmitOrderForm'])->name('admin.submit.order.form');
+
+        Route::get('/order/edit/{id}', [OrderController::class, 'orderEdit'])->name('admin.order.edit');
+        Route::put('/order/update/{id}', [OrderController::class, 'orderUpdate'])->name('admin.order.update');
+        Route::get('/order/delete/{id}', [OrderController::class, 'orderDelete'])->name('admin.order.delete');
 
         
         //Role
         Route::get('/role/list', [RoleController::class, 'roleList'])->name('admin.role.list');
         Route::get('/role/form', [RoleController::class, 'roleForm'])->name('admin.role.form');
         Route::post('/submit/role/form', [RoleController::class, 'SubmitRoleForm'])->name('admin.submit.role.form');
-
-        // Route::get('/user/edit/{id}', [UserController::class, 'userEdit'])->name('admin.user.edit');
-        // Route::put('/user/update/{id}', [UserController::class, 'userUpdate'])->name('admin.user.update');
-        // Route::get('/user/delete/{id}', [UserController::class, 'userDelete'])->name('admin.user.delete');
+        
+        Route::get('/role/edit/{id}', [RoleController::class, 'roleEdit'])->name('admin.role.edit');
+        Route::put('/role/update/{id}', [RoleController::class, 'roleUpdate'])->name('admin.role.update');
+        
+        Route::get('/role/delete/{id}', [RoleController::class, 'roleDelete'])->name('admin.role.delete');
         Route::get('/role/permission/{id}', [RoleController::class, 'asssignPermission'])->name('admin.role.assign.permission');
 
         //User
@@ -82,4 +93,5 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/user/delete/{id}', [UserController::class, 'userDelete'])->name('admin.user.delete');
 
     });
+
 });

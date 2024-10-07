@@ -42,6 +42,43 @@ class RoleController extends Controller
         return redirect()->back();
     }
 
+    //Edit
+    public function roleEdit($id)
+    {
+        $editRole = Role::find($id);
+        return view('backend.pages.role.editRole', compact('editRole'));
+    }
+
+    public function roleUpdate(Request $request, $id)
+    {
+
+        $checkValidation = Validator::make($request->all(), [
+           'name' => 'required',
+            // 'status' => 'required',
+        ]);
+        if ($checkValidation->fails()) {
+            notify()->error($checkValidation->getMessageBag());
+            return redirect()->back();
+        }
+
+        $updateRole = Role::find($id);
+        $updateRole->update([
+            'name' => $request->name,
+            'status' => $request->status
+        ]);
+        notify()->success("Role Updated successfully.");
+        return redirect()->route('admin.role.list');
+    }
+
+    public function roleDelete($id)
+    {
+        $deleteRole = Role::find($id);
+        $deleteRole->delete();
+
+        notify()->success('Role Deleted Successfully.');
+        return redirect()->back();
+    }
+
 
     //Assign Permission
     public function asssignPermission($id)
