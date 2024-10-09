@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -9,18 +10,21 @@ use Throwable;
 
 class CategoryController extends Controller
 {
+    //list
     public function categoryList()
     {
         $category = Category::with('parentCategory')->get();
         return view('backend.pages.category.categoryList', compact('category'));
     }
 
+    //create
     public function categoryForm()
     {
         $categories = Category::all();
         return view('backend.pages.category.categoryForm', compact('categories'));
     }
 
+    //store
     public function submitCategoryForm(Request $request)
     {
         //Validation
@@ -30,7 +34,8 @@ class CategoryController extends Controller
             // 'discount' => ['required', 'numeric', 'min:1']
         ]);
         if ($checkValidation->fails()) {
-            notify()->error($checkValidation->getMessageBag());
+            // notify()->error($checkValidation->getMessageBag());
+            notify()->error("Something Went Wrong");
             return redirect()->back();
         }
 
@@ -41,7 +46,7 @@ class CategoryController extends Controller
             'catgory_image' => $request->category_image,
             'discount' => $request->discount
         ]);
-        notify()->success("Category Added Successfully.");
+        notify()->success("Category Created Successfully.");
         return redirect()->back();
     }
 
@@ -52,15 +57,26 @@ class CategoryController extends Controller
         return view('backend.pages.category.editCategory', compact('editCategory'));
     }
 
-    public function categoryUpadte(Request $request, $id)
+    //Update 
+    public function categoryUpdate(Request $request, $id)
     {
         $updateCategory = Category::find($id);
+        $checkValidation = Validator::make($request->all(), [
+            'category_name' => 'required',
+            // 'category_image' => 'required',
+            // 'discount' => ['required', 'numeric', 'min:1']
+         ]);
+         if ($checkValidation->fails()) {
+             // notify()->error($checkValidation->getMessageBag());
+             notify()->error("Something Went Wrong");
+             return redirect()->back();
+         }
         $updateCategory->update([
             'category_name' => $request->category_name,
             'catgory_image' => $request->category_image,
             'discount' => $request->discount
         ]);
-        notify()->success("Update Successful.");
+        notify()->success("Category Updated Successfully.");
         return redirect()->route('admin.category.list');
     }
 
@@ -72,7 +88,7 @@ class CategoryController extends Controller
             $deleteCategory = Category::find($id);
             $deleteCategory->delete();
 
-            notify()->success("Delete Successful.");
+            notify()->success("Category Deleted Successfully.");
             return redirect()->back();
         } catch (Throwable $ex) {
 

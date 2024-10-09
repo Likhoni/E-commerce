@@ -2,19 +2,22 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\CollectionController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
+
+use App\Http\Controllers\Backend\GroupController;
+use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\BrandController;
+use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\Backend\CustomerController;
+use App\Http\Controllers\Backend\HomeController;
+use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\UserController;
+use App\Http\Controllers\Backend\OrderController;
+use App\Http\Controllers\Backend\OrderDetailController;
 
 use App\Http\Controllers\Frontend\FrontendUserController;
 use App\Http\Controllers\Frontend\FrontendHomeController;
-use App\Http\Controllers\OrderController;
 
-//frontend or website
+//frontend or website panel
 Route::get('/', [FrontendHomeController::class, 'frontendHome'])->name('frontend.homepage');
 Route::get('/sign-up', [FrontendUserController::class, 'frontendSignUp'])->name('frontend.sign.up');
 Route::post('/do/sign-up', [FrontendUserController::class, 'frontendDoSignup'])->name('frontend.do.sign.up');
@@ -24,6 +27,7 @@ Route::post('/do/sign-in', [FrontendUserController::class, 'frontendDoSignIn'])-
 Route::group(['middleware' => 'customerAuth'], function(){
 Route::get('/sign-out',[FrontendUserController::class, 'frontendSignOut'])->name('frontend.sign.out');
 });
+
 
 //Backend: Admin Panel
 Route::group(['prefix' => 'admin'], function () {
@@ -36,15 +40,15 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/logout', [UserController::class, 'adminLogout'])->name('admin.logout');
 
         Route::get('/', [HomeController::class, 'home'])->name('homepage');
+        
+        //Group
+        Route::get('/group/list', [GroupController::class, 'groupList'])->name('admin.group.list');
+        Route::get('/group/form', [GroupController::class, 'groupForm'])->name('admin.group.form');
+        Route::post('/submit/group/form', [GroupController::class, 'submitGroupForm'])->name('admin.submit.group.form');
 
-        //Collection
-        Route::get('/collection/list', [CollectionController::class, 'collectionList'])->name('admin.collection.list');
-        Route::get('/collection/form', [CollectionController::class, 'collectionForm'])->name('admin.collection.form');
-        Route::post('/submit/collection/form', [CollectionController::class, 'submitCollectionForm'])->name('admin.submit.collection.form');
-
-        Route::get('/collection/edit/{id}', [CollectionController::class, 'collectionEdit'])->name('admin.collection.edit');
-        Route::put('/collection/update/{id}', [CollectionController::class, 'collectionUpadte'])->name('admin.collection.update');
-        Route::get('/collection/delete/{id}', [CollectionController::class, 'collectionDelete'])->name('admin.collection.delete');
+        Route::get('/group/edit/{id}', [GroupController::class, 'groupEdit'])->name('admin.group.edit');
+        Route::put('/group/update/{id}', [GroupController::class, 'groupUpadte'])->name('admin.group.update');
+        Route::get('/group/delete/{id}', [GroupController::class, 'groupDelete'])->name('admin.group.delete');
 
         //Category
         Route::get('/category/list', [CategoryController::class, 'categoryList'])->name('admin.category.list');
@@ -52,8 +56,17 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('/submit/category/form', [CategoryController::class, 'submitCategoryForm'])->name('admin.submit.category.form');
 
         Route::get('/category/edit/{id}', [CategoryController::class, 'categoryEdit'])->name('admin.category.edit');
-        Route::put('/category/update/{id}', [CategoryController::class, 'categoryUpadte'])->name('admin.category.update');
+        Route::put('/category/update/{id}', [CategoryController::class, 'categoryUpdate'])->name('admin.category.update');
         Route::get('/category/delete/{id}', [CategoryController::class, 'categoryDelete'])->name('admin.category.delete');
+        
+        //Brand
+        Route::get('/brand/list', [BrandController::class, 'brandList'])->name('admin.brand.list');
+        Route::get('/brand/form', [BrandController::class, 'brandForm'])->name('admin.brand.form');
+        Route::post('/submit/brand/form', [BrandController::class, 'submitBrandForm'])->name('admin.submit.brand.form');
+
+        Route::get('/brand/edit/{id}', [BrandController::class, 'brandEdit'])->name('admin.brand.edit');
+        Route::put('/brand/update/{id}', [BrandController::class, 'brandUpdate'])->name('admin.brand.update');
+        Route::get('/brand/delete/{id}', [BrandController::class, 'brandDelete'])->name('admin.brand.delete');
 
         //Product
         Route::get('/product/list', [ProductController::class, 'productList'])->name('admin.product.list');
@@ -81,6 +94,15 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/order/edit/{id}', [OrderController::class, 'orderEdit'])->name('admin.order.edit');
         Route::put('/order/update/{id}', [OrderController::class, 'orderUpdate'])->name('admin.order.update');
         Route::get('/order/delete/{id}', [OrderController::class, 'orderDelete'])->name('admin.order.delete');
+        
+        //Order Detail
+        Route::get('/order-detail/list', [OrderDetailController::class, 'orderDetailList'])->name('admin.order.detail.list');
+        Route::get('/order-detail/form', [OrderDetailController::class, 'orderDetailForm'])->name('admin.order.detail.form');
+        Route::post('/submit/order-detail/form', [OrderDetailController::class, 'SubmitOrderDetailForm'])->name('admin.submit.order.detail.form');
+
+        Route::get('/order-detail/edit/{id}', [OrderDetailController::class, 'orderDetailEdit'])->name('admin.order.detail.edit');
+        Route::put('/order-detail/update/{id}', [OrderDetailController::class, 'orderDetailUpdate'])->name('admin.order.detail.update');
+        Route::get('/order-detail/delete/{id}', [OrderDetailController::class, 'orderDetailDelete'])->name('admin.order.detail.delete');
 
         
         //Role
@@ -89,9 +111,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('/submit/role/form', [RoleController::class, 'SubmitRoleForm'])->name('admin.submit.role.form');
         
         Route::get('/role/edit/{id}', [RoleController::class, 'roleEdit'])->name('admin.role.edit');
-        Route::put('/role/update/{id}', [RoleController::class, 'roleUpdate'])->name('admin.role.update');
-        
+        Route::put('/role/update/{id}', [RoleController::class, 'roleUpdate'])->name('admin.role.update'); 
         Route::get('/role/delete/{id}', [RoleController::class, 'roleDelete'])->name('admin.role.delete');
+        
         Route::get('/role/permission/{id}', [RoleController::class, 'asssignPermission'])->name('admin.role.assign.permission');
 
         //User

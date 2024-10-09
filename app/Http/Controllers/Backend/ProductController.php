@@ -1,27 +1,31 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Throwable;
 
 class ProductController extends Controller
 {
+    //list
     public function productList()
     {
         $product = Product::with('category')->get();
         return view('backend.pages.product.productList', compact('product'));
     }
 
-
+    //create
     public function productForm()
     {
         $varProduct = Category::all();
         return view('backend.pages.product.productForm', compact('varProduct'));
     }
 
+    //store
     public function SubmitProductForm(Request $request)
     {
         $checkValidation = Validator::make($request->all(), [
@@ -32,7 +36,8 @@ class ProductController extends Controller
             'description' => 'required'
         ]);
         if ($checkValidation->fails()) {
-            notify()->error($checkValidation->getMessageBag());
+            // notify()->error($checkValidation->getMessageBag());
+            notify()->error("Something Went Wrong");
             return redirect()->back();
         }
         
@@ -46,7 +51,7 @@ class ProductController extends Controller
             'product_description' => $request->description
         ]);
         
-        notify()->success("Product Added Successfully.");
+        notify()->success("Product Created Successfully.");
         return redirect()->back();
     }
 
@@ -57,39 +62,47 @@ class ProductController extends Controller
         return view('backend.pages.product.editProduct', compact('editProduct'));
     }
 
+    //Update
     public function productUpdate(Request $request, $id)
     {
+        $updateProduct = Product::find($id);
         $checkValidation = Validator::make($request->all(), [
             'product_name' => 'required',
             'product_quantity' => ['required', 'numeric', 'min:1'],
-            'product_image' => 'required',
+            //'product_image' => 'required',
             'description' => 'required'
         ]);
         if ($checkValidation->fails()) {
-            notify()->error($checkValidation->getMessageBag());
+            // notify()->error($checkValidation->getMessageBag());
+            notify()->error("Something Went Wrong");
             return redirect()->back();
         }
 
-        $updateProduct = Product::find($id);
         $updateProduct->update([
             'product_name' => $request->product_name,
             'product_quantity' => $request->product_quantity,
             'product_image' => $request->product_image,
             'product_description' => $request->description
         ]);
-        notify()->success("Update Successsful.");
-        return redirect()->route('product.list');
+        notify()->success("Product Updated Successsful.");
+        return redirect()->route('admin.product.list');
     }
-
-
 
     //Delete
     public function productDelete($id)
     {
-        $deleteProduct = Product::find($id);
-        $deleteProduct->delete();
+        try{
+            $deleteProduct = Product::find($id);
+            $deleteProduct->delete();
+    
+            notify()->success("Product Deleted Successsful.");
+            return redirect()->back();
+        } catch (Throwable $ex) {
 
-        notify()->success("Delete Successsful.");
-        return redirect()->back();
+            notify()->error("This Product is Parent Table, You Cannot Delete It");
+            return redirect()->back();
+
+        }
+        
     }
 }

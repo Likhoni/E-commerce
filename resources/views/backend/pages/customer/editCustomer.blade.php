@@ -1,7 +1,7 @@
 @extends("backend.master")
 
 @section('content')
-<div style="padding-left: 10px;">
+<div style="padding: 20px;">
 
     <form action="{{route('admin.customer.update', $editCustomer->id)}}" method="post" enctype="multipart/form-data">
         @method('put')
@@ -9,7 +9,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-6">
-                    <h1><strong>Edit Customer</strong></h1><br>
+                    <h1><strong>Update Customer Form</strong></h1><br>
 
 
                     <div class="form-group">
@@ -29,7 +29,7 @@
 
                     <div class="form-group">
                         <label for="exampleFormControlInput1"><strong>Phone</strong></label>
-                        <input required value="{{$editCustomer->phone_number}}" name="phone_number" type="number" class="form-control" id="exampleFormControlInput1" placeholder="">
+                        <input required value="{{$editCustomer->phone_number}}" name="phone_number" type="tel" class="form-control" id="exampleFormControlInput1" placeholder="">
                     </div><br>
 
                     <div class="form-group">
