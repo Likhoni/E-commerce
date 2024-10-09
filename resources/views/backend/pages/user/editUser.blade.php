@@ -1,7 +1,7 @@
 @extends("backend.master")
 
 @section('content')
-<div style="padding-left: 10px;">
+<div style="padding: 20px;">
 
     <form action="{{route('admin.user.update', $editUser->id)}}" method="post" enctype="multipart/form-data">
         @method('put')
@@ -9,7 +9,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-6">
-                    <h1><strong>Edit User</strong></h1><br>
+                    <h1><strong>Update User Form</strong></h1><br>
 
 
                     <div class="form-group">

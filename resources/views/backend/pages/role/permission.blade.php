@@ -4,6 +4,6 @@
 <div>
   
    {{$roles->name}}
-   {{$roles->status}}
+   
 </div>
 @endsection
