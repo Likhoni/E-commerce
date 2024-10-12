@@ -3,7 +3,7 @@
 @section('content')
 <div style="padding: 20px;">
 
-    <form action="{{route('admin.customer.update', $editCustomer->id)}}" method="post" enctype="multipart/form-data">
+    <form action="{{route('customer.update', $editCustomer->id)}}" method="post" enctype="multipart/form-data">
         @method('put')
         @csrf
         <div class="container">

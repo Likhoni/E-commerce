@@ -16,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'customerAuth' => \App\Http\Middleware\CustomerAuthenticate::class,
         ]));
         
-        $middleware->redirectGuestsTo(fn () => route('admin.login'));
+        //$middleware->redirectGuestsTo(fn () => route('admin.login'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

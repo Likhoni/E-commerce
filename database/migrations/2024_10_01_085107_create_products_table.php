@@ -14,10 +14,13 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('product_name');
-            $table->foreignId('category_id')->constrained('categories')->restrictOnDelete();
+            $table->foreignId('group_id')->nullable()->constrained('groups')->restrictOnDelete();
+            $table->foreignId('category_id')->nullable()->constrained('categories')->restrictOnDelete();
+            $table->foreignId('brand_id')->nullable()->constrained('brands')->restrictOnDelete();
             $table->string('product_quantity');
             $table->string('product_price');
             $table->string('product_image')->nullable();
+            $table->integer('discount')->nullable();
             $table->string('product_description')->nullable();
             $table->timestamps();
         });

@@ -2,13 +2,13 @@
 @section('content')
     <div style="padding: 20px;">
         <div style="padding:10px;">
-            <a href="{{ route('admin.role.list') }}" class="btn btn-primary">
+            <a href="{{ route('role.list') }}" class="btn btn-primary">
                 <i class="fas fa-arrow-left"></i> Back
             </a>
         </div>
         <div style="padding-left: 10px;">
 
-            <form action="{{ route('admin.submit.role.form') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('submit.role.form') }}" method="post" enctype="multipart/form-data">
 
                 @csrf
                 <div class="container">

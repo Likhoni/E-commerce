@@ -3,7 +3,7 @@
 @section('content')
     <div style="padding:20px">
         <h1>Customer List</h1>
-        <div><a href="{{ route('admin.customer.form') }}" class="btn btn-primary">Add New Customer</a></div>
+        <div><a href="{{ route('customer.form') }}" class="btn btn-primary">Add New Customer</a></div>
 
         <table class="table">
             <thead>
@@ -30,8 +30,8 @@
                         <td>{{ $data->image }}</td>
                         <td>{{ $data->address }}</td>
                         <td>
-                            <a href="{{ route('admin.customer.edit', $data->id) }}" class="btn btn-success">Edit</a>
-                            <a href="{{ route('admin.customer.delete', $data->id) }}" class="btn btn-danger">Delete</a>
+                            <a href="{{ route('customer.edit', $data->id) }}" class="btn btn-success">Edit</a>
+                            <a href="{{ route('customer.delete', $data->id) }}" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 @endforeach

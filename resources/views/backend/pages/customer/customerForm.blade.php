@@ -3,11 +3,11 @@
     <div style="padding: 20px;">
 
         <div style="padding:10px;">
-            <a href="{{ route('admin.customer.list') }}" class="btn btn-primary">
+            <a href="{{ route('customer.list') }}" class="btn btn-primary">
                 <i class="fas fa-arrow-left"></i> Back
             </a>
         </div>
-        <form action="{{ route('admin.submit.customer.form') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('submit.customer.form') }}" method="post" enctype="multipart/form-data">
 
             @csrf
             <div class="container">

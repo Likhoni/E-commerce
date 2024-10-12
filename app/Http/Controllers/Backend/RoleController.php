@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Permission;
 use App\Models\Role;
+use App\Models\Role_permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
@@ -30,9 +32,9 @@ class RoleController extends Controller
         $checkValidation = Validator::make($request->all(), [
             'name' => 'required',
             // 'status' => 'required',
-             
+
         ]);
-        
+
         if ($checkValidation->fails()) {
             // notify()->error($checkValidation->getMessageBag());
             notify()->error("Something Went Wrong");
@@ -61,7 +63,7 @@ class RoleController extends Controller
 
         $updateRole = Role::find($id);
         $checkValidation = Validator::make($request->all(), [
-           'name' => 'required',
+            'name' => 'required',
             // 'status' => 'required',
         ]);
         if ($checkValidation->fails()) {
@@ -81,14 +83,14 @@ class RoleController extends Controller
     //Delete
     public function roleDelete($id)
     {
-        try{
+        try {
 
             $deleteRole = Role::find($id);
             $deleteRole->delete();
-            
+
             notify()->success('Role Deleted Successfully.');
             return redirect()->back();
-        }catch (Throwable $ex) {
+        } catch (Throwable $ex) {
 
             notify()->error("This Role Has User, You Cannot Delete It");
             return redirect()->back();
@@ -98,7 +100,36 @@ class RoleController extends Controller
     //Assign Permission
     public function asssignPermission($id)
     {
-        $roles= Role::find($id);
-        return view('backend.pages.role.permission', compact('roles'));
+        $permissions = Permission::all();
+        $roles = Role::findOrFail($id);
+        return view('backend.pages.role.permission', compact('roles', 'permissions'));
+    }
+
+    //store role permission
+    public function storePermission(Request $request)
+    {
+        $checkValidation = Validator::make($request->all(), [
+            'role_id' => 'required',
+            'permission_id' => 'required|array',
+        ]);
+
+        if ($checkValidation->fails()) {
+            notify()->error("Something Went Wrong.");
+            // notify()->error($checkValidation->getMessageBag());
+            return redirect()->back();
+        }
+        //dd($request->all());
+        foreach ($request->permission_id as $permissionId) {
+            Role_permission::create([
+                'role_id' => $request->role_id,
+                'permission_id' => $permissionId,
+                //'permission_id' => $request->permission_id,
+            ]);
+        }
+
+       //$role_permission->permission()->attach($request->permission_id);
+
+        notify()->success('Role Permissions Set Successfully.');
+        return redirect()->back();
     }
 }
