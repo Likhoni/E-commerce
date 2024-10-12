@@ -24,8 +24,7 @@
                         <td>
                             <a href="{{ route('admin.role.edit', $data->id) }}" class="btn btn-success">Edit</a>
                             <a href="{{ route('admin.role.delete', $data->id) }}" class="btn btn-danger">Delete</a>
-                            <a href="{{ route('admin.role.assign.permission', $data->id) }}" class="btn btn-success">Assign
-                                Permission</a>
+                            <a href="" class="btn btn-success">Assign Permission</a>
                         </td>
                     </tr>
                 @endforeach
