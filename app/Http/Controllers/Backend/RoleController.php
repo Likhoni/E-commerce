@@ -94,11 +94,4 @@ class RoleController extends Controller
             return redirect()->back();
         }
     }
-
-    //Assign Permission
-    public function asssignPermission($id)
-    {
-        $roles= Role::find($id);
-        return view('backend.pages.role.permission', compact('roles'));
-    }
 }
