@@ -3,17 +3,20 @@
 @section('content')
     <div style="padding:20px">
         <h1>Product List</h1>
-        <div><a href="{{ route('admin.product.form') }}" class="btn btn-primary">Add New Product</a></div>
+        <div><a href="{{ route('product.form') }}" class="btn btn-primary">Add New Product</a></div>
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Product Name</th>
+                    <th scope="col">Group Name</th>
                     <th scope="col">Category Name</th>
+                    <th scope="col">Brand Name</th>
                     <th scope="col">Product Quantity</th>
                     <th scope="col">Product Price</th>
                     <th scope="col">Product Image</th>
                     <th scope="col">Product Description</th>
+                    <th scope="col">Discount</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
@@ -22,14 +25,17 @@
                     <tr>
                         <th>{{ $data->id }}</th>
                         <td>{{ $data->product_name }}</td>
+                        <td>{{ $data->group->group_name }}</td>
                         <td>{{ $data->category->category_name }}</td>
+                        <td>{{ $data->brand->brand_name }}</td>
                         <td>{{ $data->product_quantity }}</td>
                         <td>{{ $data->product_price }}</td>
                         <td>{{ $data->product_image }}</td>
                         <td>{{ $data->product_description }}</td>
+                        <td>{{ $data->discount }}%</td>
                         <td>
-                            <a href="{{ route('admin.product.edit', $data->id) }}" class="btn btn-success">Edit</a>
-                            <a href="{{ route('admin.product.delete', $data->id) }}" class="btn btn-danger">Delete</a>
+                            <a href="{{ route('product.edit', $data->id) }}" class="btn btn-success">Edit</a>
+                            <a href="{{ route('product.delete', $data->id) }}" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 @endforeach

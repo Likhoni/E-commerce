@@ -3,7 +3,7 @@
 @section('content')
     <div style="padding:20px">
         <h1>Discount List</h1>
-        <div><a href="{{ route('admin.discount.form') }}" class="btn btn-primary">Add New Discount</a></div>
+        <div><a href="{{ route('discount.form') }}" class="btn btn-primary">Add New Discount</a></div>
 
         <table class="table">
             <thead>
@@ -28,7 +28,7 @@
                             <a href="" type="button"
                                 class="btn btn-success">Edit</a>
 
-                            <a href="{{route('admin.discount.delete', $data->id)}}" type="button"
+                            <a href="{{route('discount.delete', $data->id)}}" type="button"
                                 class="btn btn-danger">Delete</a>
                         </td>
                     </tr>

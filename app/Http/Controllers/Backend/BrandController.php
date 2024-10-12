@@ -77,7 +77,7 @@ class BrandController extends Controller
             'discount' => $request->discount
         ]);
         notify()->success("Brand Updated Successfully.");
-        return redirect()->route('admin.brand.list');
+        return redirect()->route('brand.list');
     }
 
     //Delete

@@ -41,7 +41,7 @@ class UserController extends Controller
         // auth()->logout();(works in laravel 10)
 
         notify()->success("Sign Out Successful.");
-        return redirect()->route('admin.login');
+        return redirect()->route('login');
     }
 
     //list
@@ -127,7 +127,7 @@ class UserController extends Controller
             'address' => $request->address
         ]);
         notify()->success("User Updated Successfully.");
-        return redirect()->route('admin.user.list');
+        return redirect()->route('user.list');
     }
 
     //delete

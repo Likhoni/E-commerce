@@ -4,12 +4,12 @@
     <div style="padding: 20px;">
 
         <div style="padding:10px;">
-            <a href="{{ route('admin.product.list') }}" class="btn btn-primary">
+            <a href="{{ route('product.list') }}" class="btn btn-primary">
                 <i class="fas fa-arrow-left"></i> Back
             </a>
         </div>
 
-        <form action="{{ route('admin.submit.product.form') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('submit.product.form') }}" method="post" enctype="multipart/form-data">
 
             @csrf
             <div class="container">
@@ -25,11 +25,31 @@
                         </div><br>
 
                         <div class="form-group">
+                            <label for="exampleFormControlInput1"><strong>Group Name</strong></label>
+                            <select name="group_id" id="" class="form-control">
+                                <option value="">Select Option--</option>
+                                @foreach ($varGroup as $data)
+                                    <option value="{{ $data->id }}">{{ $data->group_name }}</option>
+                                @endforeach
+                            </select>
+                        </div><br>
+
+                        <div class="form-group">
                             <label for="exampleFormControlInput1"><strong>Category Name</strong></label>
                             <select name="category_id" id="" class="form-control">
                                 <option value="">Select Option--</option>
-                                @foreach ($varProduct as $data)
+                                @foreach ($varCategory as $data)
                                     <option value="{{ $data->id }}">{{ $data->category_name }}</option>
+                                @endforeach
+                            </select>
+                        </div><br>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1"><strong>Brand Name</strong></label>
+                            <select name="brand_id" id="" class="form-control">
+                                <option value="">Select Option--</option>
+                                @foreach ($varBrand as $data)
+                                    <option value="{{ $data->id }}">{{ $data->brand_name }}</option>
                                 @endforeach
                             </select>
                         </div><br>
@@ -55,6 +75,11 @@
                             <label for="exampleFormControlTextarea1"><strong>Description</strong></label>
                             <input required name="description" type="text" class="form-control" id=""
                                 placeholder="">
+                        </div><br>
+
+                        <div class="form-group">
+                            <label for=""><strong>Discount</strong></label>
+                            <input name="discount" type="number" class="form-control" id="" placeholder="">
                         </div><br>
 
                         <button type="submit" class="btn btn-success">Submit</button>

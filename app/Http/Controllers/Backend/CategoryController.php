@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
 
-class CategoryController extends Controller
+class CategoryController extends Controller 
 {
     //list
     public function categoryList()
@@ -43,7 +43,7 @@ class CategoryController extends Controller
         Category::create([
             'category_name' => $request->category_name,
             'parent_id' => $request->parent_name,
-            'catgory_image' => $request->category_image,
+            'category_image' => $request->category_image,
             'discount' => $request->discount
         ]);
         notify()->success("Category Created Successfully.");
@@ -73,11 +73,11 @@ class CategoryController extends Controller
          }
         $updateCategory->update([
             'category_name' => $request->category_name,
-            'catgory_image' => $request->category_image,
+            'category_image' => $request->category_image,
             'discount' => $request->discount
         ]);
         notify()->success("Category Updated Successfully.");
-        return redirect()->route('admin.category.list');
+        return redirect()->route('category.list');
     }
 
     //Delete

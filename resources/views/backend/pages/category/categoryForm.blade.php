@@ -4,12 +4,12 @@
     <div style="padding: 20px;">
 
         <div style="padding:10px;">
-            <a href="{{ route('admin.category.list') }}" class="btn btn-primary">
+            <a href="{{ route('category.list') }}" class="btn btn-primary">
                 <i class="fas fa-arrow-left"></i> Back
             </a>
         </div>
 
-        <form action="{{ route('admin.submit.category.form') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('submit.category.form') }}" method="post" enctype="multipart/form-data">
 
             @csrf
             <div class="container">

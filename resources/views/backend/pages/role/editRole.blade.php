@@ -3,7 +3,7 @@
 @section('content')
     <div style="padding: 20px;">
 
-        <form action="{{ route('admin.role.update', $editRole->id) }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('role.update', $editRole->id) }}" method="post" enctype="multipart/form-data">
             @method('put')
             @csrf
             <div class="container">

@@ -3,7 +3,7 @@
 @section('content')
     <div style="padding:20px">
         <h1>Category List</h1>
-        <div><a href="{{ route('admin.category.form') }}" class="btn btn-primary">Add New Category</a></div>
+        <div><a href="{{ route('category.form') }}" class="btn btn-primary">Add New Category</a></div>
 
         <table class="table">
             <thead>
@@ -30,9 +30,9 @@
                         <td>{{ $data->category_image }}</td>
                         <td>{{ $data->discount }}%</td>
                         <td>
-                            <a href="{{ route('admin.category.edit', $data->id) }}" type="button"
+                            <a href="{{ route('category.edit', $data->id) }}" type="button"
                                 class="btn btn-success">Edit</a>
-                            <a href="{{ route('admin.category.delete', $data->id) }}" type="button"
+                            <a href="{{ route('category.delete', $data->id) }}" type="button"
                                 class="btn btn-danger">Delete</a>
                         </td>
                     </tr>

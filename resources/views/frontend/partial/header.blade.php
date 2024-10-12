@@ -58,7 +58,7 @@
 
 									<ul class="account_selection">
 										@guest('customerGuard')
-										<li><a href="{{route('frontend.sign.up')}}"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+										<li><a href="{{route('frontend.sign.up')}}"><i class="fa fa-user-plus" aria-hidden="true"></i>Sign Up</a></li>
 										<li><a href="{{route('frontend.sign.in')}}"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
 										@endguest
 

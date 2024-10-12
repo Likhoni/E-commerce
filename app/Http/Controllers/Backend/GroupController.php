@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Group;
+use App\Models\Group; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
@@ -13,7 +13,7 @@ class GroupController extends Controller
     //list
     public function groupList()
     {
-        $group = Group::all();
+        $group = Group::with('parentGroup')->get();
         return view('backend.pages.group.groupList', compact('group'));
     }
 
@@ -43,6 +43,7 @@ class GroupController extends Controller
         Group::create([
             'group_name' => $request->group_name,
             'group_image' => $request->group_image,
+            'discount' => $request->discount,
             'status' => $request->status
         ]);
         notify()->success("Group Created Successfully.");
@@ -73,10 +74,11 @@ class GroupController extends Controller
         $updateGroup->update([
             'group_name' => $request->group_name,
             'group_image' => $request->group_image,
+            'discount' => $request->discount,
             'status' => $request->status
         ]);
         notify()->success("Group Updated Successfully.");
-        return redirect()->route('admin.group.list');
+        return redirect()->route('group.list');
     }
 
     //Delete

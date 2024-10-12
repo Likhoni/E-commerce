@@ -4,11 +4,11 @@
     <div style="padding: 20px;">
 
         <div style="padding:10px;">
-            <a href="{{ route('admin.group.list') }}" class="btn btn-primary">
+            <a href="{{ route('group.list') }}" class="btn btn-primary">
                 <i class="fas fa-arrow-left"></i> Back
             </a>
         </div>
-        <form action="{{ route('admin.submit.group.form') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('submit.group.form') }}" method="post" enctype="multipart/form-data">
 
             @csrf
             <div class="container">
@@ -23,9 +23,24 @@
                         </div><br>
 
                         <div class="form-group">
+                            <label for="exampleFormControlInput1"><strong>Group Parent Name</strong></label><br>
+                            <select name="parent_name" id="parent_name" class="form-control">
+                                <option value="">--Select Parent Name--</option>
+                                @foreach ($groups as $group)
+                                    <option value="{{ $group->id }}">{{ $group->group_name }}</option>
+                                @endforeach
+                            </select>
+                        </div><br>
+
+                        <div class="form-group">
                             <label for=""><strong>Group Image</strong></label>
                             <input name="group_image" type="file" class="form-control" id=""
                                 placeholder="">
+                        </div><br>
+
+                        <div class="form-group">
+                            <label for=""><strong>Discount</strong></label>
+                            <input name="discount" type="number" class="form-control" id="" placeholder="">
                         </div><br>
 
                         <div class="form-group">

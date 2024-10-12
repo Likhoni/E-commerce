@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('category_name');
             $table->string('parent_id')->nullable();
-            $table->string('catgory_image')->nullable();
+            $table->string('category_image')->nullable();
             $table->integer('discount')->nullable();
             $table->timestamps();
         });

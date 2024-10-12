@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
             $table->string('group_name');
+            $table->string('parent_id')->nullable();
             $table->string('group_image')->nullable();
+            $table->integer('discount')->nullable();
             $table->string('status')->default('active')->nullable();
             $table->timestamps();
         });

@@ -108,7 +108,7 @@ class OrderController extends Controller
             'total_discount' => $request->total_discount,
         ]);
         notify()->success("Order Updated Successfully.");
-        return redirect()->route('admin.order.list');
+        return redirect()->route('order.list');
     }
 
     //Delete
