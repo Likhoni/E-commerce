@@ -87,7 +87,7 @@
                     Report
                 </a>
 
-                <a class="nav-link collapsed" href="#">
+                <a class="nav-link collapsed" href="{{route('admin.discount.list')}}">
                     <div class="sb-nav-link-icon">
                         <i class="fas fa-percentage" style="color: #FF6347;"></i>
                     </div>

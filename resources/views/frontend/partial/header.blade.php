@@ -26,16 +26,14 @@
 										<li><a href="#">gbp</a></li>
 									</ul>
 								</li>
+
 								<li class="language">
-									<a href="#">
-										English
+									<a href="">Language
 										<i class="fa fa-angle-down"></i>
 									</a>
 									<ul class="language_selection">
-										<li><a href="#">French</a></li>
-										<li><a href="#">Italian</a></li>
-										<li><a href="#">German</a></li>
-										<li><a href="#">Spanish</a></li>
+										<li><a href="{{route('change.language','bn')}}">Bangla</a></li>
+										<li><a href="{{route('change.language','en')}}">English</a></li>
 									</ul>
 								</li>
 
@@ -90,7 +88,7 @@
 						</div>
 						<nav class="navbar">
 							<ul class="navbar_menu">
-								<li><a href="{{route('frontend.homepage')}}">home</a></li>
+								<li><a href="{{route('frontend.homepage')}}">{{__('Home')}}</a></li>
 								<li><a href="#">shop</a></li>
 								<li><a href="#">promotion</a></li>
 								<li><a href="#">pages</a></li>

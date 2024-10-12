@@ -33,10 +33,9 @@
                             </select>
                         </div><br>
 
-
                         <div class="form-group">
-                            <label for=""><strong>Category Image</strong></label>
-                            <input name="category_image" type="file" class="form-control" id="" placeholder="">
+                            <label for=""><strong>Category Parent Name</strong></label>
+                            <input name="category_image" type="text" class="form-control" id="" placeholder="">
                         </div><br>
 
                         <div class="form-group">

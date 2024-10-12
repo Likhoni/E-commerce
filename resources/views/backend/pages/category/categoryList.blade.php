@@ -22,7 +22,11 @@
                     <tr>
                         <td>{{ $data->id }}</td>
                         <td>{{ $data->category_name }}</td>
+
+
                         <td>{{ $data->parentCategory ? $data->parentCategory->category_name : 'Null' }}</td>
+
+                        
                         <td>{{ $data->category_image }}</td>
                         <td>{{ $data->discount }}%</td>
                         <td>
