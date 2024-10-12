@@ -18,7 +18,7 @@ use App\Http\Controllers\Frontend\FrontendHomeController;
 use App\Http\Controllers\LocalizationController;
 
 
-//frontend or website panel
+//frontend or website
 
 Route::group(['middleware' => 'changeLangMiddleware'], function () {
 
