@@ -20,7 +20,7 @@
     <div class="banner">
         <div class="container">
             <div class="row">
-                @foreach ($categories as $data)
+                @foreach ($categories->take(3) as $data)
                     <div class="col-md-4">
                         <div class="banner_item align-items-center"
                             style="background-image:url(frontend/images/banner_1.jpg)">
@@ -48,14 +48,15 @@
                 <div class="col text-center">
                     <div class="new_arrivals_sorting">
                         <ul class="arrivals_grid_sorting clearfix button-group filters-button-group">
-                            <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center active is-checked"
-                                data-filter="*">all</li>
-                            <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center"
-                                data-filter=".women">women's</li>
-                            <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center"
-                                data-filter=".accessories">accessories</li>
-                            <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center"
-                                data-filter=".men">men's</li>
+                            <a href="" class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center active is-checked"
+                                data-filter="">all
+                            </a>
+
+                            @foreach ($categories->take(3) as $data)
+                                <a href="" class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center"
+                                    data-filter="">{{ $data->category_name }}
+                                </a>
+                            @endforeach
                         </ul>
                     </div>
                 </div>

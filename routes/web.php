@@ -44,14 +44,14 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/do/login', [UserController::class, 'adminDoLogin'])->name('do.login');
     Route::group(['middleware' => 'auth'], function () {
 
-        Route::get('/logout', [UserController::class, 'adminLogout'])->name('admin.logout');
+        Route::get('/logout', [UserController::class, 'adminLogout'])->name('logout');
 
         Route::get('/', [HomeController::class, 'home'])->name('homepage');
 
         //Group
-        Route::get('/group/list', [GroupController::class, 'groupList'])->name('admin.group.list');
-        Route::get('/group/form', [GroupController::class, 'groupForm'])->name('admin.group.form');
-        Route::post('/submit/group/form', [GroupController::class, 'submitGroupForm'])->name('admin.submit.group.form');
+        Route::get('/group/list', [GroupController::class, 'groupList'])->name('group.list');
+        Route::get('/group/form', [GroupController::class, 'groupForm'])->name('group.form');
+        Route::post('/submit/group/form', [GroupController::class, 'submitGroupForm'])->name('submit.group.form');
 
         //Group
         Route::get('/group/list', [GroupController::class, 'groupList'])->name('group.list');
@@ -70,10 +70,6 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/category/edit/{id}', [CategoryController::class, 'categoryEdit'])->name('category.edit');
         Route::put('/category/update/{id}', [CategoryController::class, 'categoryUpdate'])->name('category.update');
         Route::get('/category/delete/{id}', [CategoryController::class, 'categoryDelete'])->name('category.delete');
-
-        Route::get('/category/edit/{id}', [CategoryController::class, 'categoryEdit'])->name('admin.category.edit');
-        Route::put('/category/update/{id}', [CategoryController::class, 'categoryUpdate'])->name('admin.category.update');
-        Route::get('/category/delete/{id}', [CategoryController::class, 'categoryDelete'])->name('admin.category.delete');
 
         //Brand
         Route::get('/brand/list', [BrandController::class, 'brandList'])->name('brand.list');
@@ -102,10 +98,6 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/customer/update/{id}', [CustomerController::class, 'customerUpdate'])->name('customer.update');
         Route::get('/customer/delete/{id}', [CustomerController::class, 'customerDelete'])->name('customer.delete');
 
-        Route::get('/customer/edit/{id}', [CustomerController::class, 'customerEdit'])->name('admin.customer.edit');
-        Route::put('/customer/update/{id}', [CustomerController::class, 'customerUpdate'])->name('admin.customer.update');
-        Route::get('/customer/delete/{id}', [CustomerController::class, 'customerDelete'])->name('admin.customer.delete');
-
         //Order
         Route::get('/order/list', [OrderController::class, 'orderList'])->name('order.list');
         Route::get('/order/form', [OrderController::class, 'orderForm'])->name('order.form');
@@ -114,10 +106,6 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/order/edit/{id}', [OrderController::class, 'orderEdit'])->name('order.edit');
         Route::put('/order/update/{id}', [OrderController::class, 'orderUpdate'])->name('order.update');
         Route::get('/order/delete/{id}', [OrderController::class, 'orderDelete'])->name('order.delete');
-
-        Route::get('/order/edit/{id}', [OrderController::class, 'orderEdit'])->name('admin.order.edit');
-        Route::put('/order/update/{id}', [OrderController::class, 'orderUpdate'])->name('admin.order.update');
-        Route::get('/order/delete/{id}', [OrderController::class, 'orderDelete'])->name('admin.order.delete');
 
         //Order Detail
         Route::get('/order-detail/list', [OrderDetailController::class, 'orderDetailList'])->name('order.detail.list');
@@ -130,26 +118,33 @@ Route::group(['prefix' => 'admin'], function () {
 
 
         //Role
-        Route::get('/role/list', [RoleController::class, 'roleList'])->name('admin.role.list');
-        Route::get('/role/form', [RoleController::class, 'roleForm'])->name('admin.role.form');
-        Route::post('/submit/role/form', [RoleController::class, 'SubmitRoleForm'])->name('admin.submit.role.form');
+        Route::get('/role/list', [RoleController::class, 'roleList'])->name('role.list');
+        Route::get('/role/form', [RoleController::class, 'roleForm'])->name('role.form');
+        Route::post('/submit/role/form', [RoleController::class, 'SubmitRoleForm'])->name('submit.role.form');
 
-        Route::get('/role/edit/{id}', [RoleController::class, 'roleEdit'])->name('admin.role.edit');
-        Route::put('/role/update/{id}', [RoleController::class, 'roleUpdate'])->name('admin.role.update');
-        Route::get('/role/delete/{id}', [RoleController::class, 'roleDelete'])->name('admin.role.delete');
+        Route::get('/role/edit/{id}', [RoleController::class, 'roleEdit'])->name('role.edit');
+        Route::put('/role/update/{id}', [RoleController::class, 'roleUpdate'])->name('role.update');
+        Route::get('/role/delete/{id}', [RoleController::class, 'roleDelete'])->name('role.delete');
+
+        Route::get('/assign/permission/{id}',[RoleController::class,'asssignPermission'])->name('role.assign.permission');
+        Route::post('store/role/permission',[RoleController::class,'storePermission'])->name('store.role.permission');
 
         //User
         Route::get('/user/list', [UserController::class, 'userList'])->name('user.list');
         Route::get('/user/form', [UserController::class, 'userForm'])->name('user.form');
         Route::post('/submit/user/form', [UserController::class, 'SubmitUserForm'])->name('submit.user.form');
 
-        //Discount
-        Route::get('discount/list', [DiscountController::class, 'discountList'])->name('admin.discount.list');
-        Route::get('/discount/form', [DiscountController::class, 'discountForm'])->name('admin.discount.form');
-        Route::post('/submit/discount/form', [DiscountController::class, 'SubmitDiscountForm'])->name('admin.submit.discount.form');
+        Route::get('/user/edit/{id}', [UserController::class, 'userEdit'])->name('user.edit');
+        Route::put('/user/update/{id}', [UserController::class, 'userUpdate'])->name('user.update');
+        Route::get('/user/delete/{id}', [UserController::class, 'userDelete'])->name('user.delete');
 
-        Route::get('/discount/edit/{id}', [DiscountController::class, 'discountEdit'])->name('admin.discount.edit');
-        Route::put('/discount/update/{id}', [DiscountController::class, 'discountUpdate'])->name('admin.discount.update');
-        Route::get('/discount/delete/{id}', [DiscountController::class, 'discountDelete'])->name('admin.discount.delete');
+        //Discount
+        Route::get('discount/list', [DiscountController::class, 'discountList'])->name('discount.list');
+        Route::get('/discount/form', [DiscountController::class, 'discountForm'])->name('discount.form');
+        Route::post('/submit/discount/form', [DiscountController::class, 'SubmitDiscountForm'])->name('submit.discount.form');
+
+        Route::get('/discount/edit/{id}', [DiscountController::class, 'discountEdit'])->name('discount.edit');
+        Route::put('/discount/update/{id}', [DiscountController::class, 'discountUpdate'])->name('discount.update');
+        Route::get('/discount/delete/{id}', [DiscountController::class, 'discountDelete'])->name('discount.delete');
     });
 });

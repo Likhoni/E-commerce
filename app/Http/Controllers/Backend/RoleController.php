@@ -77,7 +77,7 @@ class RoleController extends Controller
             'status' => $request->status
         ]);
         notify()->success("Role Updated successfully.");
-        return redirect()->route('admin.role.list');
+        return redirect()->route('role.list');
     }
 
     //Delete
@@ -101,13 +101,14 @@ class RoleController extends Controller
     public function asssignPermission($id)
     {
         $permissions = Permission::all();
-        $roles = Role::findOrFail($id);
+        $roles = Role::find($id);
         return view('backend.pages.role.permission', compact('roles', 'permissions'));
     }
 
     //store role permission
     public function storePermission(Request $request)
     {
+        // dd(request()->all());
         $checkValidation = Validator::make($request->all(), [
             'role_id' => 'required',
             'permission_id' => 'required|array',

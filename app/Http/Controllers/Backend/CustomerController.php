@@ -91,7 +91,7 @@ class CustomerController extends Controller
             'address' => $request->address
         ]);
         notify()->success("Customer Updated successfully.");
-        return redirect()->route('admin.customer.list');
+        return redirect()->route('customer.list');
     }
 
     //delete

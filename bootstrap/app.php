@@ -15,11 +15,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias
         (([
             'customerAuth' => \App\Http\Middleware\CustomerAuthenticate::class,
+            'changeLangMiddleware' => \App\Http\Middleware\ChangeLanguageMiddleware::class,
         ]));
 
-        $middleware->alias([
-            'changeLangMiddleware' => \App\Http\Middleware\ChangeLanguageMiddleware::class,
-        ]);
+        // $middleware->alias([
+        //     'changeLangMiddleware' => \App\Http\Middleware\ChangeLanguageMiddleware::class,
+        // ]);
         
         //$middleware->redirectGuestsTo(fn () => route('admin.login'));
     })

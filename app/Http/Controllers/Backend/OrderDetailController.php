@@ -94,7 +94,7 @@ class OrderDetailController extends Controller
             'discount_price' => $request->discount_price,
         ]);
         notify()->success("Order Detail Updated Successfully.");
-        return redirect()->route('admin.order.detail.list');
+        return redirect()->route('order.detail.list');
     }
 
     //Delete
