@@ -2,6 +2,13 @@
 <html lang="en">
 
 <head>
+    <style type="text/css">
+        .notify {
+            z-index: 1000000;
+            margin-top: 5%;
+        }
+    </style>
+    @notifyCss
     <title>E-Commerce</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,7 +29,7 @@
 
     <div class="super_container">
 
-        
+
 
 
         @include('frontend.partial.header')
@@ -40,6 +47,10 @@
     <script src="{{ url('frontend/plugins/OwlCarousel2-2.2.1/owl.carousel.js') }}"></script>
     <script src="{{ url('frontend/plugins/easing/easing.js') }}"></script>
     <script src="{{ url('frontend/js/custom.js') }}"></script>
+
+    @include('notify::components.notify')
+    @notifyJs
+
 </body>
 
 </html>

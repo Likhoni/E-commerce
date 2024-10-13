@@ -79,4 +79,50 @@ class FrontendUserController extends Controller
         notify()->success("Sign-Out Successful.");
         return redirect()->route('frontend.homepage');
     }
+
+    //View Customer profile
+    public function customerView(){
+        $viewCustomer = Customer::find(auth('customerGuard')->user()->id);
+        return view('frontend.pages.customer.viewCustomer',compact('viewCustomer'));
+    }
+
+    //Edit Customer Profile
+    public function customerEdit(){
+        $editCustomer = Customer::find(auth('customerGuard')->user()->id);
+        return view('frontend.pages.customer.editCustomer',compact('editCustomer'));
+    }
+
+    //Update
+    public function customerUpdate(Request $request)
+    {
+
+        $updateCustomer = Customer::find(auth('customerGuard')->user()->id);
+        $checkValidation = Validator::make($request->all(), [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+            'phone_number' => 'required',
+            // 'customer_image' => 'required'
+            'address' => 'required'
+        ]);
+        if ($checkValidation->fails()) {
+            // notify()->error($checkValidation->getMessageBag());
+            notify()->error("Something Went Wrong");
+            return redirect()->back();
+        }
+
+        $updateCustomer->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+            'image' => $request->customer_image,
+            'address' => $request->address
+        ]);
+        notify()->success("Profile Updated successfully.");
+        return redirect()->route('customer.view');  
+    }
+
+
+    
 }

@@ -31,6 +31,10 @@ Route::group(['middleware' => 'changeLangMiddleware'], function () {
     Route::get('/sign-in', [FrontendUserController::class, 'frontendSignIn'])->name('frontend.sign.in');
     Route::post('/do/sign-in', [FrontendUserController::class, 'frontendDoSignIn'])->name('frontend.do.sign.in');
 
+    Route::get('/customer/view', [FrontendUserController::class, 'customerView'])->name('customer.view');
+    Route::get('/customer/edit', [FrontendUserController::class, 'customerEdit'])->name('customer.edit');
+    Route::put('/customer/update', [FrontendUserController::class, 'customerUpdate'])->name('customer.update');
+
     Route::group(['middleware' => 'customerAuth'], function () {
         Route::get('/sign-out', [FrontendUserController::class, 'frontendSignOut'])->name('frontend.sign.out');
     });
@@ -94,8 +98,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/customer/form', [CustomerController::class, 'customerForm'])->name('customer.form');
         Route::post('/submit/customer/form', [CustomerController::class, 'SubmitCustomerForm'])->name('submit.customer.form');
 
-        Route::get('/customer/edit/{id}', [CustomerController::class, 'customerEdit'])->name('customer.edit');
-        Route::put('/customer/update/{id}', [CustomerController::class, 'customerUpdate'])->name('customer.update');
+        // Route::get('/customer/edit/{id}', [CustomerController::class, 'customerEdit'])->name('customer.edit');
+        // Route::put('/customer/update/{id}', [CustomerController::class, 'customerUpdate'])->name('customer.update');
         Route::get('/customer/delete/{id}', [CustomerController::class, 'customerDelete'])->name('customer.delete');
 
         //Order
@@ -126,8 +130,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/role/update/{id}', [RoleController::class, 'roleUpdate'])->name('role.update');
         Route::get('/role/delete/{id}', [RoleController::class, 'roleDelete'])->name('role.delete');
 
-        Route::get('/assign/permission/{id}',[RoleController::class,'asssignPermission'])->name('role.assign.permission');
-        Route::post('store/role/permission',[RoleController::class,'storePermission'])->name('store.role.permission');
+        Route::get('/assign/permission/{id}', [RoleController::class, 'asssignPermission'])->name('role.assign.permission');
+        Route::post('store/role/permission', [RoleController::class, 'storePermission'])->name('store.role.permission');
 
         //User
         Route::get('/user/list', [UserController::class, 'userList'])->name('user.list');
