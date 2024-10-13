@@ -12,7 +12,7 @@ use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\OrderDetailController;
-use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\Backend\DiscountController;
 use App\Http\Controllers\Frontend\FrontendUserController;
 use App\Http\Controllers\Frontend\FrontendHomeController;
 use App\Http\Controllers\LocalizationController;
@@ -115,7 +115,6 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/order-detail/edit/{id}', [OrderDetailController::class, 'orderDetailEdit'])->name('order.detail.edit');
         Route::put('/order-detail/update/{id}', [OrderDetailController::class, 'orderDetailUpdate'])->name('order.detail.update');
         Route::get('/order-detail/delete/{id}', [OrderDetailController::class, 'orderDetailDelete'])->name('order.detail.delete');
-
 
         //Role
         Route::get('/role/list', [RoleController::class, 'roleList'])->name('role.list');
