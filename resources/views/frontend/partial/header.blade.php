@@ -38,22 +38,24 @@
 								</li>
 
 								<li class="account">
-								
 									@guest('customerGuard')
 									<a href="#">
 										Add Account
 										<i class="fa fa-angle-down"></i>
 									</a>
 									@endguest
-									
-									@auth('customerGuard')
 
+									@auth('customerGuard')
 									<a href="#">
+										@if(auth('customerGuard')->user()->profile_image)
+										<img src="" alt="profile picture" class="profile-img">
+										@else
+										<i class="fa fa-user" aria-hidden="true"></i>
+										@endif
 										{{auth('customerGuard')->user()->first_name}}
 										{{auth('customerGuard')->user()->last_name}}
 										<i class="fa fa-angle-down"></i>
 									</a>
-
 									@endauth
 
 									<ul class="account_selection">
@@ -63,11 +65,12 @@
 										@endguest
 
 										@auth('customerGuard')
-										<li><a href="#"><i class="fa fa-profile" aria-hidden="true"></i>View Profile</a></li>
+										<li><a href="{{route('customer.view')}}">
+												<i class="fa fa-profile" aria-hidden="true"></i>View Profile</a>
+										</li>
 										<li><a href="{{route('frontend.sign.out')}}"><i class="fa fa-sign-out" aria-hidden="true"></i>Sign Out</a></li>
 										@endauth
 									</ul>
-
 								</li>
 
 							</ul>
@@ -84,7 +87,7 @@
 				<div class="row">
 					<div class="col-lg-12 text-right">
 						<div class="logo_container">
-							<a href="#">colo<span>shop</span></a>
+							<a href="#">E-<span>Commerce</span></a>
 						</div>
 						<nav class="navbar">
 							<ul class="navbar_menu">
@@ -97,7 +100,7 @@
 							</ul>
 							<ul class="navbar_user">
 								<li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-								<li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
+
 								<li class="checkout">
 									<a href="#">
 										<i class="fa fa-shopping-cart" aria-hidden="true"></i>
