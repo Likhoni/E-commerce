@@ -126,10 +126,15 @@
                         <table width="100%">
                             @foreach ($permissions as $permission)
                                 <tr>
-                                    <td>{{ $permission->name }}</td>
+                                    <td>{{ ucfirst($permission->name) }}</td>
                                     <td>
                                         <div>
-                                            <input type="checkbox" name="permission_id[]" value="{{ $permission->id }}" id="permissions" multiple />
+                                            <input type="checkbox" name="permission_id[]" value="{{ $permission->id }}"
+                                                id="permissions" multiple 
+                                            @if (in_array($permission->id, $role_permission))
+                                                checked
+                                            @endif
+                                            />
                                             <span></span>
                                         </div>
                                     </td>

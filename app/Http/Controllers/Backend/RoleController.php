@@ -100,9 +100,17 @@ class RoleController extends Controller
     //Assign Permission
     public function asssignPermission($id)
     {
+        $role_permission = Role_permission::where('role_id', $id)
+            ->get()
+            ->pluck('permission_id')
+            ->toArray();
+
+
+
         $permissions = Permission::all();
         $roles = Role::find($id);
-        return view('backend.pages.role.permission', compact('roles', 'permissions'));
+        //dd($role_permission);
+        return view('backend.pages.role.permission', compact('roles', 'permissions', 'role_permission'));
     }
 
     //store role permission
@@ -120,17 +128,27 @@ class RoleController extends Controller
             return redirect()->back();
         }
         //dd($request->all());
-        foreach ($request->permission_id as $permissionId) {
-            Role_permission::create([
-                'role_id' => $request->role_id,
-                'permission_id' => $permissionId,
-                //'permission_id' => $request->permission_id,
-            ]);
+        try {
+
+
+            Role_permission::where('role_id', $request->role_id)
+                ->delete();
+
+            foreach ($request->permission_id as $permissionId) {
+                Role_permission::create([
+                    'role_id' => $request->role_id,
+                    'permission_id' => $permissionId,
+                    //'permission_id' => $request->permission_id,
+                ]);
+            }
+
+            notify()->success('Role Permissions Set Successfully.');
+            return redirect()->back();
+        } catch (Throwable $e) {
+
+            //$role_permission->permission()->attach($request->permission_id);
+            notify()->error($e->getMessage());
+            return redirect()->back();
         }
-
-       //$role_permission->permission()->attach($request->permission_id);
-
-        notify()->success('Role Permissions Set Successfully.');
-        return redirect()->back();
     }
 }

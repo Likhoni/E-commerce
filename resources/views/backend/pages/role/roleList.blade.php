@@ -3,8 +3,9 @@
 @section('content')
     <div style="padding:20px">
         <h1>Role List</h1>
-        <div><a href="{{ route('role.form') }}" class="btn btn-primary">Add New Role</a></div>
-
+        @if (checkPermission('role.form'))
+            <div><a href="{{ route('role.form') }}" class="btn btn-primary">Add New Role</a></div>
+        @endif
         <table class="table">
             <thead>
                 <tr>
@@ -22,10 +23,16 @@
                         <td>{{ $data->name }}</td>
                         <td>{{ $data->status }}</td>
                         <td>
+                        @if (checkPermission('role.edit'))
                             <a href="{{ route('role.edit', $data->id) }}" class="btn btn-success">Edit</a>
+                        @endif
+                        @if (checkPermission('role.delete'))
                             <a href="{{ route('role.delete', $data->id) }}" class="btn btn-danger">Delete</a>
+                        @endif
+                        @if (checkPermission('role.assign.permission'))
                             <a href="{{ route('role.assign.permission', $data->id) }}" class="btn btn-success">Assign
                                 Permission</a>
+                        @endif
                         </td>
                     </tr>
                 @endforeach

@@ -3,8 +3,9 @@
 @section('content')
     <div style="padding:20px">
         <h1>Discount List</h1>
-        <div><a href="{{ route('discount.form') }}" class="btn btn-primary">Add New Discount</a></div>
-
+        @if (checkPermission('discount.form'))
+            <div><a href="{{ route('discount.form') }}" class="btn btn-primary">Add New Discount</a></div>
+        @endif
         <table class="table">
             <thead>
                 <tr>
@@ -16,23 +17,24 @@
                     <th scope="col">Action</th>
                 </tr>
             </thead>
-            <tbody> 
-                @foreach($discount as $data)
+            <tbody>
+                @foreach ($discount as $data)
                     <tr>
-                        <td>{{$data->id}}</td>
-                        <td>{{$data->discount_name}}</td>
-                        <td>{{$data->category_name}}</td>
-                        <td>{{$data->product_name}}</td>
-                        <td>{{$data->discount_percentage}}</td>
+                        <td>{{ $data->id }}</td>
+                        <td>{{ $data->discount_name }}</td>
+                        <td>{{ $data->category_name }}</td>
+                        <td>{{ $data->product_name }}</td>
+                        <td>{{ $data->discount_percentage }}</td>
                         <td>
-                            <a href="" type="button"
-                                class="btn btn-success">Edit</a>
-
-                            <a href="{{route('discount.delete', $data->id)}}" type="button"
-                                class="btn btn-danger">Delete</a>
+                            
+                                <a href="" type="button" class="btn btn-success">Edit</a>
+                            
+                            @if (checkPermission('discount.delete'))
+                                <a href="{{ route('discount.delete', $data->id) }}" type="button" class="btn btn-danger">Delete</a>
+                            @endif
                         </td>
                     </tr>
-                    @endforeach
+                @endforeach
             </tbody>
         </table>
     </div>

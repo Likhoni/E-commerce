@@ -3,9 +3,9 @@
 @section('content')
     <div style="padding:20px">
         <h1>User List</h1>
-        
-        <div><a href="{{ route('user.form') }}" class="btn btn-primary">Add New User</a></div>
-
+        @if (checkPermission('user.form'))
+            <div><a href="{{ route('user.form') }}" class="btn btn-primary">Add New User</a></div>
+        @endif
         <table class="table">
             <thead>
                 <tr>
@@ -33,8 +33,12 @@
                         <td>{{ $data->image }}</td>
                         <td>{{ $data->address }}</td>
                         <td>
+                        @if (checkPermission('user.edit'))
                             <a href="{{ route('user.edit', $data->id) }}" class="btn btn-success">Edit</a>
+                        @endif
+                        @if (checkPermission('user.delete'))
                             <a href="{{ route('user.delete', $data->id) }}" class="btn btn-danger">Delete</a>
+                        @endif
                         </td>
                     </tr>
                 @endforeach

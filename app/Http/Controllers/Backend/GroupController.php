@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Group; 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
 
@@ -30,7 +31,7 @@ class GroupController extends Controller
         //Validation
         $checkValidation = Validator::make($request->all(), [
             'group_name' => 'required',
-            // 'category_image' => 'required',
+            // 'image' => 'required',
             //'status' => 'required',
         ]);
         if ($checkValidation->fails()) {
@@ -39,10 +40,17 @@ class GroupController extends Controller
             return redirect()->back();
         }
 
+        $group_image= '';
+        if($request->hasFile('group_image'))
+        {
+            $group_image = date('YmdHis') . '.' . $request->file('group_image')->getClientOriginalExtension();
+            $request->file('group_image')->storeAs('/groups', $group_image);
+        }
+
         //Store Data
         Group::create([
             'group_name' => $request->group_name,
-            'group_image' => $request->group_image,
+            'group_image' => $group_image,
             'discount' => $request->discount,
             'status' => $request->status
         ]);
@@ -71,9 +79,20 @@ class GroupController extends Controller
             notify()->error("Something Went Wrong");
             return redirect()->back();
         }
+
+        $group_image = '';
+
+        if ($request->hasFile('group_image')) {
+
+            $group_image = date('YmdHis') . '.' . $request->file('group_image')->getClientOriginalExtension();
+
+            $request->file('group_image')->storeAs('/groups', $group_image);
+            File::delete('images/groups/' . $updateGroup->group_image);
+        }
+
         $updateGroup->update([
             'group_name' => $request->group_name,
-            'group_image' => $request->group_image,
+            'group_image' => $group_image,
             'discount' => $request->discount,
             'status' => $request->status
         ]);

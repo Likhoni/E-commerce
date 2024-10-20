@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         (([
             'customerAuth' => \App\Http\Middleware\CustomerAuthenticate::class,
             'changeLangMiddleware' => \App\Http\Middleware\ChangeLanguageMiddleware::class,
+            'permissionMiddleware' => \App\Http\Middleware\CheckPermissionMiddleware::class,
         ]));
 
         // $middleware->alias([

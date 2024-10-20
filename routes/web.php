@@ -46,16 +46,11 @@ Route::group(['prefix' => 'admin'], function () {
     //Admin Login Logout
     Route::get('/login', [UserController::class, 'adminLogin'])->name('login');
     Route::post('/do/login', [UserController::class, 'adminDoLogin'])->name('do.login');
-    Route::group(['middleware' => 'auth'], function () {
+    Route::group(['middleware' => ['auth', 'permissionMiddleware']], function () {
 
         Route::get('/logout', [UserController::class, 'adminLogout'])->name('logout');
 
         Route::get('/', [HomeController::class, 'home'])->name('homepage');
-
-        //Group
-        Route::get('/group/list', [GroupController::class, 'groupList'])->name('group.list');
-        Route::get('/group/form', [GroupController::class, 'groupForm'])->name('group.form');
-        Route::post('/submit/group/form', [GroupController::class, 'submitGroupForm'])->name('submit.group.form');
 
         //Group
         Route::get('/group/list', [GroupController::class, 'groupList'])->name('group.list');

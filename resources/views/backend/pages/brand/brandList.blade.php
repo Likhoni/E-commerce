@@ -3,8 +3,9 @@
 @section('content')
     <div style="padding:20px">
         <h1>Brand List</h1>
-        <div><a href="{{ route('brand.form') }}" class="btn btn-primary">Add New Brand</a></div>
-
+        @if (checkPermission('brand.form'))
+            <div><a href="{{ route('brand.form') }}" class="btn btn-primary">Add New Brand</a></div>
+        @endif
         <table class="table">
             <thead>
                 <tr>
@@ -26,10 +27,14 @@
                         <td>{{ $data->brand_image }}</td>
                         <td>{{ $data->discount }}%</td>
                         <td>
-                            <a href="{{ route('brand.edit', $data->id) }}" type="button"
-                                class="btn btn-success">Edit</a>
-                            <a href="{{ route('brand.delete', $data->id) }}" type="button"
-                                class="btn btn-danger">Delete</a>
+                            @if (checkPermission('brand.edit'))
+                                <a href="{{ route('brand.edit', $data->id) }}" type="button"
+                                    class="btn btn-success">Edit</a>
+                            @endif
+                            @if (checkPermission('brand.delete'))
+                                <a href="{{ route('brand.delete', $data->id) }}" type="button"
+                                    class="btn btn-danger">Delete</a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
