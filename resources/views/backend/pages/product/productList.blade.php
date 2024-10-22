@@ -32,7 +32,8 @@
                         <td>{{ $data->brand->brand_name ?? 'N/A' }}</td>
                         <td>{{ $data->product_quantity }}</td>
                         <td>{{ $data->product_price }}</td>
-                        <td>{{ $data->product_image }}</td>
+                        <td><img style="width: 100px;height:100px" src="{{ url('images/products', $data->product_image) }}"
+                                alt="" srcset=""></td>
                         <td>{{ $data->product_description }}</td>
                         <td>{{ $data->discount }}%</td>
                         <td>

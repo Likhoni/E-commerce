@@ -24,7 +24,8 @@
                         <td>{{ $data->id }}</td>
                         <td>{{ $data->brand_name }}</td>
                         <td>{{ $data->parentBrand ? $data->parentBrand->brand_name : 'Null' }}</td>
-                        <td>{{ $data->brand_image }}</td>
+                        <td><img style="width: 100px;height:100px" src="{{ url('images/brands', $data->brand_image) }}"
+                                alt="" srcset=""></td>
                         <td>{{ $data->discount }}%</td>
                         <td>
                             @if (checkPermission('brand.edit'))

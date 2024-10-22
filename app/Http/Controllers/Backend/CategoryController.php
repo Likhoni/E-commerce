@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
 
-class CategoryController extends Controller 
+class CategoryController extends Controller
 {
     //list
     public function categoryList()
@@ -39,11 +40,18 @@ class CategoryController extends Controller
             return redirect()->back();
         }
 
+        $category_image= '';
+        if($request->hasFile('category_image'))
+        {
+            $category_image = date('YmdHis') . '.' . $request->file('category_image')->getClientOriginalExtension();
+            $request->file('category_image')->storeAs('/categories', $category_image);
+        }
+
         //Store Data
         Category::create([
             'category_name' => $request->category_name,
             'parent_id' => $request->parent_name,
-            'category_image' => $request->category_image,
+            'category_image' => $category_image,
             'discount' => $request->discount
         ]);
         notify()->success("Category Created Successfully.");
@@ -65,15 +73,26 @@ class CategoryController extends Controller
             'category_name' => 'required',
             // 'category_image' => 'required',
             // 'discount' => ['required', 'numeric', 'min:1']
-         ]);
-         if ($checkValidation->fails()) {
-             // notify()->error($checkValidation->getMessageBag());
-             notify()->error("Something Went Wrong");
-             return redirect()->back();
-         }
+        ]);
+        if ($checkValidation->fails()) {
+            // notify()->error($checkValidation->getMessageBag());
+            notify()->error("Something Went Wrong");
+            return redirect()->back();
+        }
+
+        $category_image = $updateCategory->category_image;
+
+        if ($request->hasFile('category_image')) {
+
+            $category_image = date('YmdHis') . '.' . $request->file('category_image')->getClientOriginalExtension();
+
+            $request->file('category_image')->storeAs('/categories', $category_image);
+            File::delete('images/categories/' . $updateCategory->category_image);
+        }
+
         $updateCategory->update([
             'category_name' => $request->category_name,
-            'category_image' => $request->category_image,
+            'category_image' => $category_image,
             'discount' => $request->discount
         ]);
         notify()->success("Category Updated Successfully.");

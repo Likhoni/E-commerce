@@ -13,7 +13,7 @@ use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\OrderDetailController;
 use App\Http\Controllers\Backend\DiscountController;
-use App\Http\Controllers\Frontend\FrontendUserController;
+use App\Http\Controllers\Frontend\FrontendCustomerController;
 use App\Http\Controllers\Frontend\FrontendHomeController;
 use App\Http\Controllers\LocalizationController;
 
@@ -26,17 +26,17 @@ Route::group(['middleware' => 'changeLangMiddleware'], function () {
     Route::get('/change/lang/{lang_name}', [LocalizationController::class, 'changeLang'])->name('change.language');
 
     Route::get('/', [FrontendHomeController::class, 'frontendHome'])->name('frontend.homepage');
-    Route::get('/sign-up', [FrontendUserController::class, 'frontendSignUp'])->name('frontend.sign.up');
-    Route::post('/do/sign-up', [FrontendUserController::class, 'frontendDoSignup'])->name('frontend.do.sign.up');
-    Route::get('/sign-in', [FrontendUserController::class, 'frontendSignIn'])->name('frontend.sign.in');
-    Route::post('/do/sign-in', [FrontendUserController::class, 'frontendDoSignIn'])->name('frontend.do.sign.in');
+    Route::get('/sign-up', [FrontendCustomerController::class, 'frontendSignUp'])->name('frontend.sign.up');
+    Route::post('/do/sign-up', [FrontendCustomerController::class, 'frontendDoSignup'])->name('frontend.do.sign.up');
+    Route::get('/sign-in', [FrontendCustomerController::class, 'frontendSignIn'])->name('frontend.sign.in');
+    Route::post('/do/sign-in', [FrontendCustomerController::class, 'frontendDoSignIn'])->name('frontend.do.sign.in');
 
-    Route::get('/customer/view', [FrontendUserController::class, 'customerView'])->name('customer.view');
-    Route::get('/customer/edit', [FrontendUserController::class, 'customerEdit'])->name('customer.edit');
-    Route::put('/customer/update', [FrontendUserController::class, 'customerUpdate'])->name('customer.update');
+    Route::get('/customer/view', [FrontendCustomerController::class, 'customerView'])->name('customer.view');
+    Route::get('/customer/edit', [FrontendCustomerController::class, 'customerEdit'])->name('customer.edit');
+    Route::put('/customer/update', [FrontendCustomerController::class, 'customerUpdate'])->name('customer.update');
 
     Route::group(['middleware' => 'customerAuth'], function () {
-        Route::get('/sign-out', [FrontendUserController::class, 'frontendSignOut'])->name('frontend.sign.out');
+        Route::get('/sign-out', [FrontendCustomerController::class, 'frontendSignOut'])->name('frontend.sign.out');
     });
 });
 
@@ -93,9 +93,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/customer/form', [CustomerController::class, 'customerForm'])->name('customer.form');
         Route::post('/submit/customer/form', [CustomerController::class, 'SubmitCustomerForm'])->name('submit.customer.form');
 
-        // Route::get('/customer/edit/{id}', [CustomerController::class, 'customerEdit'])->name('customer.edit');
-        // Route::put('/customer/update/{id}', [CustomerController::class, 'customerUpdate'])->name('customer.update');
-        Route::get('/customer/delete/{id}', [CustomerController::class, 'customerDelete'])->name('customer.delete');
+        //Route::get('/customer/delete/{id}', [CustomerController::class, 'customerDelete'])->name('customer.delete');
 
         //Order
         Route::get('/order/list', [OrderController::class, 'orderList'])->name('order.list');

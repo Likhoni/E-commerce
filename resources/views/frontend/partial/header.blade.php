@@ -46,15 +46,17 @@
 									@endguest
 
 									@auth('customerGuard')
-									<a href="#">
-										@if(auth('customerGuard')->user()->profile_image)
-										<img src="" alt="profile picture" class="profile-img">
+									<a href="#" style="display: flex; align-items: center;">
+										@if(auth('customerGuard')->user()->image)
+										<img src="{{ url('images/customers/', auth('customerGuard')->user()->image) }}" alt="profile picture" class="profile-img" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-top: 5px;">
 										@else
-										<i class="fa fa-user" aria-hidden="true"></i>
+										<i class="fa fa-user" aria-hidden="true" style="font-size: 40px; margin-top: 5px;"></i>
 										@endif
+										<span style="margin-left: 10px;">
 										{{auth('customerGuard')->user()->first_name}}
 										{{auth('customerGuard')->user()->last_name}}
-										<i class="fa fa-angle-down"></i>
+										 </span>
+										<i class="fa fa-angle-down" style="margin-left: 5px;"></i>
 									</a>
 									@endauth
 
@@ -66,7 +68,7 @@
 
 										@auth('customerGuard')
 										<li><a href="{{route('customer.view')}}">
-												<i class="fa fa-profile" aria-hidden="true"></i>View Profile</a>
+												<i class="fa fa-user" aria-hidden="true"></i>View Profile</a>
 										</li>
 										<li><a href="{{route('frontend.sign.out')}}"><i class="fa fa-sign-out" aria-hidden="true"></i>Sign Out</a></li>
 										@endauth

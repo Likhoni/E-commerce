@@ -23,12 +23,9 @@
                     <tr>
                         <td>{{ $data->id }}</td>
                         <td>{{ $data->category_name }}</td>
-
-
                         <td>{{ $data->parentCategory ? $data->parentCategory->category_name : 'Null' }}</td>
-
-
-                        <td>{{ $data->category_image }}</td>
+                        <td><img style="width: 100px;height:100px" src="{{ url('images/categories', $data->category_image) }}"
+                                alt="" srcset=""></td>
                         <td>{{ $data->discount }}%</td>
                         <td>
                             @if (checkPermission('category.edit'))

@@ -19,6 +19,7 @@
 
                         <div class="form-group">
                             <label for=""><strong>Category Image</strong></label>
+                            <img style="width: 100px;height:100px" src="{{url('images/categories',$editCategory->category_image)}}" alt="">
                             <input value="{{ $editCategory->category_image }}" name="category_image" type="file"
                                 class="form-control" id="" placeholder="">
                         </div><br>

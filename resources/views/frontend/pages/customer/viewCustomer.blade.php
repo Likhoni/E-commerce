@@ -38,10 +38,11 @@
             <tr>
                 <td style="padding: 6px;">Image</td>
                 <td style="padding: 6px;">
-                    @if($viewCustomer->profile_image)
-                    <img width="80" src="{{ asset('storage/' . $viewCustomer->profile_image) }}" alt="Profile Image">
+                    
+                    @if($viewCustomer->image)
+                    <img class="img-fluid" style="width: 100px;height:100px;" src="{{ url('images/customers/' . $viewCustomer->image) }}" alt="Profile Image">
                     @else
-                    <img width="80" src="{{ asset('path/to/default-image.jpg') }}" alt="No Image Available">
+                    <img width="80" src="{{ url('images/customers/default-image.jpg') }}" alt="No Image Available">
                     @endif
                 </td>
             </tr>

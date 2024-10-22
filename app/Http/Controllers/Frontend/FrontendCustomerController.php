@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
-class FrontendUserController extends Controller
+class FrontendCustomerController extends Controller
 {
     public function frontendSignUp()
     {
@@ -31,13 +32,20 @@ class FrontendUserController extends Controller
             return redirect()->back();
         }
 
+        $image= '';
+        if($request->hasFile('image'))
+        {
+            $image = date('YmdHis') . '.' . $request->file('image')->getClientOriginalExtension();
+            $request->file('image')->storeAs('/customers', $image);
+        }
+
         Customer::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'phone_number' => $request->phone_number,
-            'image' => $request->customer_image,
+            'image' => $image,
             'address' => $request->address
         ]);
         notify()->success("Registration Successful");
@@ -83,6 +91,7 @@ class FrontendUserController extends Controller
     //View Customer profile
     public function customerView(){
         $viewCustomer = Customer::find(auth('customerGuard')->user()->id);
+        // dd($viewCustomer);
         return view('frontend.pages.customer.viewCustomer',compact('viewCustomer'));
     }
 
@@ -101,8 +110,8 @@ class FrontendUserController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required',
-            'phone_number' => 'required',
-            // 'customer_image' => 'required'
+            //'phone_number' => 'required',
+            // 'image' => 'required'
             'address' => 'required'
         ]);
         if ($checkValidation->fails()) {
@@ -111,12 +120,23 @@ class FrontendUserController extends Controller
             return redirect()->back();
         }
 
+        $image = $updateCustomer->image;
+
+        if ($request->hasFile('image')) {
+
+            $image = date('YmdHis') . '.' . $request->file('image')->getClientOriginalExtension();
+
+            $request->file('image')->storeAs('/customers', $image);
+            File::delete('images/customers/' . $updateCustomer->image);
+        }
+
+
         $updateCustomer->update([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'phone_number' => $request->phone_number,
-            'image' => $request->customer_image,
+            'image' => $image,
             'address' => $request->address
         ]);
         notify()->success("Profile Updated successfully.");

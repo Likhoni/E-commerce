@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Group;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
 
@@ -45,6 +46,13 @@ class ProductController extends Controller
             notify()->error("Something Went Wrong");
             return redirect()->back();
         }
+
+        $product_image= '';
+        if($request->hasFile('product_image'))
+        {
+            $product_image = date('YmdHis') . '.' . $request->file('product_image')->getClientOriginalExtension();
+            $request->file('product_image')->storeAs('/products', $product_image);
+        }
         
          Product::create([
             'product_name' => $request->product_name,
@@ -53,7 +61,7 @@ class ProductController extends Controller
             'brand_id' => $request->brand_id,
             'product_quantity' => $request->product_quantity,
             'product_price' => $request->product_price,
-            'product_image' => $request->product_image,
+            'product_image' => $product_image,
             'discount' => $request->discount,
             'product_description' => $request->description
         ]);
@@ -90,6 +98,16 @@ class ProductController extends Controller
             return redirect()->back();
         }
 
+        $product_image = $updateProduct->product_image;
+
+        if ($request->hasFile('product_image')) {
+
+            $product_image = date('YmdHis') . '.' . $request->file('product_image')->getClientOriginalExtension();
+
+            $request->file('product_image')->storeAs('/products', $product_image);
+            File::delete('images/products/' . $updateProduct->product_image);
+        }
+
         $updateProduct->update([
             'product_name' => $request->product_name,
             'group_id' => $request->group_id,
@@ -97,7 +115,7 @@ class ProductController extends Controller
             'brand_id' => $request->brand_id,
             'product_quantity' => $request->product_quantity,
             'product_price' => $request->product_price,
-            'product_image' => $request->product_image,
+            'product_image' => $product_image,
             'discount' => $request->discount,
             'product_description' => $request->description
         ]);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
 
@@ -39,11 +40,18 @@ class BrandController extends Controller
             return redirect()->back();
         }
 
+        $brand_image= '';
+        if($request->hasFile('brand_image'))
+        {
+            $brand_image = date('YmdHis') . '.' . $request->file('brand_image')->getClientOriginalExtension();
+            $request->file('brand_image')->storeAs('/brands', $brand_image);
+        }
+
         //Store Data
         Brand::create([
             'brand_name' => $request->brand_name,
             'parent_id' => $request->parent_name,
-            'brand_image' => $request->brand_image,
+            'brand_image' => $brand_image,
             'discount' => $request->discount
         ]);
         notify()->success("Brand Created Successfully.");
@@ -71,9 +79,20 @@ class BrandController extends Controller
              notify()->error("Something Went Wrong");
              return redirect()->back();
          }
+
+         $brand_image = $updateBrand->brand_image;
+
+        if ($request->hasFile('brand_image')) {
+
+            $brand_image = date('YmdHis') . '.' . $request->file('brand_image')->getClientOriginalExtension();
+
+            $request->file('brand_image')->storeAs('/brands', $brand_image);
+            File::delete('images/brands/' . $updateBrand->brand_image);
+        }
+
         $updateBrand->update([
             'brand_name' => $request->brand_name,
-            'brand_image' => $request->brand_image,
+            'brand_image' => $brand_image,
             'discount' => $request->discount
         ]);
         notify()->success("Brand Updated Successfully.");

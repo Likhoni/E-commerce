@@ -80,7 +80,7 @@ class GroupController extends Controller
             return redirect()->back();
         }
 
-        $group_image = '';
+        $group_image = $updateGroup->group_image;
 
         if ($request->hasFile('group_image')) {
 

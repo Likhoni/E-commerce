@@ -7,7 +7,7 @@
                     <div class="main_slider_content">
                         <div>
                             <form action="{{route('frontend.do.sign.in')}}" method="post"
-                                style="border: 2px solid #000; border-radius: 10px; padding: 20px; max-width: 600px; margin: 0 auto; background-color: white;">
+                                style="border: 2px solid #000; border-radius: 10px; padding: 20px; max-width: 600px; margin: 0 auto; background-color: white;" enctype="multipart/form-data">
                                 @csrf
                                 <div style="display: flex; flex-wrap: wrap; gap: 20px;">
                                     <!-- Left Column -->

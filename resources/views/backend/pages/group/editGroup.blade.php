@@ -16,7 +16,7 @@
                             <input required value="{{ $editGroup->group_name }}" name="group_name"
                                 type="text" class="form-control" id="exampleFormControlInput1" placeholder="">
                         </div><br>
-
+ 
                         <div class="form-group">
                             <label for=""><strong>Group Image</strong></label>
                                 <img style="width: 100px;height:100px" src="{{url('images/groups',$editGroup->group_image)}}" alt="">

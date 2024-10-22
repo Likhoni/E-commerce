@@ -3,9 +3,6 @@
 @section('content')
     <div style="padding:20px">
         <h1>Customer List</h1>
-        @if (checkPermission('customer.form'))
-            <div><a href="{{ route('customer.form') }}" class="btn btn-primary">Add New Customer</a></div>
-        @endif
         <table class="table">
             <thead>
                 <tr>
@@ -28,15 +25,13 @@
                         <td>{{ $data->last_name }}</td>
                         <td>{{ $data->email }}</td>
                         <td>{{ $data->phone_number }}</td>
-                        <td>{{ $data->image }}</td>
+                        <td><img style="width: 100px;height:100px" src="{{ url('images/customers', $data->image) }}"
+                                alt="" srcset=""></td>
                         <td>{{ $data->address }}</td>
                         <td>
-                        @if (checkPermission('customer.edit'))
-                            <a href="{{ route('customer.edit', $data->id) }}" class="btn btn-success">Edit</a>
-                        @endif
-                        @if (checkPermission('customer.delete'))
+                        {{-- @if (checkPermission('customer.delete'))
                             <a href="{{ route('customer.delete', $data->id) }}" class="btn btn-danger">Delete</a>
-                        @endif
+                        @endif --}}
                         </td>
                     </tr>
                 @endforeach

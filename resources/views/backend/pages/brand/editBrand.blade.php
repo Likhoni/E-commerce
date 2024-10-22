@@ -19,6 +19,7 @@
 
                         <div class="form-group">
                             <label for=""><strong>Brand Image</strong></label>
+                            <img style="width: 100px;height:100px" src="{{url('images/brands',$editBrand->brand_image)}}" alt="">
                             <input value="{{ $editBrand->brand_image }}" name="brand_image" type="file"
                                 class="form-control" id="" placeholder="">
                         </div><br>
