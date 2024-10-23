@@ -35,6 +35,9 @@ Route::group(['middleware' => 'changeLangMiddleware'], function () {
     Route::get('/customer/edit', [FrontendCustomerController::class, 'customerEdit'])->name('customer.edit');
     Route::put('/customer/update', [FrontendCustomerController::class, 'customerUpdate'])->name('customer.update');
 
+    Route::get('/otp',[FrontendCustomerController::class,'otpPage'])->name('otp.page');
+    Route::post('/otp-submit',[FrontendCustomerController::class,'otpSubmit'])->name('otp.submit');
+
     Route::group(['middleware' => 'customerAuth'], function () {
         Route::get('/sign-out', [FrontendCustomerController::class, 'frontendSignOut'])->name('frontend.sign.out');
     });

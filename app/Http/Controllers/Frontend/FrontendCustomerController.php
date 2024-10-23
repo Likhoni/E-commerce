@@ -58,27 +58,42 @@ class FrontendCustomerController extends Controller
 
     public function frontendDoSignIn(Request $request)
     {
-
-        $customerInput = ['email' => $request->email, 'password' => $request->password];
-        $checkLogin = auth()->guard('customerGuard')->attempt($customerInput);
-
         //Validation
         $checkValidation = Validator::make($request->all(), [
             'email' => 'required',
             'password' => 'required',
         ]);
-        if ($checkValidation->fails()) {
+
+        $customerInput = $request->except('_token');
+        // $customerInput = 
+        // [
+        //     'email' => $request->email,
+        //     'password' => $request->password
+        // ];
+
+        $checkLogin = auth()->guard('customerGuard')->attempt($customerInput);
+
+        // if ($checkValidation->fails()) {
+        //     notify()->error("Invalid Credentials.");
+        //     return redirect()->back();
+        // }
+
+        if ($checkLogin) {
+            $customer = auth('customerGuard')->user();
+
+            if ($customer->is_email_verified == true) {
+
+                notify()->success("Sign-In Successful.");
+                return redirect()->route('frontend.homepage');
+            } else {
+                auth('customerGuard')->logout();
+                notify()->error('Account Not Verified');
+                return redirect()->route('frontend.sign.in');
+            }
+        } else {
             notify()->error("Invalid Credentials.");
             return redirect()->back();
         }
-
-        if ($checkLogin) {
-            notify()->success("Sign-In Successful.");
-            return redirect()->route('frontend.homepage');
-        }
-
-        notify()->error("Invalid Credentials.");
-        return redirect()->back();
     }
 
     public function frontendSignOut()
@@ -143,5 +158,11 @@ class FrontendCustomerController extends Controller
         ]);
         notify()->success("Profile Updated successfully.");
         return redirect()->route('customer.view');
+    }
+
+    //OTP-One Time Password
+    public function otpPage()
+    {
+        return view('frontend.pages.customer.otp');
     }
 }
