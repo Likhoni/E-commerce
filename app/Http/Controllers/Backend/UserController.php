@@ -7,11 +7,12 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
 
 class UserController extends Controller
-{  
+{
     //form 
     public function adminLogin()
     {
@@ -55,30 +56,39 @@ class UserController extends Controller
     public function userForm()
     {
         $role = Role::all();
-        return view('backend.pages.user.userForm',compact('role'));
+        return view('backend.pages.user.userForm', compact('role'));
     }
 
     //store
     public function SubmitUserForm(Request $request)
     {
+        // dd(request()->all());
         //Validation
         $checkValidation = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
             'role_id' => 'required',
             'email' => 'required',
-            'phone_number' => 'required',
             'password' => 'required',
-             
+            'phone_number' => 'required',
+            //'image' => 'required',
+            //'address' => 'required',
+
         ]);
-        
+
         if ($checkValidation->fails()) {
             // notify()->error($checkValidation->getMessageBag());
             notify()->error("Something Went Wrong");
             return redirect()->back();
         }
 
-         //Store Data
+        $image = '';
+        if ($request->hasFile('image')) {
+            $image = date('YmdHis') . '.' . $request->file('image')->getClientOriginalExtension();
+            $request->file('image')->storeAs('/users', $image);
+        }
+
+        //Store Data
         User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -86,7 +96,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'phone_number' => $request->phone_number,
-            'image' => $request->user_image,
+            'image' => $image,
             'address' => $request->address,
         ]);
         notify()->success("User Created Successfully.");
@@ -96,8 +106,9 @@ class UserController extends Controller
     //Edit
     public function userEdit($id)
     {
+        $role = Role::all();
         $editUser = User::find($id);
-        return view('backend.pages.user.editUser', compact('editUser'));
+        return view('backend.pages.user.editUser', compact('editUser', 'role'));
     }
 
     //Update
@@ -109,13 +120,20 @@ class UserController extends Controller
             'last_name' => 'required',
             'email' => 'required',
             'phone_number' => 'required',
-            // 'user_image' => 'required'
+            // 'image' => 'required',
             'address' => 'required'
         ]);
         if ($checkValidation->fails()) {
-            // notify()->error($checkValidation->getMessageBag());
-            notify()->error("Something Went Wrong");
+            notify()->error($checkValidation->getMessageBag());
+            // notify()->error("Something Went Wrong");
             return redirect()->back();
+        }
+
+        $image = $updateUser->image;
+        if ($request->hasFile('image')) {
+            $image = date('YmdHis') . '.' . $request->file('image')->getClientOriginalExtension();
+            $request->file('image')->storeAs('/users', $image);
+            File::delete('images/users/' . $updateUser->image);
         }
 
         $updateUser->update([
@@ -123,7 +141,7 @@ class UserController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'phone_number' => $request->phone_number,
-            'image' => $request->user_image,
+            'image' => $image,
             'address' => $request->address
         ]);
         notify()->success("User Updated Successfully.");
@@ -133,17 +151,17 @@ class UserController extends Controller
     //delete
     public function userDelete($id)
     {
-        try{
+        try {
 
             $deleteUser = User::find($id);
             $deleteUser->delete();
-            
+
             notify()->success('User Deleted Successfully.');
             return redirect()->back();
-        }catch (Throwable $ex) {
+        } catch (Throwable $ex) {
 
             notify()->error("This User Has Order, You Cannot Delete It");
             return redirect()->back();
-        } 
+        }
     }
 }

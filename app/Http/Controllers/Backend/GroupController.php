@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
-
+ 
 class GroupController extends Controller
 {
     //list
@@ -28,6 +28,7 @@ class GroupController extends Controller
     //store 
     public function submitGroupForm(Request $request)
     {
+        // dd(request()->all());
         //Validation
         $checkValidation = Validator::make($request->all(), [
             'group_name' => 'required',

@@ -32,9 +32,8 @@ class FrontendCustomerController extends Controller
             return redirect()->back();
         }
 
-        $image= '';
-        if($request->hasFile('image'))
-        {
+        $image = '';
+        if ($request->hasFile('image')) {
             $image = date('YmdHis') . '.' . $request->file('image')->getClientOriginalExtension();
             $request->file('image')->storeAs('/customers', $image);
         }
@@ -82,23 +81,26 @@ class FrontendCustomerController extends Controller
         return redirect()->back();
     }
 
-    public function frontendSignOut(){
+    public function frontendSignOut()
+    {
         auth('customerGuard')->logout();
         notify()->success("Sign-Out Successful.");
         return redirect()->route('frontend.homepage');
     }
 
     //View Customer profile
-    public function customerView(){
+    public function customerView()
+    {
         $viewCustomer = Customer::find(auth('customerGuard')->user()->id);
         // dd($viewCustomer);
-        return view('frontend.pages.customer.viewCustomer',compact('viewCustomer'));
+        return view('frontend.pages.customer.viewCustomer', compact('viewCustomer'));
     }
 
     //Edit Customer Profile
-    public function customerEdit(){
+    public function customerEdit()
+    {
         $editCustomer = Customer::find(auth('customerGuard')->user()->id);
-        return view('frontend.pages.customer.editCustomer',compact('editCustomer'));
+        return view('frontend.pages.customer.editCustomer', compact('editCustomer'));
     }
 
     //Update
@@ -140,9 +142,6 @@ class FrontendCustomerController extends Controller
             'address' => $request->address
         ]);
         notify()->success("Profile Updated successfully.");
-        return redirect()->route('customer.view');  
+        return redirect()->route('customer.view');
     }
-
-
-    
 }

@@ -7,6 +7,7 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Throwable;
 
 class CustomerController extends Controller
 {
@@ -17,13 +18,19 @@ class CustomerController extends Controller
         return view('backend.pages.customer.customerList', compact('customer'));
     }
 
-    // //delete
-    // public function customerDelete($id)
-    // {
-    //     $deleteCustomer = Customer::find($id);
-    //     $deleteCustomer->delete();
+    // public function customerDelete()
 
-    //     notify()->success('Customer Deleted Successfully.');
-    //     return redirect()->back();
+    // {
+    //    try {
+    //       $customer = Customer::find(auth('customerGuard')->user()->id);
+    //       $customer->delete();
+    //       notify()->success('Customer Deleted Successfully.');
+    //       return redirect()->back();
+ 
+    //    } catch (Throwable $ex) {
+ 
+    //       notify()->error("This Customer Has Order, You Cannot Delete It");
+    //       return redirect()->back();
+    //    }
     // }
 }

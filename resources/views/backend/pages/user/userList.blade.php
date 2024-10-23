@@ -30,15 +30,16 @@
                         <td>{{ $data->role->name }}</td>
                         <td>{{ $data->email }}</td>
                         <td>{{ $data->phone_number }}</td>
-                        <td>{{ $data->image }}</td>
+                        <td><img style="width: 100px;height:100px" src="{{ url('/images/users', $data->image) }}"
+                                alt="user image" srcset=""></td>
                         <td>{{ $data->address }}</td>
                         <td>
-                        @if (checkPermission('user.edit'))
-                            <a href="{{ route('user.edit', $data->id) }}" class="btn btn-success">Edit</a>
-                        @endif
-                        @if (checkPermission('user.delete'))
-                            <a href="{{ route('user.delete', $data->id) }}" class="btn btn-danger">Delete</a>
-                        @endif
+                            @if (checkPermission('user.edit'))
+                                <a href="{{ route('user.edit', $data->id) }}" class="btn btn-success">Edit</a>
+                            @endif
+                            @if (checkPermission('user.delete'))
+                                <a href="{{ route('user.delete', $data->id) }}" class="btn btn-danger">Delete</a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

@@ -51,19 +51,17 @@
 
                         <div class="form-group">
                             <label for=""><strong> Phone Number </strong></label>
-                            <input required name="phone_number" type="phone" class="form-control" id=""
-                                placeholder="">
+                            <input name="phone_number" type="tel" class="form-control" id="" placeholder="">
                         </div><br>
 
                         <div class="form-group">
                             <label for=""><strong>User Image</strong></label>
-                            <input name="user_image" type="file" class="form-control" id="" placeholder="">
+                            <input name="image" type="file" class="form-control" id="" placeholder="">
                         </div><br>
 
                         <div class="form-group">
                             <label for="exampleFormControlTextarea1"><strong>Address</strong></label>
-                            <input required name="address" type="text" class="form-control" id=""
-                                placeholder="">
+                            <input name="address" type="text" class="form-control" id="" placeholder="">
                         </div><br>
 
                         <button type="submit" class="btn btn-success">Submit</button>
