@@ -11,6 +11,7 @@
                 <tr>
                     <th scope="col">Id </th>
                     <th scope="col">Brand Name</th>
+                    <th scope="col">Category name</th>
                     <th scope="col">Parent Brand</th>
                     <th scope="col">Brand Image</th>
                     <th scope="col">Discount</th>
@@ -23,6 +24,7 @@
                     <tr>
                         <td>{{ $data->id }}</td>
                         <td>{{ $data->brand_name }}</td>
+                        <td>{{ $data->category->category_name ?? 'N/A' }}</td>
                         <td>{{ $data->parentBrand ? $data->parentBrand->brand_name : 'Null' }}</td>
                         <td><img style="width: 100px;height:100px" src="{{ url('images/brands', $data->brand_image) }}"
                                 alt="" srcset=""></td>

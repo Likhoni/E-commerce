@@ -13,8 +13,12 @@ use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\OrderDetailController;
 use App\Http\Controllers\Backend\DiscountController;
+
 use App\Http\Controllers\Frontend\FrontendCustomerController;
 use App\Http\Controllers\Frontend\FrontendHomeController;
+use App\Http\Controllers\Frontend\FrontendConatactController;
+use App\Http\Controllers\Frontend\FrontendProductController;
+
 use App\Http\Controllers\LocalizationController;
 
 
@@ -31,12 +35,18 @@ Route::group(['middleware' => 'changeLangMiddleware'], function () {
     Route::get('/sign-in', [FrontendCustomerController::class, 'frontendSignIn'])->name('frontend.sign.in');
     Route::post('/do/sign-in', [FrontendCustomerController::class, 'frontendDoSignIn'])->name('frontend.do.sign.in');
 
+    Route::get('/all/category/products', [FrontendProductController::class, 'categoryProduct'])->name('frontend.all.category.products');
+   // Route::get('/all/category/products/show', [FrontendProductController::class, 'categoryProductShow'])->name('frontend.all.category.products.show');
+    Route::get('/all/brand/products', [FrontendProductController::class, 'brandProduct'])->name('frontend.all.brand.products');
+    Route::get('/single/product', [FrontendProductController::class, 'singleProduct'])->name('frontend.single.product');
+
     Route::get('/customer/view', [FrontendCustomerController::class, 'customerView'])->name('customer.view');
     Route::get('/customer/edit', [FrontendCustomerController::class, 'customerEdit'])->name('customer.edit');
     Route::put('/customer/update', [FrontendCustomerController::class, 'customerUpdate'])->name('customer.update');
 
     Route::group(['middleware' => 'customerAuth'], function () {
         Route::get('/sign-out', [FrontendCustomerController::class, 'frontendSignOut'])->name('frontend.sign.out');
+        Route::get('/contact-us', [FrontendConatactController::class, 'frontendContactUs'])->name('frontend.contact.us');
     });
 });
 
@@ -90,9 +100,6 @@ Route::group(['prefix' => 'admin'], function () {
 
         //Customer
         Route::get('/customer/list', [CustomerController::class, 'customerList'])->name('customer.list');
-        Route::get('/customer/form', [CustomerController::class, 'customerForm'])->name('customer.form');
-        Route::post('/submit/customer/form', [CustomerController::class, 'SubmitCustomerForm'])->name('submit.customer.form');
-
         //Route::get('/customer/delete/{id}', [CustomerController::class, 'customerDelete'])->name('customer.delete');
 
         //Order

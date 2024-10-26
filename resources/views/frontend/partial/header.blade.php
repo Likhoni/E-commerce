@@ -94,11 +94,11 @@
 						<nav class="navbar">
 							<ul class="navbar_menu">
 								<li><a href="{{route('frontend.homepage')}}">{{__('Home')}}</a></li>
-								<li><a href="#">shop</a></li>
-								<li><a href="#">promotion</a></li>
+								<li><a href="{{route('frontend.all.category.products')}}">Category</a></li>
+								<li><a href="{{route('frontend.all.brand.products')}}">Brand</a></li>
 								<li><a href="#">pages</a></li>
 								<li><a href="#">blog</a></li>
-								<li><a href="contact.html">contact</a></li>
+								<li><a href={{route('frontend.contact.us')}}>contact</a></li>
 							</ul>
 							<ul class="navbar_user">
 								<li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>

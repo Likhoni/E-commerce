@@ -22,8 +22,7 @@
             <div class="row">
                 @foreach ($categories->take(3) as $data)
                     <div class="col-md-4">
-                        <div class="banner_item align-items-center"
-                            style="background-image:url(frontend/images/banner_1.jpg)">
+                        <div class="banner_item align-items-center" style="background-image: url('{{ url('images/categories', $data->category_image) }}')">
                             <div class="banner_category">
                                 <a href="categories.html">{{ $data->category_name }}</a>
                             </div>
@@ -48,25 +47,11 @@
                 <div class="col text-center">
                     <div class="new_arrivals_sorting">
                         <ul class="arrivals_grid_sorting clearfix button-group filters-button-group">
-                            <!-- All button -->
                             <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center active is-checked"
-                                data-filter="*" onclick="filterProducts('*')">
-                                <a href="#" class="d-flex flex-column justify-content-center align-items-center"
-                                    style="text-decoration: none; color: inherit;">
-                                    All
-                                </a>
-                            </li>
-
-                            <!-- Dynamically rendered category buttons -->
-                            @foreach ($categories->take(3) as $category)
+                                data-filter="*">all</li>
+                            @foreach ($categories->take(3) as $data)
                                 <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center"
-                                    data-filter=".{{ strtolower($category->category_name) }}"
-                                    onclick="filterProducts('{{ strtolower($category->category_name) }}')">
-                                    <a href="#" class="d-flex flex-column justify-content-center align-items-center"
-                                        style="text-decoration: none; color: inherit;">
-                                        {{ $category->category_name }}
-                                    </a>
-                                </li>
+                                    data-filter=".{{ strtolower($data->category_name) }}">{{ $data->category_name }}</li>
                             @endforeach
                         </ul>
                     </div>
@@ -75,30 +60,19 @@
             <div class="row">
                 <div class="col">
                     <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
-                        @foreach ($products as $product)
-                            <div class="product-item {{ strtolower($product->category->category_name) }}"
-                                data-category="{{ strtolower($product->category->category_name) }}">
+
+                        @foreach ($products->take(10) as $data)
+                            <div class="product-item {{ strtolower($data->category->category_name) }}">
                                 <div class="product product_filter">
                                     <div class="product_image">
-                                        <img src="{{ url('frontend/images/product_1.png' ) }}"
-                                            alt="{{ $product->product_name }}">
+                                        <img src="{{ url('images/products', $data->product_image) }}"
+                                            alt="">
                                     </div>
-                                    @if ($product->discount)
-                                        <div
-                                            class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
-                                            <span>-${{ $product->discount }}</span>
-                                        </div>
-                                    @endif
                                     <div class="product_info">
-                                        <h6 class="product_name"><a
-                                                href="">{{ $product->product_name }}</a>
-                                        </h6>
-                                        <div class="product_price">
-                                            ${{ $product->price }}
-                                            @if ($product->discount_price)
-                                                <span>${{ $product->original_price }}</span>
-                                            @endif
-                                        </div>
+                                        <h6 class="product_name"><a href="single.html">
+                                                {{ $data->product_name }}
+                                            </a></h6>
+                                        <div class="product_price">TK. {{ $data->product_price }}<span></span></div>
                                     </div>
                                 </div>
                                 <div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
@@ -477,43 +451,4 @@
         </div>
     </div>
 
-    <!-- Newsletter -->
-
-    <div class="newsletter">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div
-                        class="newsletter_text d-flex flex-column justify-content-center align-items-lg-start align-items-md-center text-center">
-                        <h4>Newsletter</h4>
-                        <p>Subscribe to our newsletter and get 20% off your first purchase</p>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <form action="post">
-                        <div
-                            class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-lg-end justify-content-center">
-                            <input id="newsletter_email" type="email" placeholder="Your email" required="required"
-                                data-error="Valid email is required.">
-                            <button id="newsletter_submit" type="submit" class="newsletter_submit_btn trans_300"
-                                value="Submit">subscribe</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        function filterProducts(category) {
-            const products = document.querySelectorAll('.product-item');
-
-            products.forEach(product => {
-                if (category === '*' || product.dataset.category === category) {
-                    product.style.display = 'block'; // Show product
-                } else {
-                    product.style.display = 'none'; // Hide product
-                }
-            });
-        }
-    </script>
 @endsection

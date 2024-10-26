@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -21,8 +22,9 @@ class BrandController extends Controller
     //create
     public function brandForm()
     {
+        $varCategory = Category::all();
         $brands = Brand::all();
-        return view('backend.pages.brand.brandForm', compact('brands'));
+        return view('backend.pages.brand.brandForm', compact('brands', 'varCategory'));
     }
 
     //store
@@ -50,6 +52,7 @@ class BrandController extends Controller
         //Store Data
         Brand::create([
             'brand_name' => $request->brand_name,
+            'category_id' => $request->category_id,
             'parent_id' => $request->parent_name,
             'brand_image' => $brand_image,
             'discount' => $request->discount
@@ -61,8 +64,9 @@ class BrandController extends Controller
     // Edit
     public function brandEdit($id)
     {
+        $varCategory = Category::all();
         $editBrand = Brand::find($id);
-        return view('backend.pages.brand.editBrand', compact('editBrand'));
+        return view('backend.pages.brand.editBrand', compact('editBrand', 'varCategory'));
     }
 
     //Update 
@@ -92,6 +96,7 @@ class BrandController extends Controller
 
         $updateBrand->update([
             'brand_name' => $request->brand_name,
+            'category_id' => $request->category_id,
             'brand_image' => $brand_image,
             'discount' => $request->discount
         ]);

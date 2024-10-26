@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('product_quantity');
             $table->string('product_price');
             $table->string('product_image')->nullable();
-            $table->integer('discount')->nullable();
+            $table->integer('discount')->nullable(); 
             $table->string('product_description')->nullable();
             $table->timestamps();
         });

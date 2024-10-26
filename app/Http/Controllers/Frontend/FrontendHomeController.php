@@ -25,11 +25,11 @@ class FrontendHomeController extends Controller
 //}
 
 public function frontendHome() {
-    // Fetch categories and products
+
     $categories = Category::all();
+    
     $products = Product::with('category')->get();
 
-    // Pass them to the view
     return view('frontend.pages.homePage', compact('categories', 'products'));
 }
 

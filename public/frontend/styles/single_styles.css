@@ -881,10 +881,10 @@ section
 	background: #fe4c50;
 	content: '';
 }
-.product_details_title p
+/* .product_details_title p
 {
 	color: #;
-}
+} */
 
 /*********************************
 4. Breadcrumbs
@@ -1112,6 +1112,7 @@ section
 }
 .add_to_cart_button
 {
+	
 	width: 160px;
 	margin-left: 19px;
 	font-size: 12px !important;
@@ -1598,4 +1599,5 @@ section
 {
 	color: #fe4c50;
 }
+
 

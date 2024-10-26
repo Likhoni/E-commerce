@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
             $table->string('brand_name');
+            $table->foreignId('category_id')->nullable()->constrained('categories')->restrictOnDelete();
             $table->string('parent_id')->nullable();
             $table->string('brand_image')->nullable();
             $table->integer('discount')->nullable();

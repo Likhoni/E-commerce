@@ -24,6 +24,16 @@
                         </div><br>
 
                         <div class="form-group">
+                            <label for="exampleFormControlInput1"><strong>Category Name</strong></label>
+                            <select name="category_id" id="" class="form-control">
+                                <option value="">Select Option--</option>
+                                @foreach ($varCategory as $data)
+                                    <option value="{{ $data->id }}">{{ $data->category_name }}</option>
+                                @endforeach
+                            </select>
+                        </div><br>
+
+                        <div class="form-group">
                             <label for="exampleFormControlInput1"><strong>Brand Parent Name</strong></label><br>
                             <select name="parent_name" id="parent_name" class="form-control">
                                 <option value="">--Select Parent Name--</option>
@@ -32,7 +42,6 @@
                                 @endforeach
                             </select>
                         </div><br>
-
 
                         <div class="form-group">
                             <label for=""><strong>Brand Image</strong></label>

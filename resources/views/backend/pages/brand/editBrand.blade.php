@@ -16,10 +16,32 @@
                             <input required value="{{ $editBrand->brand_name }}" name="brand_name" type="text"
                                 class="form-control" id="exampleFormControlInput1" placeholder="">
                         </div><br>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1"><strong>Category Name</strong></label>
+                            <select name="category_id" id="" class="form-control">
+                               
+                                @if (!is_null($editBrand->category_id))
+                                    <option value="{{ $editBrand->category_id }}" selected>
+                                        {{ $editBrand->category->category_name }}</option>
+                                @endif
+
+                                <option value="" {{ is_null($editBrand->category_id) ? 'selected' : '' }}>No Category
+                                </option>
+
+                                @foreach ($varCategory as $data)
+                                    <option value="{{ $data->id }}"
+                                        {{ $editBrand->category_id == $data->id ? 'selected' : '' }}>
+                                        {{ $data->category_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div><br>
+
 
                         <div class="form-group">
                             <label for=""><strong>Brand Image</strong></label>
-                            <img style="width: 100px;height:100px" src="{{url('images/brands',$editBrand->brand_image)}}" alt="">
+                            <img style="width: 100px;height:100px" src="{{ url('images/brands', $editBrand->brand_image) }}"
+                                alt="">
                             <input value="{{ $editBrand->brand_image }}" name="brand_image" type="file"
                                 class="form-control" id="" placeholder="">
                         </div><br>

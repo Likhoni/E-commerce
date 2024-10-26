@@ -29,7 +29,7 @@
                         @if (checkPermission('role.delete'))
                             <a href="{{ route('role.delete', $data->id) }}" class="btn btn-danger">Delete</a>
                         @endif
-                        @if (checkPermission('role.assign.permission'))
+                        @if (checkPermission('role.assign.permission') && $data->name != 'Super Admin')
                             <a href="{{ route('role.assign.permission', $data->id) }}" class="btn btn-success">Assign
                                 Permission</a>
                         @endif

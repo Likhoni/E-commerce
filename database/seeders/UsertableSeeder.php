@@ -21,11 +21,14 @@ class UsertableSeeder extends Seeder
         ]);
 
         User::create([
+            'first_name' => 'Likhoni',
+            'last_name' => 'Jeedni',
             'role_id'=>$role->id,
-            'first_name' => 'Admin',
-            'last_name' => 'Admin',
             'email' => 'admin@gmail.com',
-            'password' => bcrypt(123456)
+            'password' => bcrypt(123456),
+            'phone_number' => '01725900442',
+            'image' => '20241023073021.png',
+            'address' => 'College Gate',
         ]);
     }
 }

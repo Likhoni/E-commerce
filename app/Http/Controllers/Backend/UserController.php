@@ -48,7 +48,13 @@ class UserController extends Controller
     //list
     public function userList()
     {
-        $user = User::with('role')->get();
+        $authUser = Auth::user();
+        if($authUser->role->name=='Super Admin'){
+            $user = User::with('role')->get();
+        }
+        else{
+            $user = User::with('role')->where('id', $authUser->id)->get();
+        }
         return view('backend.pages.user.userList', compact('user'));
     }
 
@@ -70,7 +76,7 @@ class UserController extends Controller
             'role_id' => 'required',
             'email' => 'required',
             'password' => 'required',
-            'phone_number' => 'required',
+            //'phone_number' => 'required',
             //'image' => 'required',
             //'address' => 'required',
 
@@ -118,10 +124,11 @@ class UserController extends Controller
         $checkValidation = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
+            'role_id' => 'required',
             'email' => 'required',
             'phone_number' => 'required',
             // 'image' => 'required',
-            'address' => 'required'
+            //'address' => 'required'
         ]);
         if ($checkValidation->fails()) {
             notify()->error($checkValidation->getMessageBag());
@@ -139,10 +146,11 @@ class UserController extends Controller
         $updateUser->update([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
+            'role_id' => $request->role_id,
             'email' => $request->email,
             'phone_number' => $request->phone_number,
             'image' => $image,
-            'address' => $request->address
+            'address' => $request->address,
         ]);
         notify()->success("User Updated Successfully.");
         return redirect()->route('user.list');
