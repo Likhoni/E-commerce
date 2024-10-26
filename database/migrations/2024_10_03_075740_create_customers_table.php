@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
@@ -20,6 +17,9 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->string('image')->nullable();
             $table->string('address')->nullable();
+            $table->boolean('is_email_verified')->default(false);
+            $table->boolean('is_mobile_verified')->default(false);
+            $table->string('otp')->nullable();
             $table->timestamps();
         });
     }

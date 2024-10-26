@@ -16,9 +16,9 @@ class CustomerAuthenticate
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // if (!Auth::guard('customerGuard')->check()) {
-        //     return redirect()->route('frontend.sign.in');
-        // }
+        if (!Auth::guard('customerGuard')->check()) {
+            return redirect()->route('frontend.sign.in');
+        }
         return $next($request);
     }
 }

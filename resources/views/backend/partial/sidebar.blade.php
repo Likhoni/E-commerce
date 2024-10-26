@@ -4,7 +4,7 @@
             <div class="nav">
                 <div class="sb-sidenav-menu-heading">Core</div>
 
-                @if (checkPermission('homepage'))
+                @if (checkPermission('homepage'))   
                     <a class="nav-link" href="{{ route('homepage') }}">
                         <div class="sb-nav-link-icon">
                             <i class="fas fa-tachometer-alt" style="color: #1E90FF;"></i>
@@ -12,6 +12,7 @@
                         Dashboard
                     </a>
                 @endif
+
                 @if (checkPermission('group.list'))
                     <a class="nav-link collapsed" href="{{ route('group.list') }}">
                         <div class="sb-nav-link-icon">
