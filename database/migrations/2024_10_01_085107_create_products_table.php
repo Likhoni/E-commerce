@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('product_name');
             $table->foreignId('group_id')->nullable()->constrained('groups')->restrictOnDelete();
-            $table->foreignId('category_id')->nullable()->constrained('categories')->restrictOnDelete();
+            $table->foreignId('category_id')->constrained('categories')->restrictOnDelete();
             $table->foreignId('brand_id')->nullable()->constrained('brands')->restrictOnDelete();
             $table->string('product_quantity');
             $table->string('product_price');

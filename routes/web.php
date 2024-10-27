@@ -17,6 +17,7 @@ use App\Http\Controllers\Backend\DiscountController;
 use App\Http\Controllers\Frontend\FrontendCustomerController;
 use App\Http\Controllers\Frontend\FrontendHomeController;
 use App\Http\Controllers\Frontend\FrontendConatactController;
+use App\Http\Controllers\Frontend\FrontendOrderController;
 use App\Http\Controllers\Frontend\FrontendProductController;
 
 use App\Http\Controllers\LocalizationController;
@@ -36,9 +37,10 @@ Route::group(['middleware' => 'changeLangMiddleware'], function () {
     Route::post('/do/sign-in', [FrontendCustomerController::class, 'frontendDoSignIn'])->name('frontend.do.sign.in');
 
     Route::get('/all/category/products', [FrontendProductController::class, 'categoryProduct'])->name('frontend.all.category.products');
-   // Route::get('/all/category/products/show', [FrontendProductController::class, 'categoryProductShow'])->name('frontend.all.category.products.show');
-    Route::get('/all/brand/products', [FrontendProductController::class, 'brandProduct'])->name('frontend.all.brand.products');
+    //Route::get('/all/brand/products', [FrontendProductController::class, 'brandProduct'])->name('frontend.all.brand.products');
     Route::get('/single/product', [FrontendProductController::class, 'singleProduct'])->name('frontend.single.product');
+
+    Route::get('/add-to-cart', [FrontendOrderController::class, 'addCart'])->name('frontend.add.to.cart');
 
     Route::get('/customer/view', [FrontendCustomerController::class, 'customerView'])->name('customer.view');
     Route::get('/customer/edit', [FrontendCustomerController::class, 'customerEdit'])->name('customer.edit');

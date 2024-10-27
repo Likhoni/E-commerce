@@ -17,7 +17,7 @@ class FrontendProductController extends Controller
         
         return view('frontend.pages.product.categoryProduct', compact('categories', 'products'));
     }
-
+    
     public function brandProduct()
     {
         return view('frontend.pages.product.brandProduct');

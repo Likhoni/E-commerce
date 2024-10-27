@@ -87,8 +87,8 @@ class FrontendCustomerController extends Controller
                 return redirect()->route('frontend.homepage');
             } else {
                 auth('customerGuard')->logout();
-                notify()->error('Account Not Verified');
-                return redirect()->route('frontend.sign.in');
+                notify()->error('Account Not Verified,Use OTP to Verify Your Account');
+                return redirect()->route('otp.page');
             }
         } else {
             notify()->error("Invalid Credentials.");

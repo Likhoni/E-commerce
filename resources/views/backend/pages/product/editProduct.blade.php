@@ -1,5 +1,4 @@
 @extends('backend.master')
-
 @section('content')
     <div style="padding: 20px;">
 
@@ -20,10 +19,21 @@
 
                         <div class="form-group">
                             <label for="exampleFormControlInput1"><strong>Group Name</strong></label>
-                            <select name="group_id" id="group_id" class="form-control">
-                                <option value="{{ $editProduct->group_id }}">{{ $editProduct->group->group_name }}</option>
+                            <select name="group_id" id="" class="form-control">
+
+                                @if (!is_null($editProduct->group_id))
+                                    <option value="{{ $editProduct->group_id }}" selected>
+                                        {{ $editProduct->group->group_name }}</option>
+                                @endif
+
+                                <option value="" {{ is_null($editProduct->group_id) ? 'selected' : '' }}>No Group
+                                </option>
+
                                 @foreach ($varGroup as $data)
-                                    <option value="{{ $data->id }}">{{ $data->group_name }}</option>
+                                    <option value="{{ $data->id }}"
+                                        {{ $editProduct->group_id == $data->id ? 'selected' : '' }}>
+                                        {{ $data->group_name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div><br>
@@ -39,13 +49,23 @@
                             </select>
                         </div><br>
 
-                        <div class="form-group">
+<div class="form-group">
                             <label for="exampleFormControlInput1"><strong>Brand Name</strong></label>
                             <select name="brand_id" id="" class="form-control">
-                                <option value="{{ $editProduct->brand_id }}">{{ $editProduct->brand->brand_name }}
+
+                                @if (!is_null($editProduct->brand_id))
+                                    <option value="{{ $editProduct->brand_id }}" selected>
+                                        {{ $editProduct->brand->brand_name }}</option>
+                                @endif
+
+                                <option value="" {{ is_null($editProduct->brand_id) ? 'selected' : '' }}>No Brand
                                 </option>
+
                                 @foreach ($varBrand as $data)
-                                    <option value="{{ $data->id }}">{{ $data->brand_name }}</option>
+                                    <option value="{{ $data->id }}"
+                                        {{ $editProduct->brand_id == $data->id ? 'selected' : '' }}>
+                                        {{ $data->brand_name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div><br>
@@ -64,7 +84,8 @@
 
                         <div class="form-group">
                             <label for=""><strong>Product Image</strong></label>
-                            <img style="width: 100px;height:100px" src="{{url('images/products',$editProduct->product_image)}}" alt="">
+                            <img style="width: 100px;height:100px"
+                                src="{{ url('images/products', $editProduct->product_image) }}" alt="">
                             <input value="{{ $editProduct->product_image }}" name="product_image" type="file"
                                 class="form-control" id="" placeholder="">
                         </div><br>

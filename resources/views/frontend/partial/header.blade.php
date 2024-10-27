@@ -95,7 +95,7 @@
 							<ul class="navbar_menu">
 								<li><a href="{{route('frontend.homepage')}}">{{__('Home')}}</a></li>
 								<li><a href="{{route('frontend.all.category.products')}}">Category</a></li>
-								<li><a href="{{route('frontend.all.brand.products')}}">Brand</a></li>
+								{{-- <li><a href="{{route('frontend.all.brand.products')}}">Brand</a></li> --}}
 								<li><a href="#">pages</a></li>
 								<li><a href="#">blog</a></li>
 								<li><a href={{route('frontend.contact.us')}}>contact</a></li>

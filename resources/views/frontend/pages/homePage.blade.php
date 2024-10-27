@@ -1,7 +1,6 @@
 @extends('frontend.master')
 @section('content')
     <!-- Slider -->
-
     <div class="main_slider" style="background-image:url(frontend/images/slider_1.jpg)">
         <div class="container fill_height">
             <div class="row align-items-center fill_height">
@@ -22,7 +21,8 @@
             <div class="row">
                 @foreach ($categories->take(3) as $data)
                     <div class="col-md-4">
-                        <div class="banner_item align-items-center" style="background-image: url('{{ url('images/categories', $data->category_image) }}')">
+                        <div class="banner_item align-items-center"
+                            style="background-image: url('{{ url('images/categories', $data->category_image) }}')">
                             <div class="banner_category">
                                 <a href="categories.html">{{ $data->category_name }}</a>
                             </div>
@@ -63,19 +63,35 @@
 
                         @foreach ($products->take(10) as $data)
                             <div class="product-item {{ strtolower($data->category->category_name) }}">
-                                <div class="product product_filter">
+                                <div class="product @if ($data->discount) discount @endif product_filter">
                                     <div class="product_image">
-                                        <img src="{{ url('images/products', $data->product_image) }}"
-                                            alt="">
+                                        <img src="{{ url('images/products', $data->product_image) }}" alt="">
                                     </div>
-                                    <div class="product_info">
+                                    <!-- Badge for Discount or New -->
+                                    @if ($data->discount)
+                                        <div
+                                            class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                                            <span>-{{ $data->discount }}%</span>
+                                        </div>
+                                    @elseif($data->is_new)
+                                        <div
+                                            class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center">
+                                            <span>new</span>
+                                        </div>
+                                    @endif
+
+                                    <div class="favorite favorite_left"></div>
+                                    <div class="product_info" style="padding-bottom: 200px;">
                                         <h6 class="product_name"><a href="single.html">
                                                 {{ $data->product_name }}
                                             </a></h6>
-                                        <div class="product_price">TK. {{ $data->product_price }}<span></span></div>
+                                        <div class="product_price">TK. {{ $data->product_price }} @if ($data->old_price)
+                                                <span>TK. {{ $data->old_price }}</span>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
+                                <div class="red_button add_to_cart_button"><a href="{{route('frontend.add.to.cart')}}">add to cart</a></div>
                             </div>
                         @endforeach
                     </div>
@@ -451,4 +467,5 @@
         </div>
     </div>
 
+    
 @endsection
