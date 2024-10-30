@@ -126,7 +126,7 @@
                                             <div class="product-item" data-category="{{ $product->category_id }}">
                                                 <div class="product product_filter">
                                                     <div class="product_image">
-                                                        <img src="{{ url('images/products', $product->product_image) }}"
+                                                        <img style="height:200px; width:250px;" src="{{ url('images/products', $product->product_image) }}"
                                                             alt="">
                                                     </div>
                                                     <div class="product_info">

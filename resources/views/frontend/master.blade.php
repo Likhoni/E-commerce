@@ -7,6 +7,38 @@
             z-index: 1000000;
             margin-top: 5%;
         }
+
+        @media (min-width: 1025px) {
+            .h-custom {
+                height: 100vh !important;
+            }
+        }
+
+        .card-registration .select-input.form-control[readonly]:not([disabled]) {
+            font-size: 1rem;
+            line-height: 2.15;
+            padding-left: .75em;
+            padding-right: .75em;
+        }
+
+        .card-registration .select-arrow {
+            top: 13px;
+        }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        /* Custom style to remove underline on hover */
+        .btn-link-no-underline {
+            text-decoration: none !important;
+        }
     </style>
     @notifyCss
     <title>E-Commerce</title>
@@ -24,9 +56,9 @@
     <link rel="stylesheet" type="text/css" href="{{ url('frontend/styles/responsive.css') }}">
 
 
-    
 
-    
+
+
 
 </head>
 
@@ -48,7 +80,7 @@
     <script src="{{ url('frontend/plugins/Isotope/isotope.pkgd.min.js') }}"></script>
     <script src="{{ url('frontend/plugins/OwlCarousel2-2.2.1/owl.carousel.js') }}"></script>
     <script src="{{ url('frontend/js/custom.js') }}"></script>
-    
+
 
     @include('notify::components.notify')
     @notifyJs

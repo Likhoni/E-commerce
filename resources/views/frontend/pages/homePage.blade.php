@@ -22,7 +22,7 @@
                 @foreach ($categories->take(3) as $data)
                     <div class="col-md-4">
                         <div class="banner_item align-items-center"
-                            style="background-image: url('{{ url('images/categories', $data->category_image) }}')">
+                            style="background-image: url('images/categories/{{ $data->category_image }}');">
                             <div class="banner_category">
                                 <a href="categories.html">{{ $data->category_name }}</a>
                             </div>
@@ -65,7 +65,7 @@
                             <div class="product-item {{ strtolower($data->category->category_name) }}">
                                 <div class="product @if ($data->discount) discount @endif product_filter">
                                     <div class="product_image">
-                                        <img src="{{ url('images/products', $data->product_image) }}" alt="">
+                                        <img style="height:200px; width:250px;" src="{{ url('images/products', $data->product_image) }}" alt="">
                                     </div>
                                     <!-- Badge for Discount or New -->
                                     @if ($data->discount)
