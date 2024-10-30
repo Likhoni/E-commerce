@@ -38,7 +38,7 @@ class ProductController extends Controller
             'product_quantity' => ['required', 'numeric', 'min:1'],
             'product_price' => 'required',
             // 'product_image' => 'required',
-             'discount' => 'required',
+            'discount' => 'required|numeric|min:0|max:100',
         ]);
 
         if ($checkValidation->fails()) {
@@ -63,6 +63,7 @@ class ProductController extends Controller
             'product_price' => $request->product_price,
             'product_image' => $product_image,
             'discount' => $request->discount,
+            'discount_price' => $request->discount_price,
             'product_description' => $request->description
         ]);
         
@@ -89,7 +90,7 @@ class ProductController extends Controller
             'product_quantity' => ['required', 'numeric', 'min:1'],
             'product_price' => 'required',
             // 'product_image' => 'required',
-            // 'discount' => 'required',
+            'discount' => 'required|numeric|min:0|max:100',
             'description' => 'required'
         ]);
         if ($checkValidation->fails()) {
@@ -117,6 +118,7 @@ class ProductController extends Controller
             'product_price' => $request->product_price,
             'product_image' => $product_image,
             'discount' => $request->discount,
+            'discount_price' => $request->discount_price,
             'product_description' => $request->description
         ]);
         notify()->success("Product Updated Successsful.");

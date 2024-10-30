@@ -39,6 +39,23 @@
         .btn-link-no-underline {
             text-decoration: none !important;
         }
+
+        .strikethrough-red {
+            position: relative;
+            color: inherit;
+            /* Keeps the text color the same */
+        }
+
+        .strikethrough-red::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            border-top: 3px solid red;
+            transform: rotate(-10deg);
+            /* Slight angle if desired */
+        }
     </style>
     @notifyCss
     <title>E-Commerce</title>
