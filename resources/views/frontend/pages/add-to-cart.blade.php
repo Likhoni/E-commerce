@@ -9,7 +9,7 @@
                     <div class="card card-registration card-registration-2" style="border-radius: 15px;">
                         <div class="card-body p-0">
                             <div class="row g-0">
-                                <div class="col-lg-8">
+                                <div class="col-lg-9">
                                     <div class="p-5">
 
                                         <div class="d-flex justify-content-between align-items-center mb-5">
@@ -30,16 +30,16 @@
                                         @if (count($myCart) > 0)
                                         @foreach ($myCart as $cartData)
                                         <div class="row mb-4 d-flex justify-content-between align-items-center">
-                                            <div class="col-md-2 col-lg-2 col-xl-2">
+                                            <div class="col-md-2">
                                                 <img style="height: 100px; width:100px" src="{{ url('/images/products/' . $cartData['image']) }}"
                                                     class="img-fluid rounded-3" alt="Cotton T-shirt">
                                             </div>
 
-                                            <div class="col-md-3 col-lg-3 col-xl-3">
-                                                <h4 class="">{{ $cartData['product_name'] }}</h4>
+                                            <div class="col-md-2">
+                                                <h5 class="">{{ $cartData['product_name'] }}</h5>
                                             </div>
 
-                                            <div class="col-md-3 col-lg-3 col-xl-2 d-flex align-items-center">
+                                            <div class="col-md-2 d-flex align-items-center">
                                                 <form
                                                     action="{{ route('frontend.update.cart', $cartData['product_id']) }}"
                                                     method="post" class="d-flex align-items-center">
@@ -57,13 +57,22 @@
                                                 </form>
                                             </div>
 
-                                            <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                                <h6 class="mb-0">Unit Price:<strong> ৳ {{ $cartData['product_price'] }}</strong></h6>
-                                                <h6 class="mb-0">Discount:</h6>
-                                                <h6 class="mb-0">Amount:<strong> ৳ {{ $cartData['subtotal'] }}</strong></h6>
+                                            <div class="col-md-4">
+                                                <h6 class="mb-0">
+                                                    Unit Price:
+                                                    <strong>
+                                                        @if(isset($cartData['discount_price']) && $cartData['discount_price'] > 0)
+                                                        ৳ {{ $cartData['discount_price'] }}
+                                                        <span class="strikethrough-red">৳ {{ $cartData['product_price'] }}</span>
+                                                        @else
+                                                        ৳ {{ $cartData['product_price'] }}
+                                                        @endif
+                                                    </strong>
+                                                </h6>
+                                                <h6 class="mb-0">Amount: <strong>৳ {{ $cartData['subtotal'] }}</strong></h6>
                                             </div>
 
-                                            <div class="col-md-1 col-lg-1 col-xl-2 text-end">
+                                            <div class="col-md-2 text-end">
                                                 <a href="{{ route('frontend.cart.item.delete', $cartData['product_id']) }}"
                                                     style="color:red;">
                                                     Delete
@@ -71,17 +80,17 @@
                                             </div>
 
                                         </div>
+                                        <hr class="my-4">
                                         @endforeach
                                         @else
                                         <p>Your Cart is Empty</p>
                                         @endif
 
 
-                                        <hr class="my-4">
                                     </div>
                                 </div>
 
-                                <div class="col-lg-4 bg-body-tertiary border rounded" style="border-color: #ddd; border-width: 1px; border-radius: 15px;">
+                                <div class="col-lg-3 bg-body-tertiary border rounded" style="border-color: #ddd; border-width: 1px; border-radius: 15px;">
                                     <div class="p-5">
                                         <h3 class="fw-bold mb-5 mt-2 pt-1">Your Bill</h3>
                                         <hr class="my-4">
