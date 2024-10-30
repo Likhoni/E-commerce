@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <style type="text/css">
         .notify {
             z-index: 1000000;
@@ -28,13 +29,17 @@
         .product-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px; /* Optional spacing */
+            gap: 10px;
+            /* Optional spacing */
         }
 
         .product-item {
-            width: calc(25% - 10px); /* 4 items per row, with gap */
-            max-width: 200px; /* Adjust as per your layout requirements */
-            position: relative; /* For pseudo-elements */
+            width: calc(25% - 10px);
+            /* 4 items per row, with gap */
+            max-width: 200px;
+            /* Adjust as per your layout requirements */
+            position: relative;
+            /* For pseudo-elements */
         }
 
         .product-item::after {
@@ -51,6 +56,7 @@
             transition: all 0.3s ease;
         }
     </style>
+    @notifyCss
     <title>E-Commerce</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -89,7 +95,8 @@
                             <ul class="sidebar_categories">
                                 <li>
                                     <a href="javascript:void(0);" class="category-link active" data-category="all">
-                                        <span class="icon"><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
+                                        <span class="icon"><i class="fa fa-angle-double-right"
+                                                aria-hidden="true"></i></span>
                                         All
                                     </a>
                                 </li>
@@ -131,7 +138,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="red_button add_to_cart_button"><a href="{{route('frontend.add.to.cart')}}">add to
+                                                <div class="red_button add_to_cart_button"><a
+                                                        href="{{ route('frontend.add.to.cart', $product->id) }}">add to
                                                         cart</a>
                                                 </div>
                                             </div>
@@ -196,6 +204,8 @@
     <script src="{{ url('frontend/plugins/easing/easing.js') }}"></script>
     <script src="{{ url('frontend/plugins/jquery-ui-1.12.1.custom/jquery-ui.js') }}"></script>
     <script src="{{ url('frontend/js/categories_custom.js') }}"></script>
+    @include('notify::components.notify')
+    @notifyJs
 </body>
 
 </html>
