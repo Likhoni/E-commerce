@@ -17,14 +17,19 @@ class FrontendProductController extends Controller
         
         return view('frontend.pages.product.categoryProduct', compact('categories', 'products'));
     }
+
     
     public function brandProduct()
     {
         return view('frontend.pages.product.brandProduct');
     }
 
-    public function singleProduct()
+
+    public function singleProduct($id)
     {
-        return view('frontend.pages.product.singleProduct');
+        $singleProduct = Product::find($id);
+        return view('frontend.pages.product.singleProduct', compact('singleProduct'));
     }
+
+
 }
