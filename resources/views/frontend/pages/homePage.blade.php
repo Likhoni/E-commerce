@@ -65,7 +65,7 @@
                             <div class="product-item {{ strtolower($data->category->category_name) }}">
                                 <div class="product @if ($data->discount) discount @endif product_filter">
                                     <div class="product_image">
-                                        <img src="{{ url('images/products', $data->product_image) }}" alt="">
+                                        <img style="height:200px; width:250px;" src="{{ url('images/products', $data->product_image) }}" alt="">
                                     </div>
                                     <!-- Badge for Discount or New -->
                                     @if ($data->discount)

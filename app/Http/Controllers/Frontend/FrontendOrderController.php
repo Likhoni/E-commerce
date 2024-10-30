@@ -26,6 +26,7 @@ class FrontendOrderController extends Controller
                         'product_name' => $product->product_name,
                         'product_price' => $product->product_price,
                         'quantity' => 1,
+                        'discount' => $product->discount,
                         'subtotal' => 1 * $product->product_price,
                         'image' => $product->product_image
                     ];
@@ -59,6 +60,7 @@ class FrontendOrderController extends Controller
                             'image' => $product->product_image,
                             'product_name' => $product->product_name,
                             'product_price' => $product->product_price,
+                            'discount' => $product->discount,
                             'quantity' => 1,
                             'subtotal' => 1 * $product->product_price,
                         ];

@@ -70,6 +70,11 @@
                             <label for=""><strong>Product Image</strong></label>
                             <input name="product_image" type="file" class="form-control" id="" placeholder="">
                         </div><br>
+                        
+                        <div class="form-group">
+                            <label for=""><strong>Discount</strong></label>
+                            <input name="discount" type="number" class="form-control" id="" placeholder="">
+                        </div><br>
 
                         <div class="form-group">
                             <label for="exampleFormControlTextarea1"><strong>Description</strong></label>
@@ -77,10 +82,6 @@
                                 placeholder="">
                         </div><br>
 
-                        <div class="form-group">
-                            <label for=""><strong>Discount</strong></label>
-                            <input name="discount" type="number" class="form-control" id="" placeholder="">
-                        </div><br>
 
                         <button type="submit" class="btn btn-success">Submit</button>
                     </div>
