@@ -28,7 +28,7 @@
                         <th>{{ $data->id }}</th>
                         <td>{{ $data->product_name }}</td>
                         <td>{{ $data->group->group_name ?? 'N/A' }}</td>
-                        <td>{{ $data->category->category_name ?? 'N/A' }}</td>
+                        <td>{{ $data->category->category_name}}</td>
                         <td>{{ $data->brand->brand_name ?? 'N/A' }}</td>
                         <td>{{ $data->product_quantity }}</td>
                         <td>{{ $data->product_price }}</td>

@@ -36,7 +36,7 @@
 
                         <div class="form-group">
                             <label for="exampleFormControlInput1"><strong>Category Name</strong></label>
-                            <select name="category_id" id="" class="form-control">
+                            <select name="category_id" id="" class="form-control" required>
                                 <option value="">Select Option--</option>
                                 @foreach ($varCategory as $data)
                                     <option value="{{ $data->id }}">{{ $data->category_name }}</option>

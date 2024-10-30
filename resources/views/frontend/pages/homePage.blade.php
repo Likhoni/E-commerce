@@ -22,7 +22,7 @@
                 @foreach ($categories->take(3) as $data)
                     <div class="col-md-4">
                         <div class="banner_item align-items-center"
-                            style="background-image: url('{{ url('images/categories', $data->category_image) }}')">
+                            style="background-image: url('images/categories/{{ $data->category_image }}');">
                             <div class="banner_category">
                                 <a href="categories.html">{{ $data->category_name }}</a>
                             </div>

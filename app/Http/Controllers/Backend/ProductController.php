@@ -38,9 +38,9 @@ class ProductController extends Controller
             'product_quantity' => ['required', 'numeric', 'min:1'],
             'product_price' => 'required',
             // 'product_image' => 'required',
-            // 'discount' => 'required',
-            'description' => 'required'
+             'discount' => 'required',
         ]);
+
         if ($checkValidation->fails()) {
             // notify()->error($checkValidation->getMessageBag());
             notify()->error("Something Went Wrong");
