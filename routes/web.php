@@ -38,7 +38,9 @@ Route::group(['middleware' => 'changeLangMiddleware'], function () {
 
     Route::get('/all/category/products', [FrontendProductController::class, 'categoryProduct'])->name('frontend.all.category.products');
     //Route::get('/all/brand/products', [FrontendProductController::class, 'brandProduct'])->name('frontend.all.brand.products');
-    Route::get('/single/product', [FrontendProductController::class, 'singleProduct'])->name('frontend.single.product');
+    Route::get('/single/product/{id}', [FrontendProductController::class, 'singleProduct'])->name('frontend.single.product');
+    Route::post('/sp-add-to-cart/{id}', [FrontendProductController::class, 'singleProductAddToCart'])->name('single.product.add.to.cart');
+
  
     //Add to Cart
     Route::get('/add-to-cart/{productId}', [FrontendOrderController::class, 'addCart'])->name('frontend.add.to.cart');
@@ -51,6 +53,7 @@ Route::group(['middleware' => 'changeLangMiddleware'], function () {
     Route::get('/customer/edit', [FrontendCustomerController::class, 'customerEdit'])->name('customer.edit');
     Route::put('/customer/update', [FrontendCustomerController::class, 'customerUpdate'])->name('customer.update');
 
+    //OTP-One time Password
     Route::get('/otp',[FrontendCustomerController::class,'otpPage'])->name('otp.page');
     Route::post('/otp-submit',[FrontendCustomerController::class,'otpSubmit'])->name('otp.submit');
 

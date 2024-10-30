@@ -104,8 +104,9 @@
                                     <li>
                                         <a href="javascript:void(0);" class="category-link"
                                             data-category="{{ $data->id }}">
-                                            <span class="icon hidden"><i class="fa fa-angle-double-right"
-                                                    aria-hidden="true"></i></span>
+                                            <span class="icon hidden">
+                                             <i class="fa fa-angle-double-right"aria-hidden="true"></i>
+                                            </span>
                                             {{ $data->category_name }}
                                         </a>
                                     </li>
@@ -131,7 +132,7 @@
                                                     </div>
                                                     <div class="product_info">
                                                         <h6 class="product_name">
-                                                            <a href="single.html">{{ $product->product_name }}</a>
+                                                            <a href="{{route('frontend.single.product',$product->id )}}">{{ $product->product_name }}</a>
                                                         </h6>
                                                         <div class="product_price">TK.
                                                             {{ $product->product_price }}

@@ -1116,6 +1116,18 @@ section
 	margin-left: 19px;
 	font-size: 12px !important;
 }
+
+.buy_now_button
+{
+	width: 160px;
+	height: 40px;
+	border-radius: 3px;
+	padding-left: 20px;
+	padding-top:5px;
+	margin-left: 19px;
+	background-color:rgb(6, 6, 6);
+	font-size: 12px !important;
+}
 .product_favorite
 {
 	width: 40px;
