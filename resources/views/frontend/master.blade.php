@@ -49,12 +49,6 @@
     <script src="{{ url('frontend/plugins/OwlCarousel2-2.2.1/owl.carousel.js') }}"></script>
     <script src="{{ url('frontend/js/custom.js') }}"></script>
     
-    {{-- <script src="{{ url('frontend/js/single_custom.js') }}"></script>
-
-
-    
-
-     --}}
 
     @include('notify::components.notify')
     @notifyJs

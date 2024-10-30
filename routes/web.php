@@ -39,8 +39,13 @@ Route::group(['middleware' => 'changeLangMiddleware'], function () {
     Route::get('/all/category/products', [FrontendProductController::class, 'categoryProduct'])->name('frontend.all.category.products');
     //Route::get('/all/brand/products', [FrontendProductController::class, 'brandProduct'])->name('frontend.all.brand.products');
     Route::get('/single/product', [FrontendProductController::class, 'singleProduct'])->name('frontend.single.product');
-
-    Route::get('/add-to-cart', [FrontendOrderController::class, 'addCart'])->name('frontend.add.to.cart');
+ 
+    //Add to Cart
+    Route::get('/add-to-cart/{productId}', [FrontendOrderController::class, 'addCart'])->name('frontend.add.to.cart');
+    Route::get('/view-cart', [FrontendOrderController::class, 'viewCart'])->name('frontend.view.cart');
+    Route::post('/update-cart/{id}',[FrontendOrderController::class,'updateCart'])->name('frontend.update.cart');
+    Route::get('/clear-cart',[FrontendOrderController::class,'clearCart'])->name('frontend.cart.clear');
+    Route::get('/cart/item/delete/{product_id}',[FrontendOrderController::class,'cartItemDelete'])->name('frontend.cart.item.delete');
 
     Route::get('/customer/view', [FrontendCustomerController::class, 'customerView'])->name('customer.view');
     Route::get('/customer/edit', [FrontendCustomerController::class, 'customerEdit'])->name('customer.edit');
