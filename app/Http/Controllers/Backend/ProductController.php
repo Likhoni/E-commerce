@@ -90,7 +90,7 @@ class ProductController extends Controller
             'product_quantity' => ['required', 'numeric', 'min:1'],
             'product_price' => 'required',
             // 'product_image' => 'required',
-            'discount' => 'required|numeric|min:0|max:100',
+            // 'discount' => 'required|numeric|min:0|max:100',
             'description' => 'required'
         ]);
         if ($checkValidation->fails()) {

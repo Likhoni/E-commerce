@@ -23,32 +23,37 @@ use App\Http\Controllers\Frontend\FrontendProductController;
 use App\Http\Controllers\LocalizationController;
 
 
-//frontend or website
+// //frontend or website panel
 
+//add middleware
 Route::group(['middleware' => 'changeLangMiddleware'], function () {
 
-
+    //language change
     Route::get('/change/lang/{lang_name}', [LocalizationController::class, 'changeLang'])->name('change.language');
-
+    
+    //frontend home
     Route::get('/', [FrontendHomeController::class, 'frontendHome'])->name('frontend.homepage');
+
+    //sign up
     Route::get('/sign-up', [FrontendCustomerController::class, 'frontendSignUp'])->name('frontend.sign.up');
     Route::post('/do/sign-up', [FrontendCustomerController::class, 'frontendDoSignup'])->name('frontend.do.sign.up');
+
+    //sign in
     Route::get('/sign-in', [FrontendCustomerController::class, 'frontendSignIn'])->name('frontend.sign.in');
     Route::post('/do/sign-in', [FrontendCustomerController::class, 'frontendDoSignIn'])->name('frontend.do.sign.in');
 
     Route::get('/all/category/products', [FrontendProductController::class, 'categoryProduct'])->name('frontend.all.category.products');
     //Route::get('/all/brand/products', [FrontendProductController::class, 'brandProduct'])->name('frontend.all.brand.products');
     Route::get('/single/product/{id}', [FrontendProductController::class, 'singleProduct'])->name('frontend.single.product');
-    Route::post('/sp-add-to-cart/{id}', [FrontendProductController::class, 'singleProductAddToCart'])->name('single.product.add.to.cart');
 
- 
     //Add to Cart
     Route::get('/add-to-cart/{productId}', [FrontendOrderController::class, 'addCart'])->name('frontend.add.to.cart');
     Route::get('/view-cart', [FrontendOrderController::class, 'viewCart'])->name('frontend.view.cart');
-    Route::post('/update-cart/{id}',[FrontendOrderController::class,'updateCart'])->name('frontend.update.cart');
+    Route::post('/update-cart/quantity/{id}',[FrontendOrderController::class,'updateCart'])->name('frontend.update.cart.quantity');
     Route::get('/clear-cart',[FrontendOrderController::class,'clearCart'])->name('frontend.cart.clear');
     Route::get('/cart/item/delete/{product_id}',[FrontendOrderController::class,'cartItemDelete'])->name('frontend.cart.item.delete');
 
+    //customer
     Route::get('/customer/view', [FrontendCustomerController::class, 'customerView'])->name('customer.view');
     Route::get('/customer/edit', [FrontendCustomerController::class, 'customerEdit'])->name('customer.edit');
     Route::put('/customer/update', [FrontendCustomerController::class, 'customerUpdate'])->name('customer.update');
@@ -57,22 +62,33 @@ Route::group(['middleware' => 'changeLangMiddleware'], function () {
     Route::get('/otp',[FrontendCustomerController::class,'otpPage'])->name('otp.page');
     Route::post('/otp-submit',[FrontendCustomerController::class,'otpSubmit'])->name('otp.submit');
 
+    //add middleware
     Route::group(['middleware' => 'customerAuth'], function () {
+
+        //sign out
         Route::get('/sign-out', [FrontendCustomerController::class, 'frontendSignOut'])->name('frontend.sign.out');
+
+        //contact us
         Route::get('/contact-us', [FrontendConatactController::class, 'frontendContactUs'])->name('frontend.contact.us');
     });
 });
 
-//Backend: Admin Panel
+// //Backend: Admin Panel
+
+//add Prefix
 Route::group(['prefix' => 'admin'], function () {
 
-    //Admin Login Logout
+    //Login 
     Route::get('/login', [UserController::class, 'adminLogin'])->name('login');
     Route::post('/do/login', [UserController::class, 'adminDoLogin'])->name('do.login');
-    Route::group(['middleware' => ['auth', 'permissionMiddleware']], function () {
 
+    //add middleware
+    Route::group(['middleware' => ['auth', 'permissionMiddleware']], function () {
+        
+        //logout
         Route::get('/logout', [UserController::class, 'adminLogout'])->name('logout');
 
+        //home
         Route::get('/', [HomeController::class, 'home'])->name('homepage');
 
         //Group

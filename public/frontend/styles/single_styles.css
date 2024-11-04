@@ -927,7 +927,7 @@ section
 }
 .single_product_thumbnails
 {
-	height: 527px;
+	/* height: 527px; */
 }
 .single_product_thumbnails ul li
 {
@@ -1122,10 +1122,10 @@ section
 	width: 160px;
 	height: 40px;
 	border-radius: 3px;
-	padding-left: 20px;
+	padding-left: 50px;
 	padding-top:5px;
 	margin-left: 19px;
-	background-color:rgb(6, 6, 6);
+	background-color:rgb(54, 53, 53);
 	font-size: 12px !important;
 }
 .product_favorite

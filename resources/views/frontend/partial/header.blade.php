@@ -48,7 +48,7 @@
                                          @if (auth('customerGuard')->user()->image)
                                              <img src="{{ url('images/customers/', auth('customerGuard')->user()->image) }}"
                                                  alt="profile picture" class="profile-img"
-                                                 style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-top: 5px;">
+                                                  style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-top: 5px;">
                                          @else
                                              <i class="fa fa-user" aria-hidden="true"
                                                  style="font-size: 40px; margin-top: 5px;"></i>
@@ -102,7 +102,7 @@
                              {{-- <li><a href="{{route('frontend.all.brand.products')}}">Brand</a></li> --}}
                              <li><a href="#">pages</a></li>
                              <li><a href="#">blog</a></li>
-                             <li><a href={{ route('frontend.contact.us') }}>contact</a></li>
+                             <li><a href="{{ route('frontend.contact.us') }}">contact</a></li>
                          </ul>
 
                          <!--Add to Cart  & Search-->

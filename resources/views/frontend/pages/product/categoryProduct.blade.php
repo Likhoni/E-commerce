@@ -101,15 +101,15 @@
                                     </a>
                                 </li>
                                 @foreach ($categories as $data)
-                                    <li>
-                                        <a href="javascript:void(0);" class="category-link"
-                                            data-category="{{ $data->id }}">
-                                            <span class="icon hidden">
-                                             <i class="fa fa-angle-double-right"aria-hidden="true"></i>
-                                            </span>
-                                            {{ $data->category_name }}
-                                        </a>
-                                    </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="category-link"
+                                        data-category="{{ $data->id }}">
+                                        <span class="icon hidden">
+                                            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                                        </span>
+                                        {{ $data->category_name }}
+                                    </a>
+                                </li>
                                 @endforeach
                             </ul>
                         </div>
@@ -124,26 +124,30 @@
                                 <div class="col">
                                     <div class="product-container">
                                         @foreach ($products as $product)
-                                            <div class="product-item" data-category="{{ $product->category_id }}">
-                                                <div class="product product_filter">
-                                                    <div class="product_image">
+                                        <div class="product-item" data-category="{{ $product->category_id }}">
+                                            <div class="product product_filter">
+                                                <div class="product_image">
+                                                    <a href="{{route('frontend.single.product',$product->id )}}">
                                                         <img style="height:200px; width:250px;" src="{{ url('images/products', $product->product_image) }}"
-                                                            alt="">
-                                                    </div>
-                                                    <div class="product_info">
-                                                        <h6 class="product_name">
-                                                            <a href="{{route('frontend.single.product',$product->id )}}">{{ $product->product_name }}</a>
-                                                        </h6>
-                                                        <div class="product_price">TK.
-                                                            {{ $product->product_price }}
-                                                        </div>
-                                                    </div>
+                                                        alt="">
+                                                    </a>
                                                 </div>
-                                                <div class="red_button add_to_cart_button"><a
-                                                        href="{{ route('frontend.add.to.cart', $product->id) }}">add to
-                                                        cart</a>
+                                                <div class="favorite favorite_left"></div>
+                                                <div class="product_info">
+                                                    <h6 class="product_name">
+                                                        <a href="{{route('frontend.single.product',$product->id )}}">{{ $product->product_name }}</a>
+                                                    </h6>
+                                                    <div class="product_price">TK.
+                                                        {{ $product->product_price }}
+                                                    </div>
+                                                    
                                                 </div>
                                             </div>
+                                            <div class="red_button add_to_cart_button"><a
+                                                    href="{{ route('frontend.add.to.cart', $product->id) }}">add to
+                                                    cart</a>
+                                            </div>
+                                        </div>
                                         @endforeach
                                     </div>
                                 </div>

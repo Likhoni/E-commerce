@@ -107,11 +107,19 @@
 </div>
 
 <script>
-    function calculateDiscountPrice() {
-        const price = parseFloat(document.getElementById('product_price').value) || 0;
-        const discount = parseFloat(document.getElementById('discount').value) || 0;
-        const discountPrice = price - (price * discount / 100);
-        document.getElementById('discount_price').value = discountPrice.toFixed(0); // Show up to 4 decimal places
+   function calculateDiscountPrice() {
+    const price = parseFloat(document.getElementById('product_price').value) || 0;
+    const discount = parseFloat(document.getElementById('discount').value);
+
+    let discountPrice;
+    if (discount && discount > 0) {
+        discountPrice = price - (price * discount / 100);
+    } else {
+        discountPrice = 0; // Set discount price to 0 if no discount is given
     }
+
+    document.getElementById('discount_price').value = discountPrice.toFixed(0);
+}
+
 </script>
 @endsection

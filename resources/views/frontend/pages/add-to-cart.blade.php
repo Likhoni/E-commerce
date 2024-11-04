@@ -41,7 +41,7 @@
 
                                             <div class="col-md-2 d-flex align-items-center">
                                                 <form
-                                                    action="{{ route('frontend.update.cart', $cartData['product_id']) }}"
+                                                    action="{{ route('frontend.update.cart.quantity', $cartData['product_id']) }}"
                                                     method="post" class="d-flex align-items-center">
                                                     @csrf
                                                     <button style="color:black" type="button"
@@ -69,8 +69,14 @@
                                                         @endif
                                                     </strong>
                                                 </h6>
-                                                <h6 class="mb-0">Amount: <strong>৳ {{ $cartData['subtotal'] }}</strong></h6>
+                                                <h6 class="mb-0">
+                                                    Amount:
+                                                    <strong>
+                                                        ৳ {{ (isset($cartData['discount_price']) && $cartData['discount_price'] > 0 ? $cartData['discount_price'] : $cartData['product_price']) * (session('basket')[$cartData['product_id']]['quantity'] ?? 1) }}
+                                                    </strong>
+                                                </h6>
                                             </div>
+
 
                                             <div class="col-md-2 text-end">
                                                 <a href="{{ route('frontend.cart.item.delete', $cartData['product_id']) }}"

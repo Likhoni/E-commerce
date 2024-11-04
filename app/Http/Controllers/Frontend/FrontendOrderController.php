@@ -13,6 +13,7 @@ class FrontendOrderController extends Controller
     {
 
         $product = Product::find($pId);
+
         if ($product->product_quantity > 0) {
             $myCart = session()->get('basket');
 
@@ -103,24 +104,24 @@ class FrontendOrderController extends Controller
         return redirect()->back();
     }
 
-    //Cart quantity Upadte
-    public function updateCart(Request $request , $id)
+    //Cart quantity Update
+    public function updateCart(Request $request, $id)
     {
         $cart = session()->get('basket');
-        
+
         $product = Product::find($id);
 
-        if($product->product_quantity >= $request->quantity)
-        {
+        if ($product->product_quantity >= $request->quantity) {
             $cart[$id]['quantity'] = $request->quantity;
             $cart[$id]['subtotal'] = $request->quantity * $cart[$id]['product_price'];
 
             session()->put('basket', $cart);
             notify()->success('Cart updated.');
             return redirect()->back();
-        }else {
+        } else {
             notify()->error('stock not available');
             return redirect()->back();
         }
     }
+
 }
