@@ -121,11 +121,11 @@
                                             <h5>৳ {{ count($myCart) > 0 ? $cartData['subtotal'] : 0 }}</h5>
                                         </div>
 
-                                        <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                            class="btn btn-block btn-lg"
-                                            style="background-color: LightSeaGreen; color: white;"
-                                            data-mdb-ripple-color="dark">Go to Checkout
-                                        </button>
+                                        <a href="{{ route('checkout.cart') }}" class="btn btn-block btn-lg"
+                                            style="background-color: LightSeaGreen; color: white;">
+                                            Go to Checkout
+                                        </a>
+
 
 
                                     </div>

@@ -5,16 +5,21 @@
         <div class="row align-items-center" style="padding-top:50px">
             <div class="col">
                 <div class="main_slider_content">
+
                     <div>
-                    <h3>Enter OTP to verify your account.</h3>
+                        <h3>Enter OTP to verify your account.</h3>
                         <form action="{{route('otp.submit')}}" method="post">
                             @csrf
-                            <input type="number" id="otp" class="fadeIn second form-control" name="otp" placeholder="Enter OTP">
-                            <a href="">Resend OTP</a>
-                            <input type="submit" class="btn btn-success active" style="margin: 5px;" value="Log In">
-                        </form>
 
+                            <input type="hidden" value="{{$email}}" name="email">
+                            
+                            <input type="number" id="otp" class="fadeIn second form-control" name="otp" placeholder="Enter OTP">
+
+                            <a href="{{route('otp.resend',$email)}}">Resend OTP</a>
+                            <input type="submit" class="btn btn-success active" style="margin: 5px;" value="Submit">
+                        </form>
                     </div>
+
                 </div>
             </div>
         </div>

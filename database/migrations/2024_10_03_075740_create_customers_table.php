@@ -17,9 +17,10 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->string('image')->nullable();
             $table->string('address')->nullable();
+            $table->string('otp',6)->nullable();
+            $table->datetime('otp_expired_at')->nullable();
             $table->boolean('is_email_verified')->default(false);
             $table->boolean('is_mobile_verified')->default(false);
-            $table->string('otp')->nullable();
             $table->timestamps();
         });
     }

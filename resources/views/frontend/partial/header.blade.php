@@ -54,8 +54,8 @@
                                                  style="font-size: 40px; margin-top: 5px;"></i>
                                          @endif
                                          <span style="margin-left: 10px;">
-                                             {{ auth('customerGuard')->user()->first_name }}
-                                             {{ auth('customerGuard')->user()->last_name }}
+                                             {{ auth('customerGuard')->user()->FullName }}
+                                             
                                          </span>
                                          <i class="fa fa-angle-down" style="margin-left: 5px;"></i>
                                      </a>

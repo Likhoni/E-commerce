@@ -18,9 +18,9 @@
             </thead>
             <tbody>
 
-                @foreach ($customer as $data)
+                @foreach ($customer as $key=> $data)
                     <tr>
-                        <th>{{ $data->id }}</th>
+                        <th>{{ $customer-> firstItem()+$key}}</th>
                         <td>{{ $data->first_name }}</td>
                         <td>{{ $data->last_name }}</td>
                         <td>{{ $data->email }}</td>
@@ -39,4 +39,5 @@
             </tbody>
         </table>
     </div>
+    {{$customer->links()}}
 @endsection

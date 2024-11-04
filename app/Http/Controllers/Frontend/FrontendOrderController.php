@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class FrontendOrderController extends Controller
 {
@@ -77,12 +79,19 @@ class FrontendOrderController extends Controller
         }
     }
 
-    //View Cart
-    public function viewCart()
-    {
-        $myCart = session()->get('basket') ?? [];
-        return view('frontend.pages.add-to-cart', compact('myCart'));
+    // View Cart
+public function viewCart()
+{
+    $myCart = session()->get('basket') ?? [];
+
+    if (count($myCart) === 0) {
+        notify()->error("The cart is empty, add products to view the cart.");
+        return redirect()->route('frontend.homepage');
     }
+
+    return view('frontend.pages.add-to-cart', compact('myCart'));
+}
+
 
     //Clear Cart
     public function clearCart()
@@ -124,4 +133,51 @@ class FrontendOrderController extends Controller
         }
     }
 
+    //checkout & place order
+    public function checkoutCart()
+    {
+        return view('frontend.pages.checkout');
+    }
+
+    public function placeOrder(Request $request){
+
+        $checkValidation = Validator::make($request->all(), [
+            // 'customer_id' => 'required',
+            'name' => 'required',
+            'email' => 'required',
+            'number' => 'required',
+            'country' => 'required',
+            'district' => 'required',
+            'thana' => 'required',
+            'address' => 'required',
+            
+             
+        ]);
+        
+        if ($checkValidation->fails()) {
+            notify()->error($checkValidation->getMessageBag());
+            //notify()->error("Something Went Wrong");
+            return redirect()->back();
+        }
+
+        //Store Data
+        Order::create([
+            // 'customer_id' => $request->customer_id,
+            'receiver_name' => $request->name,
+            'receiver_email' => $request->email,
+            'receiver_mobile' => $request->number,
+            'country' => $request->country,
+            'district' => $request->district,
+            'thana' => $request->thana,
+            'receiver_address' => $request->address,
+            'status' => $request->status,
+            'payment_method' => $request->payment_method,
+            'payment_status' => $request->payment_status,
+            'order_number' => $request->order_number,
+            'total_amount' => $request->total_amount,
+            'total_discount' => $request->total_discount,
+        ]);
+        notify()->success("Order Created successfully.");
+        return redirect()->back();
+    }
 }
