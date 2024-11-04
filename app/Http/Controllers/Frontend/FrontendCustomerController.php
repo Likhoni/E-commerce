@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendMail;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class FrontendCustomerController extends Controller
@@ -38,6 +40,9 @@ class FrontendCustomerController extends Controller
             $request->file('image')->storeAs('/customers', $image);
         }
 
+        //Otp
+        $otp=rand(100000,999999);
+
         Customer::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -45,10 +50,15 @@ class FrontendCustomerController extends Controller
             'password' => bcrypt($request->password),
             'phone_number' => $request->phone_number,
             'image' => $image,
-            'address' => $request->address
+            'address' => $request->address,
+            'otp'=>$otp,
+            'otp_expired_at'=>now()->addMinutes(3)
         ]);
+
+        $email = $request->email;
+        Mail::to($email)->send(new SendMail($otp));
         notify()->success("Registration Successful");
-        return redirect()->route('frontend.homepage');
+        return view('frontend.pages.customer.otp',compact('email'));
     }
 
     public function frontendSignIn()
@@ -77,18 +87,18 @@ class FrontendCustomerController extends Controller
         //     notify()->error("Invalid Credentials.");
         //     return redirect()->back();
         // }
-
         if ($checkLogin) {
             $customer = auth('customerGuard')->user();
-
+            
             if ($customer->is_email_verified == true) {
-
+                
                 notify()->success("Sign-In Successful.");
                 return redirect()->route('frontend.homepage');
             } else {
                 auth('customerGuard')->logout();
                 notify()->error('Account Not Verified,Use OTP to Verify Your Account');
-                return redirect()->route('otp.page');
+                $email = $customer->email;
+                return view('frontend.pages.customer.otp',compact('email'));
             }
         } else {
             notify()->error("Invalid Credentials.");
@@ -126,7 +136,6 @@ class FrontendCustomerController extends Controller
         $checkValidation = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required',
             //'phone_number' => 'required',
             // 'image' => 'required'
             'address' => 'required'
@@ -151,7 +160,6 @@ class FrontendCustomerController extends Controller
         $updateCustomer->update([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-            'email' => $request->email,
             'phone_number' => $request->phone_number,
             'image' => $image,
             'address' => $request->address
@@ -164,5 +172,52 @@ class FrontendCustomerController extends Controller
     public function otpPage()
     {
         return view('frontend.pages.customer.otp');
+    }
+
+    public function otpSubmit(Request $request){
+        $user = Customer::where('email', $request->email)
+                         ->where('otp', $request->otp)->first();
+        $email=$request->email;
+
+        if($user)
+        {
+            if(strtotime($user->otp_expired_at) > strtotime(now()))
+            {
+                //Verified at
+                $user->update([
+                    'is_email_verified'=>true,
+                    'otp'=>null,
+                    'otp_expired_at'=>null
+                ]);
+                notify()->success('Account Verified.');
+                return redirect()->route('frontend.homepage');
+            }else{
+                notify()->error('Otp Expired, Please re-send OTP');
+                return view('frontend.pages.customer.otp',compact('email'));
+            }
+
+        }else{
+            //Incorrect otp or email
+            notify()->error('Invalid OTP or Email.');
+            return view('frontend.pages.customer.otp',compact('email'));
+        }
+        
+    }
+
+    //Re-Send OTP
+    public function otpResend($email){
+
+        $user = Customer::where('email', $email)->first();
+
+        if($user)
+        {
+            $otp= rand(100000, 999999);
+            $user->update([
+                'otp'=>$otp,
+                'otp_expired_at'=>now()->addMinutes(3),
+            ]);
+            notify()->success('Re-Send Success');
+            return view('frontend.pages.customer.otp',compact('email'));
+        }
     }
 }

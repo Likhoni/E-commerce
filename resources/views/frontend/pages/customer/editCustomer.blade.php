@@ -41,7 +41,7 @@
                                     <div style="flex: 1;">
                                         <label for="email"
                                             style="color: black; margin-bottom: 5px; font-size: 16px; font-weight: bold;">Email</label>
-                                        <input type="email" id="email" name="email"
+                                        <input disabled type="email" id="email" name="email"
                                             value="{{ $editCustomer->email }}" placeholder="Email"
                                             style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px;">
 

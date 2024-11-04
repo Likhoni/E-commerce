@@ -16,13 +16,10 @@
         </thead>
         <tbody>
             <tr>
-                <td style="padding: 6px;">First Name</td>
-                <td style="padding: 6px;">{{ $viewCustomer->first_name }}</td>
+                <td style="padding: 6px;">Full Name</td>
+                <td style="padding: 6px;">{{ $viewCustomer->FullName }}</td>
             </tr>
-            <tr>
-                <td style="padding: 6px;">Last Name</td>
-                <td style="padding: 6px;">{{ $viewCustomer->last_name }}</td>
-            </tr>
+
             <tr>
                 <td style="padding: 6px;">Email</td>
                 <td style="padding: 6px;">{{ $viewCustomer->email }}</td>

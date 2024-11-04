@@ -29,10 +29,13 @@ class OrderController extends Controller
         //dd(request()->all());
         //Validation
         $checkValidation = Validator::make($request->all(), [
-            //'customer_id' => 'required',
+            'customer_id' => 'required',
             'receiver_name' => 'required',
             'receiver_email' => 'required',
             'receiver_mobile' => 'required',
+            'country' => 'required',
+            'district' => 'required',
+            'thana' => 'required',
             'receiver_address' => 'required',
             'status' => 'required',
             'payment_method' => 'required',
@@ -50,10 +53,13 @@ class OrderController extends Controller
 
         //Store Data
         Order::create([
-            //'customer_id' => $request->customer_id,
+            'customer_id' => $request->customer_id,
             'receiver_name' => $request->receiver_name,
             'receiver_email' => $request->receiver_email,
             'receiver_mobile' => $request->receiver_mobile,
+            'country' => $request->country,
+            'district' => $request->district,
+            'thana' => $request->thana,
             'receiver_address' => $request->receiver_address,
             'status' => $request->status,
             'payment_method' => $request->payment_method,
@@ -78,10 +84,13 @@ class OrderController extends Controller
     {
         $updateOrder = Order::find($id);
         $checkValidation = Validator::make($request->all(), [
-            //'customer_id' => 'required',
+            'customer_id' => 'required',
             'receiver_name' => 'required',
             'receiver_email' => 'required',
             'receiver_mobile' => 'required',
+            'country' => 'required',
+            'district' => 'required',
+            'thana' => 'required',
             'receiver_address' => 'required',
             'status' => 'required',
             'payment_method' => 'required',
@@ -95,15 +104,18 @@ class OrderController extends Controller
              return redirect()->back();
          }
         $updateOrder->update([
-            //'customer_id' => $request->customer_id,
+            'customer_id' => $request->customer_id,
             'receiver_name' => $request->receiver_name,
             'receiver_email' => $request->receiver_email,
             'receiver_mobile' => $request->receiver_mobile,
+            'country' => $request->country,
+            'district' => $request->district,
+            'thana' => $request->thana,
             'receiver_address' => $request->receiver_address,
             'status' => $request->status,
             'payment_method' => $request->payment_method,
             'payment_status' => $request->payment_status,
-            'order_number' => $request->order_number,
+            'order_number' => $request->order_number, 
             'total_amount' => $request->total_amount,
             'total_discount' => $request->total_discount,
         ]);
