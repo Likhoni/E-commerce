@@ -19,7 +19,7 @@ use App\Http\Controllers\Frontend\FrontendHomeController;
 use App\Http\Controllers\Frontend\FrontendConatactController;
 use App\Http\Controllers\Frontend\FrontendOrderController;
 use App\Http\Controllers\Frontend\FrontendProductController;
-
+use App\Http\Controllers\Frontend\MailController;
 use App\Http\Controllers\LocalizationController;
 
 
@@ -36,26 +36,34 @@ Route::group(['middleware' => 'changeLangMiddleware'], function () {
     Route::get('/sign-in', [FrontendCustomerController::class, 'frontendSignIn'])->name('frontend.sign.in');
     Route::post('/do/sign-in', [FrontendCustomerController::class, 'frontendDoSignIn'])->name('frontend.do.sign.in');
 
+    Route::get('/customer/view', [FrontendCustomerController::class, 'customerView'])->name('customer.view');
+    Route::get('/customer/edit', [FrontendCustomerController::class, 'customerEdit'])->name('customer.edit');
+    Route::put('/customer/update', [FrontendCustomerController::class, 'customerUpdate'])->name('customer.update');
+
     Route::get('/all/category/products', [FrontendProductController::class, 'categoryProduct'])->name('frontend.all.category.products');
     //Route::get('/all/brand/products', [FrontendProductController::class, 'brandProduct'])->name('frontend.all.brand.products');
     Route::get('/single/product/{id}', [FrontendProductController::class, 'singleProduct'])->name('frontend.single.product');
     Route::post('/sp-add-to-cart/{id}', [FrontendProductController::class, 'singleProductAddToCart'])->name('single.product.add.to.cart');
 
- 
     //Add to Cart
     Route::get('/add-to-cart/{productId}', [FrontendOrderController::class, 'addCart'])->name('frontend.add.to.cart');
     Route::get('/view-cart', [FrontendOrderController::class, 'viewCart'])->name('frontend.view.cart');
-    Route::post('/update-cart/{id}',[FrontendOrderController::class,'updateCart'])->name('frontend.update.cart');
-    Route::get('/clear-cart',[FrontendOrderController::class,'clearCart'])->name('frontend.cart.clear');
-    Route::get('/cart/item/delete/{product_id}',[FrontendOrderController::class,'cartItemDelete'])->name('frontend.cart.item.delete');
+    Route::post('/update-cart/{id}', [FrontendOrderController::class, 'updateCart'])->name('frontend.update.cart');
+    Route::get('/clear-cart', [FrontendOrderController::class, 'clearCart'])->name('frontend.cart.clear');
+    Route::get('/cart/item/delete/{product_id}', [FrontendOrderController::class, 'cartItemDelete'])->name('frontend.cart.item.delete');
 
-    Route::get('/customer/view', [FrontendCustomerController::class, 'customerView'])->name('customer.view');
-    Route::get('/customer/edit', [FrontendCustomerController::class, 'customerEdit'])->name('customer.edit');
-    Route::put('/customer/update', [FrontendCustomerController::class, 'customerUpdate'])->name('customer.update');
+    //Checkout & Place Order
+    Route::get('/checkout-cart', [FrontendOrderController::class, 'checkoutCart'])->name('checkout.cart');
+    Route::post('/place-order', [FrontendOrderController::class, 'placeOrder'])->name('order.place');
+
+
 
     //OTP-One time Password
-    Route::get('/otp',[FrontendCustomerController::class,'otpPage'])->name('otp.page');
-    Route::post('/otp-submit',[FrontendCustomerController::class,'otpSubmit'])->name('otp.submit');
+    Route::get('/otp', [FrontendCustomerController::class, 'otpPage'])->name('otp.page');
+    Route::get('/resend-otp/{email}', [FrontendCustomerController::class, 'otpResend'])->name('otp.resend');
+    Route::post('/otp-submit', [FrontendCustomerController::class, 'otpSubmit'])->name('otp.submit');
+
+    Route::get('/send-mail', [MailController::class, 'sendMail'])->name('frontend.send.mail');
 
     Route::group(['middleware' => 'customerAuth'], function () {
         Route::get('/sign-out', [FrontendCustomerController::class, 'frontendSignOut'])->name('frontend.sign.out');

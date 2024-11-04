@@ -14,7 +14,7 @@ class CustomerController extends Controller
     //list
     public function customerList()
     {
-        $customer = Customer::all();
+        $customer = Customer::paginate(5);
         return view('backend.pages.customer.customerList', compact('customer'));
     }
 
@@ -33,4 +33,6 @@ class CustomerController extends Controller
     //       return redirect()->back();
     //    }
     // }
+
+    
 }

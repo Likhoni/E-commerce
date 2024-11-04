@@ -54,8 +54,8 @@
                                                  style="font-size: 40px; margin-top: 5px;"></i>
                                          @endif
                                          <span style="margin-left: 10px;">
-                                             {{ auth('customerGuard')->user()->first_name }}
-                                             {{ auth('customerGuard')->user()->last_name }}
+                                             {{ auth('customerGuard')->user()->FullName }}
+                                             
                                          </span>
                                          <i class="fa fa-angle-down" style="margin-left: 5px;"></i>
                                      </a>
@@ -102,7 +102,7 @@
                              {{-- <li><a href="{{route('frontend.all.brand.products')}}">Brand</a></li> --}}
                              <li><a href="#">pages</a></li>
                              <li><a href="#">blog</a></li>
-                             <li><a href={{ route('frontend.contact.us') }}>contact</a></li>
+                             <li><a href="{{ route('frontend.contact.us') }}">contact</a></li>
                          </ul>
 
                          <!--Add to Cart  & Search-->

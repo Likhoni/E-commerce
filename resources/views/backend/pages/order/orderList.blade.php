@@ -13,7 +13,10 @@
                     <th scope="col">Receiver Name</th>
                     <th scope="col">Receiver Email</th>
                     <th scope="col">Receiver Mobile</th>
-                    <th scope="col">Receiver Address</th>
+                    <th scope="col">Country</th>
+                    <th scope="col">District</th>
+                    <th scope="col">Thana</th>
+                    <th scope="col">Address</th>
                     <th scope="col">Status</th>
                     <th scope="col">Payment Method</th>
                     <th scope="col">Payment Status</th>
@@ -30,6 +33,9 @@
                         <td>{{ $data->receiver_name }}</td>
                         <td>{{ $data->receiver_email }}</td>
                         <td>{{ $data->receiver_mobile }}</td>
+                        <td>{{ $data->country }}</td>
+                        <td>{{ $data->district }}</td>
+                        <td>{{ $data->thana }}</td>
                         <td>{{ $data->receiver_address }}</td>
                         <td>{{ $data->status }}</td>
                         <td>{{ $data->payment_method }}</td>
