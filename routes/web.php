@@ -14,31 +14,26 @@ use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\OrderDetailController;
 use App\Http\Controllers\Backend\DiscountController;
 
+use App\Http\Controllers\LocalizationController;
+
 use App\Http\Controllers\Frontend\FrontendCustomerController;
 use App\Http\Controllers\Frontend\FrontendHomeController;
 use App\Http\Controllers\Frontend\FrontendConatactController;
 use App\Http\Controllers\Frontend\FrontendOrderController;
 use App\Http\Controllers\Frontend\FrontendProductController;
 use App\Http\Controllers\Frontend\MailController;
-use App\Http\Controllers\LocalizationController;
 
 
-// //frontend or website panel
+//frontend or website
 
-//add middleware
 Route::group(['middleware' => 'changeLangMiddleware'], function () {
 
-    //language change
-    Route::get('/change/lang/{lang_name}', [LocalizationController::class, 'changeLang'])->name('change.language');
-    
-    //frontend home
-    Route::get('/', [FrontendHomeController::class, 'frontendHome'])->name('frontend.homepage');
 
-    //sign up
+    Route::get('/change/lang/{lang_name}', [LocalizationController::class, 'changeLang'])->name('change.language');
+
+    Route::get('/', [FrontendHomeController::class, 'frontendHome'])->name('frontend.homepage');
     Route::get('/sign-up', [FrontendCustomerController::class, 'frontendSignUp'])->name('frontend.sign.up');
     Route::post('/do/sign-up', [FrontendCustomerController::class, 'frontendDoSignup'])->name('frontend.do.sign.up');
-
-    //sign in
     Route::get('/sign-in', [FrontendCustomerController::class, 'frontendSignIn'])->name('frontend.sign.in');
     Route::post('/do/sign-in', [FrontendCustomerController::class, 'frontendDoSignIn'])->name('frontend.do.sign.in');
 
@@ -71,33 +66,22 @@ Route::group(['middleware' => 'changeLangMiddleware'], function () {
 
     Route::get('/send-mail', [MailController::class, 'sendMail'])->name('frontend.send.mail');
 
-    //add middleware
     Route::group(['middleware' => 'customerAuth'], function () {
-
-        //sign out
         Route::get('/sign-out', [FrontendCustomerController::class, 'frontendSignOut'])->name('frontend.sign.out');
-
-        //contact us
         Route::get('/contact-us', [FrontendConatactController::class, 'frontendContactUs'])->name('frontend.contact.us');
     });
 });
 
-// //Backend: Admin Panel
-
-//add Prefix
+//Backend: Admin Panel
 Route::group(['prefix' => 'admin'], function () {
 
-    //Login 
+    //Admin Login Logout
     Route::get('/login', [UserController::class, 'adminLogin'])->name('login');
     Route::post('/do/login', [UserController::class, 'adminDoLogin'])->name('do.login');
-
-    //add middleware
     Route::group(['middleware' => ['auth', 'permissionMiddleware']], function () {
-        
-        //logout
+
         Route::get('/logout', [UserController::class, 'adminLogout'])->name('logout');
 
-        //home
         Route::get('/', [HomeController::class, 'home'])->name('homepage');
 
         //Group
@@ -135,6 +119,10 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/product/edit/{id}', [ProductController::class, 'productEdit'])->name('product.edit');
         Route::put('/product/update/{id}', [ProductController::class, 'productUpdate'])->name('product.update');
         Route::get('/product/delete/{id}', [ProductController::class, 'productDelete'])->name('product.delete');
+
+        Route::get('get/data-table', [ProductController::class, 'ajaxDataTable'])->name('ajax.get.data');
+
+
 
         //Customer
         Route::get('/customer/list', [CustomerController::class, 'customerList'])->name('customer.list');

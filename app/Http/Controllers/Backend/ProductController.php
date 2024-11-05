@@ -11,15 +11,37 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
 {
     //list
     public function productList()
     {
-        $product = Product::with('category')->get();
-        return view('backend.pages.product.productList', compact('product'));
+        return view('backend.pages.product.productList');
     }
+
+
+    public function ajaxDataTable(){
+
+
+            $data = Product::select('*');
+
+            return DataTables::of($data)
+
+                    ->addIndexColumn()
+
+                    ->addColumn('action', function($row){
+                           $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
+                            return $btn;
+
+                    })
+
+                    ->rawColumns(['action'])
+
+                    ->make(true);
+
+        }
 
     //create
     public function productForm()
