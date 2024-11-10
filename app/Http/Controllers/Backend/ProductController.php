@@ -22,19 +22,20 @@ class ProductController extends Controller
     }
 
 
-    public function ajaxDataTable()
-    {
-        $data = Product::select('*');
+    public function ajaxDataTable(){
+
+
+            $data = Product::select('*');
 
         return DataTables::of($data)
 
             ->addIndexColumn()
 
-            ->addColumn('action', function ($row) {
-                $btn = '<a href="" class="edit btn btn-primary btn-sm">View</a>
-                           <a href="" class="edit btn btn-primary btn-sm">Edit</a>';
-                return $btn;
-            })
+                    ->addColumn('action', function($row){
+                           $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
+                            return $btn;
+
+                    })
 
             ->rawColumns(['action'])
 
@@ -68,8 +69,14 @@ class ProductController extends Controller
             return redirect()->back();
         }
 
-
-        $product = Product::create([
+        $product_image= '';
+        if($request->hasFile('product_image'))
+        {
+            $product_image = date('YmdHis') . '.' . $request->file('product_image')->getClientOriginalExtension();
+            $request->file('product_image')->storeAs('/products', $product_image);
+        }
+        
+         Product::create([
             'product_name' => $request->product_name,
             'group_id' => $request->group_id,
             'category_id' => $request->category_id,
@@ -80,16 +87,7 @@ class ProductController extends Controller
             'discount_price' => $request->discount_price,
             'product_description' => $request->description
         ]);
-
-        if ($request->hasFile('product_image')) {
-            foreach ($request->file('product_image') as $image) {
-                $imageName = date('YmdHis') . '.' . $image->getClientOriginalName();
-                $image->storeAs('/products', $imageName);
-
-                // Save image path in product_images table
-                $product->images()->create(['image_url' => $imageName]);
-            }
-        }
+        
         notify()->success("Product Created Successfully.");
         return redirect()->back();
     }

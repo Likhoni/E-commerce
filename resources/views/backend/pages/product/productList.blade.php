@@ -35,17 +35,11 @@
 @push('js')
 <script type="text/javascript">
     $(function() {
-
         var table = $('.data-table').DataTable({
-
             processing: true,
             serverSide: false,
-
             ajax: "{{ route('ajax.get.data') }}",
-
-            columns: [
-
-                {
+            columns: [{
                     data: 'id',
                     name: 'id'
                 },
@@ -53,9 +47,10 @@
                     data: 'product_name',
                     name: 'product_name'
                 },
-
-
-
+                {
+                    data: 'group_id',
+                    name: 'group_id'
+                },
                 {
                     data: 'group_id',
                     name: 'group_id'
@@ -65,50 +60,60 @@
                     data: 'category_id',
                     name: 'category_id'
                 },
+<<<<<<< HEAD
 
+=======
+>>>>>>> 93fd1780752936e822ce226d5580da70155d2199
                 {
                     data: 'brand_id',
                     name: 'brand_id'
                 },
+<<<<<<< HEAD
 
                
+=======
+>>>>>>> 93fd1780752936e822ce226d5580da70155d2199
                 {
                     data: 'product_quantity',
                     name: 'product_quantity'
                 },
-
                 {
                     data: 'product_price',
                     name: 'product_price'
                 },
-
                 {
                     data: 'discount',
                     name: 'discount'
                 },
-
                 {
                     data: 'discount_price',
                     name: 'discount_price'
                 },
-
                 {
                     data: 'product_image',
                     name: 'product_image'
                 },
-
                 {
                     data: 'product_description',
                     name: 'product_description'
                 },
+<<<<<<< HEAD
 
                 {data: 'action',name: 'action', orderable: false, searchable: false},
 
                 
 
+=======
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                }
+>>>>>>> 93fd1780752936e822ce226d5580da70155d2199
             ]
-
         });
     });
 </script>
+
 @endpush

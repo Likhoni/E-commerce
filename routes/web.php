@@ -122,6 +122,10 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/product/update/{id}', [ProductController::class, 'productUpdate'])->name('product.update');
         Route::get('/product/delete/{id}', [ProductController::class, 'productDelete'])->name('product.delete');
 
+        Route::get('get/data-table', [ProductController::class, 'ajaxDataTable'])->name('ajax.get.data');
+
+
+
         //Customer
         Route::get('/customer/list', [CustomerController::class, 'customerList'])->name('customer.list');
         //Route::get('/customer/delete/{id}', [CustomerController::class, 'customerDelete'])->name('customer.delete');
