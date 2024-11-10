@@ -2,6 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Frontend\FrontendCustomerController;
+use App\Http\Controllers\Frontend\FrontendHomeController;
+use App\Http\Controllers\Frontend\FrontendConatactController;
+use App\Http\Controllers\Frontend\FrontendOrderController;
+use App\Http\Controllers\Frontend\FrontendProductController;
+use App\Http\Controllers\Frontend\MailController;
+
+use App\Http\Controllers\LocalizationController;
+
 use App\Http\Controllers\Backend\GroupController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\BrandController;
@@ -14,21 +23,14 @@ use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\OrderDetailController;
 use App\Http\Controllers\Backend\DiscountController;
 
-use App\Http\Controllers\LocalizationController;
 
-use App\Http\Controllers\Frontend\FrontendCustomerController;
-use App\Http\Controllers\Frontend\FrontendHomeController;
-use App\Http\Controllers\Frontend\FrontendConatactController;
-use App\Http\Controllers\Frontend\FrontendOrderController;
-use App\Http\Controllers\Frontend\FrontendProductController;
-use App\Http\Controllers\Frontend\MailController;
 
 
 //frontend or website
 
 Route::group(['middleware' => 'changeLangMiddleware'], function () {
 
-
+    //Localization
     Route::get('/change/lang/{lang_name}', [LocalizationController::class, 'changeLang'])->name('change.language');
 
     Route::get('/', [FrontendHomeController::class, 'frontendHome'])->name('frontend.homepage');
@@ -40,7 +42,8 @@ Route::group(['middleware' => 'changeLangMiddleware'], function () {
     Route::get('/customer/view', [FrontendCustomerController::class, 'customerView'])->name('customer.view');
     Route::get('/customer/edit', [FrontendCustomerController::class, 'customerEdit'])->name('customer.edit');
     Route::put('/customer/update', [FrontendCustomerController::class, 'customerUpdate'])->name('customer.update');
-
+    
+    //Product
     Route::get('/all/category/products', [FrontendProductController::class, 'categoryProduct'])->name('frontend.all.category.products');
     //Route::get('/all/brand/products', [FrontendProductController::class, 'brandProduct'])->name('frontend.all.brand.products');
     Route::get('/single/product/{id}', [FrontendProductController::class, 'singleProduct'])->name('frontend.single.product');
@@ -111,6 +114,7 @@ Route::group(['prefix' => 'admin'], function () {
 
         //Product
         Route::get('/product/list', [ProductController::class, 'productList'])->name('product.list');
+        Route::get('get/data-table', [ProductController::class, 'ajaxDataTable'])->name('ajax.get.data');
         Route::get('/product/form', [ProductController::class, 'productForm'])->name('product.form');
         Route::post('/submit/product/form', [ProductController::class, 'SubmitProductForm'])->name('submit.product.form');
 
@@ -118,7 +122,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/product/update/{id}', [ProductController::class, 'productUpdate'])->name('product.update');
         Route::get('/product/delete/{id}', [ProductController::class, 'productDelete'])->name('product.delete');
 
-        Route::get('get/products/data-table', [ProductController::class, 'ajaxDataTable'])->name('ajax.get.data');
+        Route::get('get/data-table', [ProductController::class, 'ajaxDataTable'])->name('ajax.get.data');
+
+
 
         //Customer
         Route::get('/customer/list', [CustomerController::class, 'customerList'])->name('customer.list');

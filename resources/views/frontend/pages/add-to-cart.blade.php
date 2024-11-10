@@ -40,7 +40,11 @@
                                             </div>
 
                                             <div class="col-md-2 d-flex align-items-center">
+<<<<<<< HEAD
+                                                <form
+=======
                                                 <form 
+>>>>>>> 93fd1780752936e822ce226d5580da70155d2199
                                                     action="{{ route('frontend.update.cart', $cartData['product_id']) }}"
                                                     method="post" class="d-flex align-items-center">
                                                     @csrf

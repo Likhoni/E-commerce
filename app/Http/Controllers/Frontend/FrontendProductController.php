@@ -28,6 +28,9 @@ class FrontendProductController extends Controller
     public function singleProduct($id)
     {
         $singleProduct = Product::find($id);
+        if (!$singleProduct) {
+            abort(404); // Product not found
+        }
         return view('frontend.pages.product.singleProduct', compact('singleProduct'));
     }
 

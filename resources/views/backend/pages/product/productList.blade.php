@@ -6,6 +6,7 @@
     @if (checkPermission('product.form'))
     <div><a href="{{ route('product.form') }}" class="btn btn-primary">Add New Product</a></div>
     @endif
+    <br>
     <table class="data-table">
         <thead>
             <tr>
@@ -51,13 +52,27 @@
                     name: 'group_id'
                 },
                 {
+                    data: 'group_id',
+                    name: 'group_id'
+                },
+
+                {
                     data: 'category_id',
                     name: 'category_id'
                 },
+<<<<<<< HEAD
+
+=======
+>>>>>>> 93fd1780752936e822ce226d5580da70155d2199
                 {
                     data: 'brand_id',
                     name: 'brand_id'
                 },
+<<<<<<< HEAD
+
+               
+=======
+>>>>>>> 93fd1780752936e822ce226d5580da70155d2199
                 {
                     data: 'product_quantity',
                     name: 'product_quantity'
@@ -82,12 +97,20 @@
                     data: 'product_description',
                     name: 'product_description'
                 },
+<<<<<<< HEAD
+
+                {data: 'action',name: 'action', orderable: false, searchable: false},
+
+                
+
+=======
                 {
                     data: 'action',
                     name: 'action',
                     orderable: false,
                     searchable: false
                 }
+>>>>>>> 93fd1780752936e822ce226d5580da70155d2199
             ]
         });
     });
