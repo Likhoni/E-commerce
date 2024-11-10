@@ -6,6 +6,7 @@
     @if (checkPermission('product.form'))
     <div><a href="{{ route('product.form') }}" class="btn btn-primary">Add New Product</a></div>
     @endif
+    <br>
     <table class="data-table">
         <thead>
             <tr>
@@ -56,8 +57,18 @@
 
 
                 {
+                    data: 'group_id',
+                    name: 'group_id'
+                },
+
+                {
                     data: 'category_id',
                     name: 'category_id'
+                },
+
+                {
+                    data: 'brand_id',
+                    name: 'brand_id'
                 },
 
                
@@ -90,6 +101,8 @@
                     data: 'product_description',
                     name: 'product_description'
                 },
+
+                {data: 'action',name: 'action', orderable: false, searchable: false},
 
                 
 

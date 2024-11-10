@@ -37,44 +37,44 @@
 
                              <li class="account">
                                  @guest('customerGuard')
-                                     <a href="#">
-                                         Add Account
-                                         <i class="fa fa-angle-down"></i>
-                                     </a>
+                                 <a href="#">
+                                     Add Account
+                                     <i class="fa fa-angle-down"></i>
+                                 </a>
                                  @endguest
 
                                  @auth('customerGuard')
-                                     <a href="#" style="display: flex; align-items: center;">
-                                         @if (auth('customerGuard')->user()->image)
-                                             <img src="{{ url('images/customers/', auth('customerGuard')->user()->image) }}"
-                                                 alt="profile picture" class="profile-img"
-                                                  style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-top: 5px;">
-                                         @else
-                                             <i class="fa fa-user" aria-hidden="true"
-                                                 style="font-size: 40px; margin-top: 5px;"></i>
-                                         @endif
-                                         <span style="margin-left: 10px;">
-                                             {{ auth('customerGuard')->user()->FullName }}
-                                             
-                                         </span>
-                                         <i class="fa fa-angle-down" style="margin-left: 5px;"></i>
-                                     </a>
+                                 <a href="#" style="display: flex; align-items: center;">
+                                     @if (auth('customerGuard')->user()->image)
+                                     <img src="{{ url('images/customers/', auth('customerGuard')->user()->image) }}"
+                                         alt="profile picture" class="profile-img"
+                                         style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-top: 5px;">
+                                     @else
+                                     <i class="fa fa-user" aria-hidden="true"
+                                         style="font-size: 40px; margin-top: 5px;"></i>
+                                     @endif
+                                     <span style="margin-left: 10px;">
+                                         {{ auth('customerGuard')->user()->FullName }}
+
+                                     </span>
+                                     <i class="fa fa-angle-down" style="margin-left: 5px;"></i>
+                                 </a>
                                  @endauth
 
                                  <ul class="account_selection">
                                      @guest('customerGuard')
-                                         <li><a href="{{ route('frontend.sign.up') }}"><i class="fa fa-user-plus"
-                                                     aria-hidden="true"></i>Sign Up</a></li>
-                                         <li><a href="{{ route('frontend.sign.in') }}"><i class="fa fa-sign-in"
-                                                     aria-hidden="true"></i>Sign In</a></li>
+                                     <li><a href="{{ route('frontend.sign.up') }}"><i class="fa fa-user-plus"
+                                                 aria-hidden="true"></i>Sign Up</a></li>
+                                     <li><a href="{{ route('frontend.sign.in') }}"><i class="fa fa-sign-in"
+                                                 aria-hidden="true"></i>Sign In</a></li>
                                      @endguest
 
                                      @auth('customerGuard')
-                                         <li><a href="{{ route('customer.view') }}">
-                                                 <i class="fa fa-user" aria-hidden="true"></i>View Profile</a>
-                                         </li>
-                                         <li><a href="{{ route('frontend.sign.out') }}"><i class="fa fa-sign-out"
-                                                     aria-hidden="true"></i>Sign Out</a></li>
+                                     <li><a href="{{ route('customer.view') }}">
+                                             <i class="fa fa-user" aria-hidden="true"></i>View Profile</a>
+                                     </li>
+                                     <li><a href="{{ route('frontend.sign.out') }}"><i class="fa fa-sign-out"
+                                                 aria-hidden="true"></i>Sign Out</a></li>
                                      @endauth
                                  </ul>
                              </li>
@@ -87,6 +87,10 @@
      </div>
 
      <!-- Main Navigation -->
+
+
+
+
 
      <div class="main_nav_container">
          <div class="container">
@@ -114,11 +118,11 @@
                                      <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                      <span id="checkout_items" class="checkout_items">
                                          @php
-                                             if (session()->has('basket')) {
-                                                 echo count(session()->get('basket'));
-                                             } else {
-                                                 echo 0;
-                                             }
+                                         if (session()->has('basket')) {
+                                         echo count(session()->get('basket'));
+                                         } else {
+                                         echo 0;
+                                         }
                                          @endphp
                                      </span>
                                  </a>

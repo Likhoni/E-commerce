@@ -8,6 +8,7 @@
             margin-top: 5%;
         }
     </style>
+
     @notifyCss
     <title>E-Commerce</title>
     <meta charset="utf-8">
@@ -16,8 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" type="text/css" href="{{ url('frontend/styles/bootstrap4/bootstrap.min.css') }}">
-    <link href="{{ url('frontend/plugins/font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet"
-        type="text/css">
+    <link href="{{ url('frontend/plugins/font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{ url('frontend/plugins/OwlCarousel2-2.2.1/owl.carousel.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url('frontend/plugins/OwlCarousel2-2.2.1/owl.theme.default.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url('frontend/plugins/OwlCarousel2-2.2.1/animate.css') }}">
@@ -42,7 +42,8 @@
                             <div class="col-lg-9 image_col order-lg-2 order-1">
                                 <div class="single_product_image">
                                     <div class="single_product_image_background"
-                                        style="background-image:url('/images/products/{{ $singleProduct->product_image }}');"></div>
+                                        style="background-image:url('/images/products/{{ $singleProduct->images->first() ? $singleProduct->images->first()->image_url : '' }}');">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -86,24 +87,26 @@
                                     </div>
                                 </form>
                             </div>
+
                             <div style="padding-top: 50px;" class="row">
                                 <div class="buy_now_button"><a href="#" style="color:white">Buy Now </a></div>
                                 <div class="red_button add_to_cart_button"><a href="{{ route('frontend.add.to.cart', $singleProduct->id) }}">add to cart</a></div>
                                 <div class="product_favorite d-flex flex-column align-items-center justify-content-center">
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
                 <div style="padding-left: 15px; padding-top:50px;">
                     <div class="single_product_thumbnails">
                         <ul class="d-flex flex-row list-unstyled">
-                            <li class="me-2"><img src="{{url('frontend/images/single_1_thumb.jpg')}}" alt=""
-                                    data-image="{{url('frontend/images/single_1.jpg')}}"></li>
-                            <li class=""><img src="{{url('frontend/images/single_2_thumb.jpg')}}" alt=""
-                                    data-image="{{url('frontend/images/single_2.jpg')}}"></li>
-                            <li><img src="{{url('frontend/images/single_3_thumb.jpg')}}" alt=""
-                                    data-image="{{url('frontend/images/single_3.jpg')}}"></li>
+                            @foreach ($singleProduct->images as $image)
+                            <li class="me-2">
+                                <img src="/images/products/{{ $image->image_url }}" alt=""
+                                    data-image="/images/products/{{ $image->image_url }}">
+                            </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
@@ -126,11 +129,11 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col">
 
                             <!-- Tab Description -->
-
                             <div id="tab_1" class="tab_container active">
                                 <div class="row">
                                     <div class="col-lg-5 desc_col">
@@ -186,12 +189,12 @@
                                                     <div class="review_date">27 Aug 2016</div>
                                                     <div class="user_name">Brandon William</div>
                                                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                        tempor incididunt ut labore et dolore magna aliqua.</p>
+                                                        tempor incididunt ut labore et dolore magna aliqua.
+                                                    </p>
                                                 </div>
                                             </div>
 
                                             <!-- User Review -->
-
                                             <div class="user_review_container d-flex flex-column flex-sm-row">
                                                 <div class="user">
                                                     <div class="user_pic"></div>
@@ -205,12 +208,14 @@
                                                         </ul>
                                                     </div>
                                                 </div>
+
                                                 <div class="review">
                                                     <div class="review_date">27 Aug 2016</div>
                                                     <div class="user_name">Brandon William</div>
                                                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                                                         tempor incididunt ut labore et dolore magna aliqua.</p>
                                                 </div>
+
                                             </div>
                                         </div>
 
@@ -229,6 +234,7 @@
                                                             type="email" name="email" placeholder="Email*"
                                                             required="required" data-error="Valid email is required.">
                                                     </div>
+
                                                     <div>
                                                         <h1>Your Rating:</h1>
                                                         <ul class="user_star_rating">
@@ -239,8 +245,10 @@
                                                             <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
                                                         </ul>
                                                         <textarea id="review_message" class="input_review" name="message" placeholder="Your Review" rows="4" required
-                                                            data-error="Please, leave us a review."></textarea>
+                                                            data-error="Please, leave us a review.">
+                                                        </textarea>
                                                     </div>
+                                                    
                                                     <div class="text-left text-sm-right">
                                                         <button id="review_submit" type="submit"
                                                             class="red_button review_submit_btn trans_300"
