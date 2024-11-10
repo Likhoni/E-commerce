@@ -61,8 +61,9 @@ class CategoryController extends Controller
     // Edit
     public function categoryEdit($id)
     {
+        $categories = Category::all();
         $editCategory = Category::find($id);
-        return view('backend.pages.category.editCategory', compact('editCategory'));
+        return view('backend.pages.category.editCategory', compact('editCategory','categories'));
     }
 
     //Update 
@@ -92,6 +93,7 @@ class CategoryController extends Controller
 
         $updateCategory->update([
             'category_name' => $request->category_name,
+            'parent_id' => $request->parent_name,
             'category_image' => $category_image,
             'discount' => $request->discount
         ]);

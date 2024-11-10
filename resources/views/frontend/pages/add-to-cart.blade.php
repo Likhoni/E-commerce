@@ -40,8 +40,8 @@
                                             </div>
 
                                             <div class="col-md-2 d-flex align-items-center">
-                                                <form
-                                                    action="{{ route('frontend.update.cart.quantity', $cartData['product_id']) }}"
+                                                <form 
+                                                    action="{{ route('frontend.update.cart', $cartData['product_id']) }}"
                                                     method="post" class="d-flex align-items-center">
                                                     @csrf
                                                     <button style="color:black" type="button"

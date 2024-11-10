@@ -57,8 +57,6 @@ Route::group(['middleware' => 'changeLangMiddleware'], function () {
     Route::get('/checkout-cart', [FrontendOrderController::class, 'checkoutCart'])->name('checkout.cart');
     Route::post('/place-order', [FrontendOrderController::class, 'placeOrder'])->name('order.place');
 
-
-
     //OTP-One time Password
     Route::get('/otp', [FrontendCustomerController::class, 'otpPage'])->name('otp.page');
     Route::get('/resend-otp/{email}', [FrontendCustomerController::class, 'otpResend'])->name('otp.resend');
@@ -120,9 +118,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/product/update/{id}', [ProductController::class, 'productUpdate'])->name('product.update');
         Route::get('/product/delete/{id}', [ProductController::class, 'productDelete'])->name('product.delete');
 
-        Route::get('get/data-table', [ProductController::class, 'ajaxDataTable'])->name('ajax.get.data');
-
-
+        Route::get('get/products/data-table', [ProductController::class, 'ajaxDataTable'])->name('ajax.get.data');
 
         //Customer
         Route::get('/customer/list', [CustomerController::class, 'customerList'])->name('customer.list');
