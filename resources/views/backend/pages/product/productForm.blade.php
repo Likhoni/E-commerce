@@ -64,7 +64,7 @@
                     </div><br>
 
                     <div class="form-group">
-                        <label for=""><strong>Product Image</strong></label>
+                        <label for=""><strong>Product Images</strong></label>
                         <input name="product_image[]" type="file" class="form-control" id="" placeholder="" multiple>
                     </div><br>
 

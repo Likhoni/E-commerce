@@ -7,6 +7,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Group;
 use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -22,23 +23,30 @@ class ProductController extends Controller
     }
 
 
-    public function ajaxDataTable(){
+    public function ajaxDataTable()
+    {
 
 
-            $data = Product::select('*');
+        $data = Product::select('*');
 
         return DataTables::of($data)
 
             ->addIndexColumn()
 
-                    ->addColumn('action', function($row){
-                           $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
-                            return $btn;
+            ->addColumn('product_image', function ($row) {
+                return $row->images->first()
+                    ? '<img src="' . asset('images/products/' . $row->images->first()->image_url) . '" width="100" height="100" />'
+                    : '<img src="' . asset('images/placeholder.png') . '" width="100" height="100" />';
+            })
 
-                    })
+            ->addColumn('action', function ($row) {
+                $btn = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="view btn btn-primary btn-sm">View</a>
+                        <a href="javascript:void(0)" data-id="' . $row->id . '" class="edit btn btn-success btn-sm">Edit</a>
+                        <a href="javascript:void(0)" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm">Delete</a>';
+                return $btn;
+            })
 
-            ->rawColumns(['action'])
-
+            ->rawColumns(['product_image', 'action'])
             ->make(true);
     }
 
@@ -60,6 +68,7 @@ class ProductController extends Controller
             'product_quantity' => ['required', 'numeric', 'min:1'],
             'product_price' => 'required',
             // 'product_image' => 'required',
+            // 'product_image.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', 
             'discount' => 'required|numeric|min:0|max:100',
         ]);
 
@@ -69,14 +78,7 @@ class ProductController extends Controller
             return redirect()->back();
         }
 
-        $product_image= '';
-        if($request->hasFile('product_image'))
-        {
-            $product_image = date('YmdHis') . '.' . $request->file('product_image')->getClientOriginalExtension();
-            $request->file('product_image')->storeAs('/products', $product_image);
-        }
-        
-         Product::create([
+        $product = Product::create([
             'product_name' => $request->product_name,
             'group_id' => $request->group_id,
             'category_id' => $request->category_id,
@@ -87,7 +89,18 @@ class ProductController extends Controller
             'discount_price' => $request->discount_price,
             'product_description' => $request->description
         ]);
-        
+
+        if ($request->hasFile('product_image')) {
+            foreach ($request->file('product_image') as $file) {
+                $imageName = date('YmdHis') . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->storeAs('/products', $imageName);
+
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'image_url' => $imageName
+                ]);
+            }
+        }
         notify()->success("Product Created Successfully.");
         return redirect()->back();
     }
@@ -123,9 +136,7 @@ class ProductController extends Controller
         $product_image = $updateProduct->product_image;
 
         if ($request->hasFile('product_image')) {
-
             $product_image = date('YmdHis') . '.' . $request->file('product_image')->getClientOriginalExtension();
-
             $request->file('product_image')->storeAs('/products', $product_image);
             File::delete('images/products/' . $updateProduct->product_image);
         }
@@ -150,12 +161,19 @@ class ProductController extends Controller
     public function productDelete($id)
     {
         try {
-            $deleteProduct = Product::find($id);
+            $deleteProduct = Product::findOrFail($id);
             $deleteProduct->delete();
 
-            notify()->success("Product Deleted Successsfully.");
+            if (request()->ajax()) {
+                return response()->json(['success' => "Product deleted successfully."]);
+            }
+
+            notify()->success("Product Deleted Successfully.");
             return redirect()->back();
         } catch (Throwable $ex) {
+            if (request()->ajax()) {
+                return response()->json(['error' => "This product is a parent table, you cannot delete it."], 400);
+            }
 
             notify()->error("This Product is Parent Table, You Cannot Delete It");
             return redirect()->back();
