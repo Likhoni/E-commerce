@@ -37,7 +37,7 @@
     $(function() {
         var table = $('.data-table').DataTable({
             processing: true,
-            serverSide: false,
+            serverSide: true,
             ajax: "{{ route('ajax.get.data') }}",
             columns: [{
                     data: 'id',
@@ -52,21 +52,13 @@
                     name: 'group_id'
                 },
                 {
-                    data: 'group_id',
-                    name: 'group_id'
-                },
-
-                {
                     data: 'category_id',
                     name: 'category_id'
                 },
-
                 {
                     data: 'brand_id',
                     name: 'brand_id'
                 },
-
-               
                 {
                     data: 'product_quantity',
                     name: 'product_quantity'
@@ -85,17 +77,14 @@
                 },
                 {
                     data: 'product_image',
-                    name: 'product_image'
+                    name: 'product_image',
+                    orderable: false,
+                    searchable: false
                 },
                 {
                     data: 'product_description',
                     name: 'product_description'
                 },
-
-                {data: 'action',name: 'action', orderable: false, searchable: false},
-
-                
-
                 {
                     data: 'action',
                     name: 'action',
@@ -103,6 +92,24 @@
                     searchable: false
                 }
             ]
+        });
+
+        // Handle delete button click
+        $('.data-table').on('click', '.delete', function() {
+            var productId = $(this).data('id');
+            if (confirm("Are you sure you want to delete this product?")) {
+                $.ajax({
+                    url: "{{ route('product.delete', '') }}/" + productId,
+                    type: "GET",
+                    success: function(response) {
+                        alert("Product deleted successfully");
+                        table.ajax.reload(); // Refresh DataTable
+                    },
+                    error: function(xhr) {
+                        alert("An error occurred while deleting the product");
+                    }
+                });
+            }
         });
     });
 </script>

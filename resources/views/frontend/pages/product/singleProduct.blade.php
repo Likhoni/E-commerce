@@ -42,7 +42,7 @@
                             <div class="col-lg-9 image_col order-lg-2 order-1">
                                 <div class="single_product_image">
                                     <div class="single_product_image_background"
-                                        style="background-image:url('/images/products/{{ $singleProduct->images->first() ? $singleProduct->images->first()->image_url : '' }}');">
+                                        style="background-image:url('/images/products/{{ $singleProduct->images->first()}}');">
                                     </div>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                         <ul class="d-flex flex-row list-unstyled">
                             @foreach ($singleProduct->images as $image)
                             <li class="me-2">
-                                <img src="/images/products/{{ $image->image_url }}" alt=""
+                                <img style="height: 200px;" width="200px;" src="/images/products/{{ $image->image_url }}" alt=""
                                     data-image="/images/products/{{ $image->image_url }}">
                             </li>
                             @endforeach

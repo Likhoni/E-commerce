@@ -80,17 +80,17 @@ class FrontendOrderController extends Controller
     }
 
     // View Cart
-public function viewCart()
-{
-    $myCart = session()->get('basket') ?? [];
+    public function viewCart()
+    {
+        $myCart = session()->get('basket') ?? [];
 
-    if (count($myCart) === 0) {
-        notify()->error("The cart is empty, add products to view the cart.");
-        return redirect()->route('frontend.homepage');
+        if (count($myCart) === 0) {
+            notify()->error("The cart is empty, add products to view the cart.");
+            return redirect()->route('frontend.homepage');
+        }
+
+        return view('frontend.pages.add-to-cart', compact('myCart'));
     }
-
-    return view('frontend.pages.add-to-cart', compact('myCart'));
-}
 
 
     //Clear Cart
@@ -139,7 +139,8 @@ public function viewCart()
         return view('frontend.pages.checkout');
     }
 
-    public function placeOrder(Request $request){
+    public function placeOrder(Request $request)
+    {
 
         $checkValidation = Validator::make($request->all(), [
             // 'customer_id' => 'required',
@@ -150,10 +151,10 @@ public function viewCart()
             'district' => 'required',
             'thana' => 'required',
             'address' => 'required',
-            
-             
+
+
         ]);
-        
+
         if ($checkValidation->fails()) {
             notify()->error($checkValidation->getMessageBag());
             //notify()->error("Something Went Wrong");

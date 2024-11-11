@@ -32,10 +32,11 @@
         </div>
     </div>
 </div>
-<!-- New Arrivals -->
 
+<!-- New Arrivals -->
 <div class="new_arrivals">
     <div class="container">
+        
         <div class="row">
             <div class="col text-center">
                 <div class="section_title new_arrivals_title">
@@ -43,12 +44,14 @@
                 </div>
             </div>
         </div>
+
         <div class="row align-items-center">
             <div class="col text-center">
                 <div class="new_arrivals_sorting">
                     <ul class="arrivals_grid_sorting clearfix button-group filters-button-group">
-                        <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center active is-checked"
-                            data-filter="*">all</li>
+                        <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center active is-checked" data-filter="*">
+                            all
+                        </li>
                         @foreach ($categories->take(6) as $data)
                         <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center"
                             data-filter=".{{ strtolower($data->category_name) }}">{{ $data->category_name }}</li>
@@ -57,18 +60,22 @@
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col">
                 <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
 
                     @foreach ($products->take(10) as $data)
                     <div class="product-item {{ strtolower($data->category->category_name) }}">
+                        
                         <div class="product @if ($data->discount) discount @endif product_filter">
+                            <!--Product Image-->
                             <div class="product_image">
                                 <a href="{{route('frontend.single.product',$data->id )}}">
-                                <img style="height:200px; width:250px;" src="{{ url('images/products', $data->product_image) }}" alt="">
+                                    <img style="height:200px; width:250px;" src="{{ url('images/products', $data->image_url) }}" alt="">
                                 </a>
                             </div>
+
                             <!-- Badge for Discount or New -->
                             @if ($data->discount)
                             <div
@@ -81,19 +88,26 @@
                                 <span>new</span>
                             </div>
                             @endif
+
                             <div class="favorite favorite_left"></div>
                             <div class="product_info" style="padding-bottom: 200px;">
-                                <h6 class="product_name"><a href="{{route('frontend.single.product',$data->id )}}">
+                                <!--Product Name-->
+                                <h6 class="product_name">
+                                    <a href="{{route('frontend.single.product',$data->id )}}">
                                         {{ $data->product_name }}
-                                        
-                                    </a></h6>
-                                <div class="product_price">TK. {{ $data->product_price }} @if ($data->old_price)
+                                    </a>
+                                </h6>
+
+                                <!--Product Price-->
+                                <div class="product_price">TK. {{ $data->product_price }}
+                                    @if ($data->old_price)
                                     <span>TK. {{ $data->old_price }}</span>
                                     @endif
                                 </div>
-                                
-                            </div>
+                            </div> 
                         </div>
+
+                        <!--Add to Cart Button-->
                         <div class="red_button add_to_cart_button"><a
                                 href="{{ route('frontend.add.to.cart', $data->id) }}">add to cart</a>
                         </div>
