@@ -192,8 +192,6 @@
              display: inline-block;
          }
 
-<<<<<<< HEAD
-=======
          .category-toggle {
              background: none;
              border: none;
@@ -285,5 +283,4 @@
          }
      </style>
 
->>>>>>> 93fd1780752936e822ce226d5580da70155d2199
  </header>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
 
 class FrontendHomeController extends Controller
@@ -27,10 +28,10 @@ class FrontendHomeController extends Controller
 public function frontendHome() {
 
     $categories = Category::all();
-    
+    $productImage = ProductImage::all();
     $products = Product::with('category')->get();
 
-    return view('frontend.pages.homePage', compact('categories', 'products'));
+    return view('frontend.pages.homePage', compact('categories', 'products', 'productImage'));
 }
 
 }
