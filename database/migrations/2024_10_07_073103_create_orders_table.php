@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('receiver_email');
             $table->string('receiver_mobile');
             $table->string('country')->default('bangladesh');
-            $table->string('district');
+            $table->foreignId('district_id')->constrained('districts')->restrictOnDelete();
             $table->string('thana');
             $table->string('receiver_address');
             $table->string('status')->nullable();

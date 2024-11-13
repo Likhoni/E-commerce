@@ -1,5 +1,6 @@
 @extends('frontend.master')
 @section('content')
+
 <!-- Slider -->
 <div class="main_slider" style="background-image:url(frontend/images/slider_1.jpg)">
     <div class="container fill_height">
@@ -72,7 +73,8 @@
                             <!--Product Image-->
                             <div class="product_image">
                                 <a href="{{route('frontend.single.product',$data->id )}}">
-                                    <img style="height:200px; width:250px;" src="{{ url('images/products', $data->image_url) }}" alt="">
+                                    <img style="height:200px; width:250px;" src="{{ $data->images->first() ? url('images/products', $data->images->first()->image_url) : url('images/placeholder.png') }}" 
+                                    alt="">
                                 </a>
                             </div>
 

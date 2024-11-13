@@ -15,6 +15,10 @@
                                     <div class="col-lg-9">
                                         <h2>Shipping Address</h2>
                                         
+                                        <div class="form-group"><!-- For Customer ID-->
+                                            <input name="status" class="form-control" type="hidden" id="address" placeholder="">
+                                        </div>
+
                                         <div class="form-group">
                                             <label for="recipient-name"><strong>Recipient Name *</strong></label>
                                             <input class="form-control" name="name" type="text" id="recipient-name" placeholder="Full Name" required>
@@ -37,91 +41,24 @@
 
                                         <div class="form-group">
                                             <label for="district"><strong>District/City *</strong></label>
-                                            <select name="district" class="form-control" id="district" required>
+                                            <select name="district_id" class="form-control" id="district" required onchange="updateUpazilas()">
                                                 <option value="">Select District/City</option>
-                                                <option value="bagerhat">Bagerhat</option>
-                                                <option value="bandarban">Bandarban</option>
-                                                <option value="barguna">Barguna</option>
-                                                <option value="barisal">Barisal</option>
-                                                <option value="bhola">Bhola</option>
-                                                <option value="bogura">Bogura</option>
-                                                <option value="brahmanbaria">Brahmanbaria</option>
-                                                <option value="chandpur">Chandpur</option>
-                                                <option value="chattogram">Chattogram</option>
-                                                <option value="chuadanga">Chuadanga</option>
-                                                <option value="coxsbazar">Cox's Bazar</option>
-                                                <option value="cumilla">Cumilla</option>
-                                                <option value="dhaka">Dhaka</option>
-                                                <option value="dinajpur">Dinajpur</option>
-                                                <option value="faridpur">Faridpur</option>
-                                                <option value="feni">Feni</option>
-                                                <option value="gaibandha">Gaibandha</option>
-                                                <option value="gazipur">Gazipur</option>
-                                                <option value="gopalganj">Gopalganj</option>
-                                                <option value="habiganj">Habiganj</option>
-                                                <option value="jamalpur">Jamalpur</option>
-                                                <option value="jashore">Jashore</option>
-                                                <option value="jhenaidah">Jhenaidah</option>
-                                                <option value="joypurhat">Joypurhat</option>
-                                                <option value="khagrachari">Khagrachari</option>
-                                                <option value="khulna">Khulna</option>
-                                                <option value="kishoreganj">Kishoreganj</option>
-                                                <option value="kurigram">Kurigram</option>
-                                                <option value="kushtia">Kushtia</option>
-                                                <option value="lakshmipur">Lakshmipur</option>
-                                                <option value="lalmonirhat">Lalmonirhat</option>
-                                                <option value="madaripur">Madaripur</option>
-                                                <option value="magura">Magura</option>
-                                                <option value="manikganj">Manikganj</option>
-                                                <option value="meherpur">Meherpur</option>
-                                                <option value="moulvibazar">Moulvibazar</option>
-                                                <option value="munshiganj">Munshiganj</option>
-                                                <option value="mymensingh">Mymensingh</option>
-                                                <option value="naogaon">Naogaon</option>
-                                                <option value="narail">Narail</option>
-                                                <option value="narayanganj">Narayanganj</option>
-                                                <option value="narsingdi">Narsingdi</option>
-                                                <option value="natore">Natore</option>
-                                                <option value="netrokona">Netrokona</option>
-                                                <option value="nilphamari">Nilphamari</option>
-                                                <option value="noakhali">Noakhali</option>
-                                                <option value="pabna">Pabna</option>
-                                                <option value="panchagarh">Panchagarh</option>
-                                                <option value="patuakhali">Patuakhali</option>
-                                                <option value="pirojpur">Pirojpur</option>
-                                                <option value="rajbari">Rajbari</option>
-                                                <option value="rajshahi">Rajshahi</option>
-                                                <option value="rangamati">Rangamati</option>
-                                                <option value="rangpur">Rangpur</option>
-                                                <option value="satkhira">Satkhira</option>
-                                                <option value="shariatpur">Shariatpur</option>
-                                                <option value="sherpur">Sherpur</option>
-                                                <option value="sirajganj">Sirajganj</option>
-                                                <option value="sunamganj">Sunamganj</option>
-                                                <option value="sylhet">Sylhet</option>
-                                                <option value="tangail">Tangail</option>
-                                                <option value="thakurgaon">Thakurgaon</option>
-
+                                                @foreach($districts as $data)
+                                                <option value="{{ $data->id }}">{{ strtoupper($data->name) }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="area"><strong>Area/Thana/Upazilla * </strong></label>
+                                            <label for="area"><strong>Area/Thana/Upazilla *</strong></label>
                                             <select name="thana" class="form-control" id="area" required>
-                                                <option value="">Select Area/Thana/Upazilla</option>
-                                                <option value="barisal sadar">Barisal Sadar</option>
-                                                <option value="dhaka sadar">Dhaka Sadar</option>
-                                                <!-- Populate options based on selected district -->
+                                                <option value="">Select District First</option>
                                             </select>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="address"><strong>Address *</strong></label>
                                             <input name="address" class="form-control" type="text" id="address" placeholder="House / Building / Street" required>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <input name="status"  class="form-control" type="hidden" id="address" placeholder="House / Building / Street" required>
                                         </div>
 
                                     </div>
@@ -169,3 +106,30 @@
     </section>
 </div>
 @endsection
+
+<script>
+    // Preload upazilas from PHP data
+    const upazilas = @json($upazilas);
+
+    function updateUpazilas() {
+        // Get selected district ID
+        const districtId = document.getElementById("district").value;
+        const areaSelect = document.getElementById("area");
+
+        // Clear previous options
+        areaSelect.innerHTML = '<option value="">Select Area/Thana/Upazilla</option>';
+
+        if (districtId && upazilas[districtId]) {
+            // Populate upazilas specific to selected district
+            upazilas[districtId].forEach(upazila => {
+                const option = document.createElement("option");
+                option.value = upazila.name;
+                option.textContent = upazila.name;
+                areaSelect.appendChild(option);
+            });
+        } else {
+            // Show a default message if no district is selected
+            areaSelect.innerHTML = '<option value="">Select District First</option>';
+        }
+    }
+</script>
