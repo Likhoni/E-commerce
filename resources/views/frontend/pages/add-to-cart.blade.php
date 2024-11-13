@@ -31,8 +31,16 @@
                                         @foreach ($myCart as $cartData)
                                         <div class="row mb-4 d-flex justify-content-between align-items-center">
                                             <div class="col-md-2">
-                                                <img style="height: 100px; width:100px" src="{{ url('/images/products/' . $cartData['image']) }}"
-                                                    class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                                @if(!empty($cartData['images']))
+                                                @foreach ($cartData['images'] as $imageUrl)
+                                                <img style="height: 100px; width:100px" src="{{ url('/images/products/' . $imageUrl) }}"
+                                                    class="img-fluid rounded-3" alt="{{ $cartData['product_name'] }}">
+                                                @break <!-- Show only the first image, remove this if you want to display all images -->
+                                                @endforeach
+                                                @else
+                                                <img style="height: 100px; width:100px" src="{{ url('/images/products/default.png') }}"
+                                                    class="img-fluid rounded-3" alt="No image available">
+                                                @endif
                                             </div>
 
                                             <div class="col-md-2">
@@ -46,7 +54,7 @@
                                                     @csrf
                                                     <button style="color:black" type="button"
                                                         class="btn btn-link btn-link-no-underline px-2"
-                                                        onclick="this.nextElementSibling.stepDown(); this.form.submit()">-</button>
+                                                        onclick="if (this.nextElementSibling.value > 1) { this.nextElementSibling.stepDown(); this.form.submit(); }">-</button>
                                                     <input id="form1" min="0" name="quantity"
                                                         value="{{ session('basket')[$cartData['product_id']]['quantity'] ?? 1 }}" type="number"
                                                         class="form-control form-control-sm text-center"
@@ -107,18 +115,18 @@
 
                                         <div class="d-flex justify-content-between mb-4">
                                             <h5 class="text-uppercase mb-3">Sub-Total</h5>
-                                            <h5>৳ {{ count($myCart) > 0 ? $cartData['subtotal'] : 0 }}</h5>
+                                            <h5>৳ {{ $subtotal }}</h5>
                                         </div>
 
                                         <div class="d-flex justify-content-between mb-4">
                                             <h5 class="text-uppercase mb-3">Discount</h5>
-                                            <h5>৳ {{ count($myCart) > 0 ? $cartData['subtotal'] : 0 }}</h5>
+                                            <h5>৳ {{ $discount }}</h5>
                                         </div>
 
                                         <hr class="my-4">
                                         <div class="d-flex justify-content-between mb-5">
                                             <h5 class="text-uppercase">Total price</h5>
-                                            <h5>৳ {{ count($myCart) > 0 ? $cartData['subtotal'] : 0 }}</h5>
+                                            <h5>৳ {{ $total }}</h5>
                                         </div>
 
                                         <a href="{{ route('checkout.cart') }}" class="btn btn-block btn-lg"

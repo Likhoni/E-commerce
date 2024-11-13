@@ -45,7 +45,7 @@
 
                     <div class="form-group">
                         <label for="district">District/City *</label>
-                        <select name="district" class="form-control" id="district" required>
+                        <select name="district_id" class="form-control" id="district" required>
                             <option value="">Select District/City</option>
                             <option value="bagerhat">Bagerhat</option>
                             <option value="bandarban">Bandarban</option>

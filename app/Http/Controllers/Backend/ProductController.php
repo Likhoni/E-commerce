@@ -69,7 +69,7 @@ class ProductController extends Controller
             'product_price' => 'required',
             // 'product_image' => 'required',
             // 'product_image.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', 
-            'discount' => 'required|numeric|min:0|max:100',
+            'discount' => 'nullable|numeric|min:0|max:100',
         ]);
 
         if ($checkValidation->fails()) {

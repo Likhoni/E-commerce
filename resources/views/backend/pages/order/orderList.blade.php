@@ -34,7 +34,7 @@
                         <td>{{ $data->receiver_email }}</td>
                         <td>{{ $data->receiver_mobile }}</td>
                         <td>{{ $data->country }}</td>
-                        <td>{{ $data->district }}</td>
+                        <td>{{ $data->district->name }}</td>
                         <td>{{ $data->thana }}</td>
                         <td>{{ $data->receiver_address }}</td>
                         <td>{{ $data->status }}</td>
