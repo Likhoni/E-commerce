@@ -122,6 +122,13 @@ class FrontendOrderController extends Controller
             // Calculate total
             $total = $subtotal - $discount;
         }
+
+        session()->put('cart_summary', [
+            'subtotal' => $subtotal,
+            'discount' => $discount,
+            'total' => $total,
+            'item_count' => count($myCart),
+        ]);
         return view('frontend.pages.add-to-cart', compact('myCart', 'subtotal', 'discount', 'total'));
     }
 
@@ -168,15 +175,17 @@ class FrontendOrderController extends Controller
         return redirect()->back();
     }
 
-    //checkout & place order
     public function checkoutCart()
     {
-        $divisions = Division::all();
-        $districts = District::orderBy('name', 'asc')->get();
+        $divisions = Division::orderBy('name', 'asc')->get();
+        $districts = District::orderBy('name', 'asc')->get()->groupBy('division_id'); // Group by division_id
         $upazilas = Upazila::all()->groupBy('district_id'); // Group by district_id
-
-        return view('frontend.pages.checkout', compact('divisions', 'districts', 'upazilas'));
+        $cartSummary = session()->get('cart_summary');
+        $myCart = session()->get('basket');
+    
+        return view('frontend.pages.checkout', compact('divisions', 'districts', 'upazilas', 'cartSummary', 'myCart'));
     }
+    
 
     public function placeOrder(Request $request)
     {

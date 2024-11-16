@@ -1,149 +1,269 @@
-@extends('frontend.master')
-@section('content')
+<!DOCTYPE html>
+<html lang="en">
 
-<div style="padding-top:150px;">
-    <section class="h-100 h-custom">
-        <div>
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-12">
-                    <div class="card card-registration card-registration-2" style="border-radius: 15px;">
-                        <div class="card-body p-0">
-                            <div class="row g-0">
-                                <div class="col-lg-9">
-                                    <div class="p-5">
+<head>
+    <style type="text/css">
+        .notify {
+            z-index: 1000000;
+            margin-top: 5%;
+        }
+        .card-registration-2 {
+            padding: 50px;
+            border-radius: 15px;
+        }
 
-                                        <div class="d-flex justify-content-between align-items-center mb-5">
-                                            <h2 class="fw-bold mb-0">Shopping Cart</h2>
-                                        </div>
+        .left-section,
+        .right-section {
+            border-radius: 15px;
+            background-color: #f8f9fa;
+        }
 
-                                        <div class="d-flex justify-content-between align-items-center mb-5">
-                                            <h5 class="mb-0 text-muted"><strong>{{ count($myCart) }} items</strong></h5>
+        .summary-box {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
 
-                                            @if (count($myCart) > 0)
-                                            <a href="{{ route('frontend.cart.clear') }}" class="btn btn-danger">Clear All</a>
-                                            @endif
-                                        </div>
-                                        <hr class="my-4">
+        .summary-box h5,
+        .summary-box h3 {
+            color: #333;
+        }
 
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 20px;
+        }
 
+        .payment-option {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
 
-                                        @if (count($myCart) > 0)
-                                        @foreach ($myCart as $cartData)
-                                        <div class="row mb-4 d-flex justify-content-between align-items-center">
-                                            <div class="col-md-2">
-                                                @if(!empty($cartData['images']))
-                                                @foreach ($cartData['images'] as $imageUrl)
-                                                <img style="height: 100px; width:100px" src="{{ url('/images/products/' . $imageUrl) }}"
-                                                    class="img-fluid rounded-3" alt="{{ $cartData['product_name'] }}">
-                                                @break <!-- Show only the first image, remove this if you want to display all images -->
-                                                @endforeach
-                                                @else
-                                                <img style="height: 100px; width:100px" src="{{ url('/images/products/default.png') }}"
-                                                    class="img-fluid rounded-3" alt="No image available">
-                                                @endif
-                                            </div>
+        .payment-option:hover {
+            border-color: #888;
+        }
 
-                                            <div class="col-md-2">
-                                                <h5 class="">{{ $cartData['product_name'] }}</h5>
-                                            </div>
+        .payment-option input[type="radio"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            margin-right: 1rem;
+            border: 2px solid #333;
+            border-radius: 4px;
+            /* This controls the roundness; set to 0 for a perfect square */
+            position: relative;
+        }
 
-                                            <div class="col-md-2 d-flex align-items-center">
-                                                <form
-                                                    action="{{ route('frontend.update.cart', $cartData['product_id']) }}"
-                                                    method="post" class="d-flex align-items-center">
-                                                    @csrf
-                                                    <button style="color:black" type="button"
-                                                        class="btn btn-link btn-link-no-underline px-2"
-                                                        onclick="if (this.nextElementSibling.value > 1) { this.nextElementSibling.stepDown(); this.form.submit(); }">-</button>
-                                                    <input id="form1" min="0" name="quantity"
-                                                        value="{{ session('basket')[$cartData['product_id']]['quantity'] ?? 1 }}" type="number"
-                                                        class="form-control form-control-sm text-center"
-                                                        style="width: 50px;" />
-                                                    <button style="color:black" type="button"
-                                                        class="btn btn-link btn-link-no-underline px-2"
-                                                        onclick="this.previousElementSibling.stepUp(); this.form.submit()">+</button>
-                                                </form>
-                                            </div>
+        .payment-option input[type="radio"]:checked {
+            background-color: #333;
+            /* Color when selected */
+        }
 
-                                            <div class="col-md-4">
-                                                <h6 class="mb-0">
-                                                    Unit Price:
-                                                    <strong>
-                                                        @if(isset($cartData['discount_price']) && $cartData['discount_price'] > 0)
-                                                        ৳ {{ $cartData['discount_price'] }}
-                                                        <span class="strikethrough-red">৳ {{ $cartData['product_price'] }}</span>
-                                                        @else
-                                                        ৳ {{ $cartData['product_price'] }}
-                                                        @endif
-                                                    </strong>
-                                                </h6>
-                                                <h6 class="mb-0">
-                                                    Amount:
-                                                    <strong>
-                                                        ৳ {{ (isset($cartData['discount_price']) && $cartData['discount_price'] > 0 ? $cartData['discount_price'] : $cartData['product_price']) * (session('basket')[$cartData['product_id']]['quantity'] ?? 1) }}
-                                                    </strong>
-                                                </h6>
-                                            </div>
+        .payment-option input[type="radio"]::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            background-color: white;
+            display: none;
+        }
 
+        .payment-option input[type="radio"]:checked::before {
+            display: block;
+        }
 
-                                            <div class="col-md-2 text-end">
-                                                <a href="{{ route('frontend.cart.item.delete', $cartData['product_id']) }}"
-                                                    style="color:red;">
-                                                    Delete
-                                                </a>
-                                            </div>
+        .payment-option span {
+            font-size: 16px;
+            font-weight: 500;
+        }
 
-                                        </div>
-                                        <hr class="my-4">
-                                        @endforeach
+        .payment-logos {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .payment-logo-ebl {
+            width: 40px;
+            height: auto;
+        }
+
+        .payment-logo {
+            width: 70px;
+            height: auto;
+        }
+
+        .payment-logo-ssl {
+            width: 90px;
+            height: auto;
+        }
+
+        .payment-description {
+            font-size: 14px;
+            color: #666;
+            margin-left: 2.5rem;
+            margin-top: 4px;
+        }
+
+        .payment-description-container {
+            margin-top: 10px;
+        }
+
+    </style>
+    @notifyCss
+
+    <title>E-Commerce</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Colo Shop Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="{{ url('frontend/styles/bootstrap4/bootstrap.min.css') }}">
+    <link href="{{ url('frontend/plugins/font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ url('frontend/plugins/OwlCarousel2-2.2.1/owl.carousel.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url('frontend/plugins/OwlCarousel2-2.2.1/owl.theme.default.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url('frontend/plugins/OwlCarousel2-2.2.1/animate.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url('frontend/styles/main_styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url('frontend/styles/responsive.css') }}">
+</head>
+
+<body>
+    <div class="super_container">
+        @include('frontend.partial.header')
+        <div class="container product_section_container">
+            <div class="row" style="padding-top:180px;">
+                <!-- Left Section: Cart Details -->
+                <div class="col-md-8">
+                    <div class="left-section">
+                        <div class="d-flex justify-content-between align-items-center mb-5">
+                            <h2 class="fw-bold mb-0">Shopping Cart</h2>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-5">
+                            <h5 class="mb-0 text-muted"><strong>{{ count($myCart) }} items</strong></h5>
+                            @if (count($myCart) > 0)
+                            <a href="{{ route('frontend.cart.clear') }}" class="btn btn-danger">Clear All</a>
+                            @endif
+                        </div>
+
+                        <hr class="my-4">
+
+                        @if (count($myCart) > 0)
+                        @foreach ($myCart as $cartData)
+                        <div class="row mb-4 d-flex justify-content-between align-items-center">
+                            <div class="col-md-2">
+                                @if(!empty($cartData['images']))
+                                @foreach ($cartData['images'] as $imageUrl)
+                                <img style="height: 100px; width:100px" src="{{ url('/images/products/' . $imageUrl) }}" class="img-fluid rounded-3" alt="{{ $cartData['product_name'] }}">
+                                @break
+                                @endforeach
+                                @else
+                                <img style="height: 100px; width:100px" src="{{ url('/images/products/default.png') }}" class="img-fluid rounded-3" alt="No image available">
+                                @endif
+                            </div>
+
+                            <div class="col-md-2">
+                                <h5>{{ $cartData['product_name'] }}</h5>
+                            </div>
+
+                            <div class="col-md-2 d-flex align-items-center">
+                                <form action="{{ route('frontend.update.cart', $cartData['product_id']) }}" method="post" class="d-flex align-items-center">
+                                    @csrf
+                                    <button style="color:black; text-decoration: none;" type="button" class="btn btn-link px-2" onclick="if (this.nextElementSibling.value > 1) { this.nextElementSibling.stepDown(); this.form.submit(); }">-</button>
+                                    <input id="form1" min="0" name="quantity" value="{{ session('basket')[$cartData['product_id']]['quantity'] ?? 1 }}" type="number" class="form-control form-control-sm text-center" style="width: 50px;" />
+                                    <button style="color:black; text-decoration: none;" type="button" class="btn btn-link px-2" onclick="this.previousElementSibling.stepUp(); this.form.submit()">+</button>
+                                </form>
+                            </div>
+
+                            <div class="col-md-4">
+                                <h6 class="mb-0">
+                                    Unit Price:
+                                    <strong>
+                                        @if(isset($cartData['discount_price']) && $cartData['discount_price'] > 0)
+                                        ৳ {{ $cartData['discount_price'] }}
+                                        <span class="strikethrough-red">৳ {{ $cartData['product_price'] }}</span>
                                         @else
-                                        <p>Your Cart is Empty</p>
+                                        ৳ {{ $cartData['product_price'] }}
                                         @endif
+                                    </strong>
+                                </h6>
+                                <h6 class="mb-0">
+                                    Amount:
+                                    <strong>
+                                        ৳ {{ (isset($cartData['discount_price']) && $cartData['discount_price'] > 0 ? $cartData['discount_price'] : $cartData['product_price']) * (session('basket')[$cartData['product_id']]['quantity'] ?? 1) }}
+                                    </strong>
+                                </h6>
+                            </div>
 
-
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-3 bg-body-tertiary border rounded" style="border-color: #ddd; border-width: 1px; border-radius: 15px;">
-                                    <div class="p-5">
-                                        <h3 class="fw-bold mb-5 mt-2 pt-1">Your Bill</h3>
-                                        <hr class="my-4">
-
-                                        <div class="d-flex justify-content-between mb-4">
-                                            <h5 class="text-uppercase">{{ count($myCart) }} (items)</h5>
-                                        </div>
-
-                                        <div class="d-flex justify-content-between mb-4">
-                                            <h5 class="text-uppercase mb-3">Sub-Total</h5>
-                                            <h5>৳ {{ $subtotal }}</h5>
-                                        </div>
-
-                                        <div class="d-flex justify-content-between mb-4">
-                                            <h5 class="text-uppercase mb-3">Discount</h5>
-                                            <h5>৳ {{ $discount }}</h5>
-                                        </div>
-
-                                        <hr class="my-4">
-                                        <div class="d-flex justify-content-between mb-5">
-                                            <h5 class="text-uppercase">Total price</h5>
-                                            <h5>৳ {{ $total }}</h5>
-                                        </div>
-
-                                        <a href="{{ route('checkout.cart') }}" class="btn btn-block btn-lg"
-                                            style="background-color: LightSeaGreen; color: white;">
-                                            Go to Checkout
-                                        </a>
-
-
-
-                                    </div>
-                                </div>
+                            <div class="col-md-2 text-end">
+                                <a href="{{ route('frontend.cart.item.delete', $cartData['product_id']) }}" style="color:red;">Delete</a>
                             </div>
                         </div>
+                        <hr class="my-4">
+                        @endforeach
+                        @else
+                        <p>Your Cart is Empty</p>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Right Section: Order Summary and Checkout -->
+                <div class="col-md-4">
+                    <div class="right-section">
+                        <div class="summary-box">
+                            <h3>Your Bill</h3>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <h5 class="">{{ count($myCart) }} item</h5>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <h5 class="text-uppercase">Sub-Total</h5>
+                                <h5>৳ {{ $subtotal }}</h5>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <h5 class="text-uppercase">Discount</h5>
+                                <h5>৳ {{ $discount }}</h5>
+                            </div>
+
+                            <hr>
+
+                            <div class="d-flex justify-content-between">
+                                <h5 class="text-uppercase">Total Price</h5>
+                                <h5>৳ {{ $total }}</h5>
+                            </div>
+                        </div>
+
+                        <a href="{{ route('checkout.cart') }}" class="btn btn-block btn-lg" style="background-color: LightSeaGreen; color: white;">Go to Checkout</a>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-</div>
-@endsection
+
+        @include('frontend.partial.footer')
+    </div>
+
+    <script src="{{ url('frontend/js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ url('frontend/styles/bootstrap4/popper.js') }}"></script>
+    <script src="{{ url('frontend/styles/bootstrap4/bootstrap.min.js') }}"></script>
+    <script src="{{ url('frontend/plugins/Isotope/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ url('frontend/plugins/OwlCarousel2-2.2.1/owl.carousel.js') }}"></script>
+    <script src="{{ url('frontend/js/custom.js') }}"></script>
+
+
+    @include('notify::components.notify')
+    @notifyJs
+</body>
+</html>
