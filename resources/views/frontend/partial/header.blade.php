@@ -1,4 +1,4 @@
- <header class="header trans_300">
+<header class="header trans_300">
 
      <!-- Top Navigation -->
      <div class="top_nav">

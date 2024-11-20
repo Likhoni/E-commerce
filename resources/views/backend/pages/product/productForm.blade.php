@@ -64,9 +64,9 @@
                     </div><br>
 
                     <div class="form-group">
-                        <label for=""><strong>Product Images</strong></label>
-                        <input name="product_image[]" type="file" class="form-control" id="" placeholder="" multiple>
-                    </div><br>
+                        <label for=""><strong>Product Image</strong></label>
+                        <input name="image" type="file" class="form-control" id="" placeholder="">
+                    </div><br>                    
 
                     <div class="form-group">
                         <label for=""><strong>Discount (%)</strong></label>
@@ -84,6 +84,12 @@
                         <label for="exampleFormControlTextarea1"><strong>Description</strong></label>
                         <input required name="description" type="text" class="form-control" id=""
                             placeholder="">
+                    </div><br>
+
+
+                    <div class="form-group">
+                        <label for=""><strong>Product Images(Add More)</strong></label>
+                        <input name="product_images[]" type="file" class="form-control" id="" placeholder="" multiple>
                     </div><br>
 
                     <button type="submit" class="btn btn-success">Submit</button>

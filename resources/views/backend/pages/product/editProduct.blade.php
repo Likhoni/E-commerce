@@ -20,16 +20,16 @@
                         <label for="group_id"><strong>Group Name</strong></label>
                         <select name="group_id" id="group_id" class="form-control">
                             @if (!is_null($editProduct->group_id))
-                                <option value="{{ $editProduct->group_id }}" selected>
-                                    {{ $editProduct->group->group_name }}
-                                </option>
+                            <option value="{{ $editProduct->group_id }}" selected>
+                                {{ $editProduct->group->group_name }}
+                            </option>
                             @endif
                             <option value="" {{ is_null($editProduct->group_id) ? 'selected' : '' }}>No Group</option>
                             @foreach ($varGroup as $data)
-                                <option value="{{ $data->id }}"
-                                    {{ $editProduct->group_id == $data->id ? 'selected' : '' }}>
-                                    {{ $data->group_name }}
-                                </option>
+                            <option value="{{ $data->id }}"
+                                {{ $editProduct->group_id == $data->id ? 'selected' : '' }}>
+                                {{ $data->group_name }}
+                            </option>
                             @endforeach
                         </select>
                     </div><br>
@@ -39,7 +39,7 @@
                         <select name="category_id" id="category_id" class="form-control">
                             <option value="{{ $editProduct->category_id }}">{{ $editProduct->category->category_name }}</option>
                             @foreach ($varCategory as $data)
-                                <option value="{{ $data->id }}">{{ $data->category_name }}</option>
+                            <option value="{{ $data->id }}">{{ $data->category_name }}</option>
                             @endforeach
                         </select>
                     </div><br>
@@ -48,16 +48,16 @@
                         <label for="brand_id"><strong>Brand Name</strong></label>
                         <select name="brand_id" id="brand_id" class="form-control">
                             @if (!is_null($editProduct->brand_id))
-                                <option value="{{ $editProduct->brand_id }}" selected>
-                                    {{ $editProduct->brand->brand_name }}
-                                </option>
+                            <option value="{{ $editProduct->brand_id }}" selected>
+                                {{ $editProduct->brand->brand_name }}
+                            </option>
                             @endif
                             <option value="" {{ is_null($editProduct->brand_id) ? 'selected' : '' }}>No Brand</option>
                             @foreach ($varBrand as $data)
-                                <option value="{{ $data->id }}"
-                                    {{ $editProduct->brand_id == $data->id ? 'selected' : '' }}>
-                                    {{ $data->brand_name }}
-                                </option>
+                            <option value="{{ $data->id }}"
+                                {{ $editProduct->brand_id == $data->id ? 'selected' : '' }}>
+                                {{ $data->brand_name }}
+                            </option>
                             @endforeach
                         </select>
                     </div><br>
@@ -75,10 +75,10 @@
                     </div><br>
 
                     <div class="form-group">
-                        <label for="product_image"><strong>Product Image</strong></label>
-                        <img style="width: 100px;height:100px" src="{{ url('images/products', $editProduct->product_image) }}" alt="">
-                        <input value="{{ $editProduct->product_image }}" name="product_image" type="file"
-                            class="form-control" id="product_image" placeholder="">
+                        <label for="image"><strong>Product Image</strong></label>
+                        <img style="width: 100px;height:100px" src="{{ url('images/products', $editProduct->image) }}" alt="">
+                        <input value="{{ $editProduct->image }}" name="image" type="file"
+                            class="form-control" id="image" placeholder="">
                     </div><br>
 
                     <div class="form-group">
@@ -99,6 +99,25 @@
                             id="discount_price" placeholder="" readonly>
                     </div><br>
 
+                    <div class="form-group">
+                        <label for="product_images"><strong>Product Images (Add More)</strong></label>
+                        <div class="row">
+                            @foreach($varImages as $file)
+                            <div class="col-md-3 text-center" style="position: relative;">
+                                <img style="width: 100px; height: 100px;" src="{{ url('images/products', $file->image_url) }}" alt="">
+                                <div>
+                                    <label>
+                                        <input type="checkbox" name="delete_images[]" value="{{ $file->id }}">
+                                        Remove
+                                    </label>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                        <input value="" name="product_images[]" type="file" class="form-control" id="product_images" placeholder="" multiple>
+                    </div>
+                    
+                    <br>
                     <button type="submit" class="btn btn-success">Update</button>
                 </div>
             </div>
@@ -107,19 +126,18 @@
 </div>
 
 <script>
-   function calculateDiscountPrice() {
-    const price = parseFloat(document.getElementById('product_price').value) || 0;
-    const discount = parseFloat(document.getElementById('discount').value);
+    function calculateDiscountPrice() {
+        const price = parseFloat(document.getElementById('product_price').value) || 0;
+        const discount = parseFloat(document.getElementById('discount').value);
 
-    let discountPrice;
-    if (discount && discount > 0) {
-        discountPrice = price - (price * discount / 100);
-    } else {
-        discountPrice = 0; // Set discount price to 0 if no discount is given
+        let discountPrice;
+        if (discount && discount > 0) {
+            discountPrice = price - (price * discount / 100);
+        } else {
+            discountPrice = 0; // Set discount price to 0 if no discount is given
+        }
+
+        document.getElementById('discount_price').value = discountPrice.toFixed(0);
     }
-
-    document.getElementById('discount_price').value = discountPrice.toFixed(0);
-}
-
 </script>
 @endsection

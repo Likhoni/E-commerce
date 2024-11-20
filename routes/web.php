@@ -103,6 +103,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/category/update/{id}', [CategoryController::class, 'categoryUpdate'])->name('category.update');
         Route::get('/category/delete/{id}', [CategoryController::class, 'categoryDelete'])->name('category.delete');
 
+        Route::get('get/category/data-table', [CategoryController::class, 'ajaxDataTable'])->name('ajax.get.category.data');
+
         //Brand
         Route::get('/brand/list', [BrandController::class, 'brandList'])->name('brand.list');
         Route::get('/brand/form', [BrandController::class, 'brandForm'])->name('brand.form');
@@ -122,9 +124,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/product/update/{id}', [ProductController::class, 'productUpdate'])->name('product.update');
         Route::get('/product/delete/{id}', [ProductController::class, 'productDelete'])->name('product.delete');
 
-        Route::get('get/data-table', [ProductController::class, 'ajaxDataTable'])->name('ajax.get.data');
-
-
+        Route::get('get/product/data-table', [ProductController::class, 'ajaxDataTable'])->name('ajax.get.product.data');
 
         //Customer
         Route::get('/customer/list', [CustomerController::class, 'customerList'])->name('customer.list');

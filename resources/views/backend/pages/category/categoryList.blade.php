@@ -6,7 +6,8 @@
         @if (checkPermission('category.form'))
             <div><a href="{{ route('category.form') }}" class="btn btn-primary">Add New Category</a></div>
         @endif
-        <table class="table">
+        <br>
+        <table class="data-table">
             <thead>
                 <tr>
                     <th scope="col">Id </th>
@@ -18,28 +19,61 @@
                 </tr>
             </thead>
             <tbody>
-
-                @foreach ($category as $data)
-                    <tr>
-                        <td>{{ $data->id }}</td>
-                        <td>{{ $data->category_name }}</td>
-                        <td>{{ $data->parentCategory ? $data->parentCategory->category_name : 'Null' }}</td>
-                        <td><img style="width: 100px;height:100px" src="{{ url('images/categories', $data->category_image) }}"
-                                alt="" srcset=""></td>
-                        <td>{{ $data->discount }}%</td>
-                        <td>
-                            @if (checkPermission('category.edit'))
-                                <a href="{{ route('category.edit', $data->id) }}" type="button"
-                                    class="btn btn-success">Edit</a>
-                            @endif
-                            @if (checkPermission('category.delete'))
-                                <a href="{{ route('category.delete', $data->id) }}" type="button"
-                                    class="btn btn-danger">Delete</a>
-                            @endif
-                        </td>
-                    </tr>
-                @endforeach
             </tbody>
         </table>
     </div>
 @endsection
+
+@push('js')
+<script type="text/javascript">
+    $(function() {
+        var table = $('.data-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('ajax.get.category.data') }}",
+            columns: [{
+
+                    data: 'id',
+                    name: 'id'
+                }, 
+                {
+                    data: 'category_name',
+                    name: 'category_name'
+                },
+                {
+                    data: 'parent_category',
+                    name: 'parent_category'
+                },
+                {
+                    data: 'category_image',
+                    name: 'category_image',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'discount',
+                    name: 'discount'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                }
+            ]
+        });
+
+        //delete
+        $('.data-table').on('click', '.delete', function() {
+            var categoryId = $(this).data('id');
+            if (confirm("Are you sure you want to delete this category?")) {
+                // Redirect to the product delete route
+                window.location.href = "{{ route('category.delete', '') }}/" + categoryId;
+            }
+        });
+
+
+    });
+</script>
+
+@endpush

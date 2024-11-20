@@ -73,7 +73,7 @@
                             <!--Product Image-->
                             <div class="product_image">
                                 <a href="{{route('frontend.single.product',$data->id )}}">
-                                    <img style="height:200px; width:250px;" src="{{ $data->images->first() ? url('images/products', $data->images->first()->image_url) : url('images/placeholder.png') }}" 
+                                    <img style="height:200px; width:250px;" src="{{ $data->image ? url('images/products', $data->image) : url('images/placeholder.png') }}" 
                                     alt="">
                                 </a>
                             </div>
@@ -110,8 +110,7 @@
                         </div>
 
                         <!--Add to Cart Button-->
-                        <div class="red_button add_to_cart_button"><a
-                                href="{{ route('frontend.add.to.cart', $data->id) }}">add to cart</a>
+                        <div class="red_button add_to_cart_button">
                         </div>
                     </div>
                     @endforeach

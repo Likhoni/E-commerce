@@ -25,27 +25,27 @@ class ProductController extends Controller
 
     public function ajaxDataTable()
     {
-
-
-        $data = Product::select('*');
+        $data = Product::with('category')->select('products.*');
 
         return DataTables::of($data)
-
             ->addIndexColumn()
-
+            ->addColumn('category_name', function ($row) {
+                return $row->category ? $row->category->category_name : 'N/A';
+            })
             ->addColumn('product_image', function ($row) {
-                return $row->images->first()
-                    ? '<img src="' . asset('images/products/' . $row->images->first()->image_url) . '" width="100" height="100" />'
-                    : '<img src="' . asset('images/placeholder.png') . '" width="100" height="100" />';
+                if ($row->image) {
+                    return '<img src="' . asset('images/products/' . $row->image) . '" width="100" height="100" />';
+                }
+                return '<img src="' . asset('images/default.avif') . '" width="100" height="100" />';
             })
 
             ->addColumn('action', function ($row) {
-                $btn = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="view btn btn-primary btn-sm">View</a>
-                        <a href="javascript:void(0)" data-id="' . $row->id . '" class="edit btn btn-success btn-sm">Edit</a>
-                        <a href="javascript:void(0)" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm">Delete</a>';
-                return $btn;
-            })
+                $editUrl = route('product.edit', $row->id);
+                $deleteUrl = route('product.delete', $row->id);
 
+                return '<a href="' . $editUrl . '" class="view btn btn-primary btn-sm">Edit</a>
+                    <a href="javascript:void(0)" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm">Delete</a>';
+            })
             ->rawColumns(['product_image', 'action'])
             ->make(true);
     }
@@ -59,6 +59,8 @@ class ProductController extends Controller
         return view('backend.pages.product.productForm', compact('varCategory', 'varGroup', 'varBrand'));
     }
 
+
+
     //store
     public function SubmitProductForm(Request $request)
     {
@@ -67,8 +69,8 @@ class ProductController extends Controller
             'product_name' => 'required',
             'product_quantity' => ['required', 'numeric', 'min:1'],
             'product_price' => 'required',
-            // 'product_image' => 'required',
-            // 'product_image.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', 
+            'image' => 'required',
+            // 'product_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', 
             'discount' => 'nullable|numeric|min:0|max:100',
         ]);
 
@@ -78,6 +80,12 @@ class ProductController extends Controller
             return redirect()->back();
         }
 
+        $image = '';
+        if ($request->hasFile('image')) {
+            $image = date('YmdHis') . '.' . $request->file('image')->getClientOriginalExtension();
+            $request->file('image')->storeAs('/products', $image);
+        }
+
         $product = Product::create([
             'product_name' => $request->product_name,
             'group_id' => $request->group_id,
@@ -85,13 +93,14 @@ class ProductController extends Controller
             'brand_id' => $request->brand_id,
             'product_quantity' => $request->product_quantity,
             'product_price' => $request->product_price,
+            'image' => $image,
             'discount' => $request->discount,
             'discount_price' => $request->discount_price,
             'product_description' => $request->description
         ]);
 
-        if ($request->hasFile('product_image')) {
-            foreach ($request->file('product_image') as $file) {
+        if ($request->hasFile('product_images')) {
+            foreach ($request->file('product_images') as $file) {
                 $imageName = date('YmdHis') . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                 $file->storeAs('/products', $imageName);
 
@@ -112,33 +121,35 @@ class ProductController extends Controller
         $varGroup = Group::all();
         $varBrand = Brand::all();
         $editProduct = Product::find($id);
-        return view('backend.pages.product.editProduct', compact('editProduct', 'varCategory', 'varGroup', 'varBrand'));
+        $varImages = ProductImage::where('product_id', $id)->get(); // Fetch only related images
+
+        return view('backend.pages.product.editProduct', compact('editProduct', 'varCategory', 'varGroup', 'varBrand', 'varImages'));
     }
+
 
     //Update
     public function productUpdate(Request $request, $id)
     {
         $updateProduct = Product::find($id);
+
         $checkValidation = Validator::make($request->all(), [
             'product_name' => 'required',
             'product_quantity' => ['required', 'numeric', 'min:1'],
             'product_price' => 'required',
-            // 'product_image' => 'required',
-            // 'discount' => 'required|numeric|min:0|max:100',
-            'description' => 'required'
+            'image' => 'nullable|image',
         ]);
+
         if ($checkValidation->fails()) {
-            // notify()->error($checkValidation->getMessageBag());
-            notify()->error("Something Went Wrong");
+            notify()->error("Validation Failed");
             return redirect()->back();
         }
 
-        $product_image = $updateProduct->product_image;
-
-        if ($request->hasFile('product_image')) {
-            $product_image = date('YmdHis') . '.' . $request->file('product_image')->getClientOriginalExtension();
-            $request->file('product_image')->storeAs('/products', $product_image);
-            File::delete('images/products/' . $updateProduct->product_image);
+        // Handle main product image update
+        $image = $updateProduct->image;
+        if ($request->hasFile('image')) {
+            $image = date('YmdHis') . '.' . $request->file('image')->getClientOriginalExtension();
+            $request->file('image')->storeAs('/products', $image);
+            File::delete('images/products/' . $updateProduct->image);
         }
 
         $updateProduct->update([
@@ -148,34 +159,52 @@ class ProductController extends Controller
             'brand_id' => $request->brand_id,
             'product_quantity' => $request->product_quantity,
             'product_price' => $request->product_price,
-            'product_image' => $product_image,
+            'image' => $image,
             'discount' => $request->discount,
             'discount_price' => $request->discount_price,
-            'product_description' => $request->description
+            'product_description' => $request->description,
         ]);
-        notify()->success("Product Updated Successsful.");
+
+        // Handle additional images deletion
+        if ($request->has('delete_images')) {
+            foreach ($request->delete_images as $imageId) {
+                $productImage = ProductImage::find($imageId);
+                if ($productImage) {
+                    File::delete('images/products/' . $productImage->image_url);
+                    $productImage->delete();
+                }
+            }
+        }
+
+        // Handle new additional images
+        if ($request->hasFile('product_images')) {
+            foreach ($request->file('product_images') as $file) {
+                $imageName = date('YmdHis') . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->storeAs('/products', $imageName);
+
+                ProductImage::create([
+                    'product_id' => $updateProduct->id,
+                    'image_url' => $imageName,
+                ]);
+            }
+        }
+
+        notify()->success("Product Updated Successfully.");
         return redirect()->route('product.list');
     }
 
-    //Delete
+
+    //delete
     public function productDelete($id)
     {
         try {
             $deleteProduct = Product::findOrFail($id);
             $deleteProduct->delete();
 
-            if (request()->ajax()) {
-                return response()->json(['success' => "Product deleted successfully."]);
-            }
-
             notify()->success("Product Deleted Successfully.");
             return redirect()->back();
         } catch (Throwable $ex) {
-            if (request()->ajax()) {
-                return response()->json(['error' => "This product is a parent table, you cannot delete it."], 400);
-            }
-
-            notify()->error("This Product is Parent Table, You Cannot Delete It");
+            notify()->error("This Product is Parent Table, You Cannot Delete It.");
             return redirect()->back();
         }
     }

@@ -17,7 +17,7 @@
                 <th scope="col">Brand Name</th>
                 <th scope="col">Product Quantity</th>
                 <th scope="col">Product Price</th>
-                <th scope="col">Discount</th>
+                <th scope="col">Discount (%)</th>
                 <th scope="col">Discount Price</th>
                 <th scope="col">Product Image</th>
                 <th scope="col">Product Description</th>
@@ -31,14 +31,13 @@
 </div>
 @endsection
 
-
 @push('js')
 <script type="text/javascript">
     $(function() {
         var table = $('.data-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('ajax.get.data') }}",
+            ajax: "{{ route('ajax.get.product.data') }}",
             columns: [{
                     data: 'id',
                     name: 'id'
@@ -52,9 +51,9 @@
                     name: 'group_id'
                 },
                 {
-                    data: 'category_id',
-                    name: 'category_id'
-                },
+                    data: 'category_name',
+                    name: 'category_name'
+                }, 
                 {
                     data: 'brand_id',
                     name: 'brand_id'
@@ -94,23 +93,16 @@
             ]
         });
 
-        // Handle delete button click
+        //delete
         $('.data-table').on('click', '.delete', function() {
             var productId = $(this).data('id');
             if (confirm("Are you sure you want to delete this product?")) {
-                $.ajax({
-                    url: "{{ route('product.delete', '') }}/" + productId,
-                    type: "GET",
-                    success: function(response) {
-                        alert("Product deleted successfully");
-                        table.ajax.reload(); // Refresh DataTable
-                    },
-                    error: function(xhr) {
-                        alert("An error occurred while deleting the product");
-                    }
-                });
+                // Redirect to the product delete route
+                window.location.href = "{{ route('product.delete', '') }}/" + productId;
             }
         });
+
+
     });
 </script>
 
