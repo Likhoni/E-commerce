@@ -94,6 +94,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/group/update/{id}', [GroupController::class, 'groupUpadte'])->name('group.update');
         Route::get('/group/delete/{id}', [GroupController::class, 'groupDelete'])->name('group.delete');
 
+        Route::get('get/group/data-table', [GroupController::class, 'ajaxDataTable'])->name('ajax.get.group.data');
+
         //Category
         Route::get('/category/list', [CategoryController::class, 'categoryList'])->name('category.list');
         Route::get('/category/form', [CategoryController::class, 'categoryForm'])->name('category.form');
@@ -114,17 +116,22 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/brand/update/{id}', [BrandController::class, 'brandUpdate'])->name('brand.update');
         Route::get('/brand/delete/{id}', [BrandController::class, 'brandDelete'])->name('brand.delete');
 
+        Route::get('get/brand/data-table', [BrandController::class, 'ajaxDataTable'])->name('ajax.get.brand.data');
+
         //Product
         Route::get('/product/list', [ProductController::class, 'productList'])->name('product.list');
         Route::get('get/data-table', [ProductController::class, 'ajaxDataTable'])->name('ajax.get.data');
         Route::get('/product/form', [ProductController::class, 'productForm'])->name('product.form');
         Route::post('/submit/product/form', [ProductController::class, 'SubmitProductForm'])->name('submit.product.form');
 
+        Route::get('/product/view/{id}', [ProductController::class, 'productView'])->name('product.view');
         Route::get('/product/edit/{id}', [ProductController::class, 'productEdit'])->name('product.edit');
         Route::put('/product/update/{id}', [ProductController::class, 'productUpdate'])->name('product.update');
         Route::get('/product/delete/{id}', [ProductController::class, 'productDelete'])->name('product.delete');
 
         Route::get('get/product/data-table', [ProductController::class, 'ajaxDataTable'])->name('ajax.get.product.data');
+
+        Route::post('/set-alert-stock', [ProductController::class, 'setAlertStock'])->name('set.alert.stock');
 
         //Customer
         Route::get('/customer/list', [CustomerController::class, 'customerList'])->name('customer.list');

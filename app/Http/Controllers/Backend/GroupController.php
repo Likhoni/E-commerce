@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Group; 
+use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
- 
+use Yajra\DataTables\Facades\DataTables;
+
 class GroupController extends Controller
 {
     //list
@@ -16,6 +17,35 @@ class GroupController extends Controller
     {
         $group = Group::with('parentGroup')->get();
         return view('backend.pages.group.groupList', compact('group'));
+    }
+
+    public function ajaxDataTable()
+    {
+
+        $data = Group::with('parentGroup')->select('groups.*');
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('parent_group', function ($row) {
+                return $row->parentGroup ? $row->parentGroup->group_name : 'N/A';
+            })
+            ->addColumn('group_image', function ($row) {
+                if ($row->group_image) {
+                    return '<img src="' . asset('images/groups/' . $row->group_image) . '" width="100" height="100" />';
+                }
+                return '<img src="' . asset('images/default.avif') . '" width="100" height="100" />';
+            })
+
+            ->addColumn('action', function ($row) {
+
+                $editUrl = route('group.edit', $row->id);
+                $deleteUrl = route('group.delete', $row->id);
+
+                return '<a href="' . $editUrl . '" class="view btn btn-primary btn-sm">Edit</a>
+                <a href="javascript:void(0)" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm">Delete</a>';
+            })
+            ->rawColumns(['group_image', 'action'])
+            ->make(true);
     }
 
     //create
@@ -41,9 +71,8 @@ class GroupController extends Controller
             return redirect()->back();
         }
 
-        $group_image= '';
-        if($request->hasFile('group_image'))
-        {
+        $group_image = '';
+        if ($request->hasFile('group_image')) {
             $group_image = date('YmdHis') . '.' . $request->file('group_image')->getClientOriginalExtension();
             $request->file('group_image')->storeAs('/groups', $group_image);
         }
@@ -51,6 +80,7 @@ class GroupController extends Controller
         //Store Data
         Group::create([
             'group_name' => $request->group_name,
+            'parent_id' => $request->parent_name,
             'group_image' => $group_image,
             'discount' => $request->discount,
             'status' => $request->status
@@ -62,16 +92,17 @@ class GroupController extends Controller
     // Edit
     public function groupEdit($id)
     {
+        $groups = Group::all();
         $editGroup = Group::find($id);
-        return view('backend.pages.group.editGroup', compact('editGroup'));
+        return view('backend.pages.group.editGroup', compact('editGroup','groups'));
     }
-    
+
     //Update 
     public function groupUpadte(Request $request, $id)
     {
         $updateGroup = Group::find($id);
         $checkValidation = Validator::make($request->all(), [
-           'group_name' => 'required',
+            'group_name' => 'required',
             // 'category_image' => 'required',
             //'status' => 'required',
         ]);
@@ -93,6 +124,7 @@ class GroupController extends Controller
 
         $updateGroup->update([
             'group_name' => $request->group_name,
+            'parent_id' => $request->parent_name,
             'group_image' => $group_image,
             'discount' => $request->discount,
             'status' => $request->status
@@ -115,6 +147,6 @@ class GroupController extends Controller
 
             notify()->error("This Group Has Category Or Product, You Cannot Delete It");
             return redirect()->back();
-        } 
+        }
     }
 }

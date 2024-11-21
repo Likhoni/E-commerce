@@ -25,28 +25,42 @@ class ProductController extends Controller
 
     public function ajaxDataTable()
     {
-        $data = Product::with('category')->select('products.*');
+        $alertQuantity = session()->get('alert', 0);
+
+        $data = Product::with('category', 'group')->select('products.*');
 
         return DataTables::of($data)
             ->addIndexColumn()
+            ->addColumn('group_name', function ($row) {
+                return $row->group ? $row->group->group_name : 'N/A';
+            })
             ->addColumn('category_name', function ($row) {
                 return $row->category ? $row->category->category_name : 'N/A';
             })
+            ->addColumn('brand_name', function ($row) {
+                return $row->brand ? $row->brand->brand_name : 'N/A';
+            })
             ->addColumn('product_image', function ($row) {
                 if ($row->image) {
-                    return '<img src="' . asset('images/products/' . $row->image) . '" width="100" height="100" />';
+                    return '<img src="' . asset('images/products/' . $row->image) . ' "style="width: 100px; height: 100px;"/>';
                 }
-                return '<img src="' . asset('images/default.avif') . '" width="100" height="100" />';
+                return '<img src="' . asset('images/default.avif') . ' "style="width: 100px; height: 100px;" />';
             })
-
+            ->addColumn('product_quantity', function ($row) use ($alertQuantity) {
+                $style = $row->product_quantity < $alertQuantity ?
+                    'background-color: red; color: white; display: inline-block; height: 50px; width: 50px; text-align: center; padding:12px;' : '';
+                return '<span style="' . $style . '">' . $row->product_quantity . '</span>';
+            })
             ->addColumn('action', function ($row) {
+                $viewUrl = route('product.view', $row->id);
                 $editUrl = route('product.edit', $row->id);
                 $deleteUrl = route('product.delete', $row->id);
 
-                return '<a href="' . $editUrl . '" class="view btn btn-primary btn-sm">Edit</a>
-                    <a href="javascript:void(0)" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm">Delete</a>';
+                return '<a href="' . $viewUrl . '" class="view btn btn-primary btn-sm">View</a>
+                        <a href="' . $editUrl . '" class="view btn btn-success btn-sm">Edit</a>
+                        <a href="javascript:void(0)" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm">Delete</a>';
             })
-            ->rawColumns(['product_image', 'action'])
+            ->rawColumns(['product_image', 'product_quantity', 'action'])
             ->make(true);
     }
 
@@ -112,6 +126,14 @@ class ProductController extends Controller
         }
         notify()->success("Product Created Successfully.");
         return redirect()->back();
+    }
+
+    //view
+    public function productView($id)
+    {
+        $viewProduct = Product::find($id);
+        $allImages = ProductImage::where('product_id', $id)->get();
+        return view('backend.pages.product.viewProduct', compact('viewProduct', 'allImages'));
     }
 
     //Edit
@@ -207,5 +229,11 @@ class ProductController extends Controller
             notify()->error("This Product is Parent Table, You Cannot Delete It.");
             return redirect()->back();
         }
+    }
+
+    public function setAlertStock(Request $request)
+    {
+        session()->put('alert', $request->alert_quantity);
+        return redirect()->back();
     }
 }

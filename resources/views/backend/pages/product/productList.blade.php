@@ -7,6 +7,16 @@
     <div><a href="{{ route('product.form') }}" class="btn btn-primary">Add New Product</a></div>
     @endif
     <br>
+    <div class="col-md-6">
+        <form action="{{route('set.alert.stock')}}" method="post">
+            @csrf
+
+            <input value="{{session()->get('alert')}}" name="alert_quantity" type="text" class="form-control" placeholder="Enter Stock alert" style="width: 200px; display: inline;">
+            <button class="btn btn-success">Set</button>
+
+        </form>
+    </div>
+    <br>
     <table class="data-table">
         <thead>
             <tr>
@@ -17,10 +27,7 @@
                 <th scope="col">Brand Name</th>
                 <th scope="col">Product Quantity</th>
                 <th scope="col">Product Price</th>
-                <th scope="col">Discount (%)</th>
-                <th scope="col">Discount Price</th>
                 <th scope="col">Product Image</th>
-                <th scope="col">Product Description</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -47,16 +54,16 @@
                     name: 'product_name'
                 },
                 {
-                    data: 'group_id',
-                    name: 'group_id'
+                    data: 'group_name',
+                    name: 'group_name'
                 },
                 {
                     data: 'category_name',
                     name: 'category_name'
-                }, 
+                },
                 {
-                    data: 'brand_id',
-                    name: 'brand_id'
+                    data: 'brand_name',
+                    name: 'brand_name'
                 },
                 {
                     data: 'product_quantity',
@@ -67,22 +74,10 @@
                     name: 'product_price'
                 },
                 {
-                    data: 'discount',
-                    name: 'discount'
-                },
-                {
-                    data: 'discount_price',
-                    name: 'discount_price'
-                },
-                {
                     data: 'product_image',
                     name: 'product_image',
                     orderable: false,
                     searchable: false
-                },
-                {
-                    data: 'product_description',
-                    name: 'product_description'
                 },
                 {
                     data: 'action',
@@ -93,7 +88,7 @@
             ]
         });
 
-        //delete
+        // Delete functionality
         $('.data-table').on('click', '.delete', function() {
             var productId = $(this).data('id');
             if (confirm("Are you sure you want to delete this product?")) {
@@ -101,9 +96,6 @@
                 window.location.href = "{{ route('product.delete', '') }}/" + productId;
             }
         });
-
-
     });
 </script>
-
 @endpush
