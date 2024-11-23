@@ -4,87 +4,59 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Order_detail;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use Devfaysal\BangladeshGeocode\Models\Division;
 use Devfaysal\BangladeshGeocode\Models\District;
+use Devfaysal\BangladeshGeocode\Models\Union;
 use Devfaysal\BangladeshGeocode\Models\Upazila;
 
 
 class FrontendOrderController extends Controller
 {
 
-    public function addCart($pId)
+    public function addCart(Request $request, $pId)
     {
-
         $product = Product::find($pId);
-        $productImage = $product->images()->first();
 
-        if ($product->product_quantity > 0) {
-            $myCart = session()->get('basket');
-            $imagePath = $productImage ? $productImage->image_url : 'default.jpg';
-
-            //step 1: Cart Empty
-            if (empty($myCart)) {
-                //Action: add to cart
-                $cart[$product->id] =
-                    [
-                        //key=> Value
-                        'product_id' => $product->id,
-                        'product_name' => $product->product_name,
-                        'product_price' => $product->product_price,
-                        'quantity' => 1,
-                        'discount_price' => $product->discount_price,
-                        'subtotal' => 1 * $product->product_price,
-                        'image' => $imagePath
-                    ];
-                session()->put('basket', $cart);
-                //session()->forget('basket'); // Clear basket session for testing
-
-                notify()->success("Product Added to Cart");
-                return redirect()->back();
-            } else {
-
-                if (array_key_exists($pId, $myCart)) {
-                    //step 2: Quantity Update, Subtotal Update
-
-                    if ($product->product_quantity > $myCart[$pId]['quantity']) {
-                        $myCart[$pId]['quantity'] = $myCart[$pId]['quantity'] + 1;
-                        $myCart[$pId]['subtotal'] = $myCart[$pId]['quantity'] * $myCart[$pId]['product_price'];
-
-                        session()->put('basket', $myCart);
-                        notify()->success('Quantity Updated');
-                        return redirect()->back();
-                    } else {
-                        notify()->error('Quantity Not Available');
-                        return redirect()->back();
-                    }
-                } else {
-
-                    //step 3: add to cart
-                    $myCart[$product->id] =
-                        [
-                            'product_id' => $product->id,
-                            'image' => $product->product_image,
-                            'product_name' => $product->product_name,
-                            'product_price' => $product->product_price,
-                            'discount_price' => $product->discount_price,
-                            'quantity' => 1,
-                            'subtotal' => 1 * $product->product_price,
-                        ];
-
-                    session()->put('basket', $myCart);
-                    notify()->success("product Added to Cart");
-                    return redirect()->back();
-                }
-            }
-        } else {
+        if (!$product || $product->product_quantity <= 0) {
             notify()->error('Stock Not Available');
             return redirect()->back();
         }
+
+        $myCart = session()->get('basket') ?? [];
+        $requestedQuantity = $request->input('quantity', 1);
+
+        // If product is already in the cart
+        if (isset($myCart[$pId])) {
+            notify()->error('Product is already in the cart. Please update the quantity there.');
+            return redirect()->back();
+        }
+
+        // Add product to the cart
+        if ($product->product_quantity >= $requestedQuantity) {
+            $myCart[$pId] = [
+                'product_id' => $product->id,
+                'product_name' => $product->product_name,
+                'product_price' => $product->product_price,
+                'discount_price' => $product->discount_price,
+                'quantity' => $requestedQuantity,
+                'subtotal' => $requestedQuantity * $product->product_price,
+                'image' => $product->image,
+            ];
+
+            session()->put('basket', $myCart);
+            notify()->success('Product added to the cart');
+        } else {
+            notify()->error('Requested quantity exceeds available stock');
+        }
+
+        return redirect()->back();
     }
+
 
     // View Cart
     public function viewCart()
@@ -94,7 +66,8 @@ class FrontendOrderController extends Controller
 
         foreach ($myCart as $productId => &$cartItem) {
             $product = Product::find($productId);
-            $cartItem['images'] = $product->images->pluck('image_url')->toArray();
+            // dd($product);
+            //$cartItem['images'] = $product->images->pluck('image_url')->toArray();
         }
 
         if (empty($myCart)) {
@@ -178,53 +151,80 @@ class FrontendOrderController extends Controller
     public function checkoutCart()
     {
         $divisions = Division::orderBy('name', 'asc')->get();
-        $districts = District::orderBy('name', 'asc')->get()->groupBy('division_id'); // Group by division_id
-        $upazilas = Upazila::all()->groupBy('district_id'); // Group by district_id
+        $districts = District::orderBy('name', 'asc')->get()->groupBy('division_id');
+        $upazilas = Upazila::all()->groupBy('district_id');
+        $unions = Union::all()->groupBy('upazila_id');
         $cartSummary = session()->get('cart_summary');
         $myCart = session()->get('basket');
-    
-        return view('frontend.pages.checkout', compact('divisions', 'districts', 'upazilas', 'cartSummary', 'myCart'));
+
+        return view('frontend.pages.checkout', compact('divisions', 'districts', 'upazilas', 'unions', 'cartSummary', 'myCart'));
     }
-    
+
 
     public function placeOrder(Request $request)
     {
-
         $checkValidation = Validator::make($request->all(), [
-            // 'customer_id' => 'required',
-            'name' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
             'email' => 'required',
-            'number' => 'required',
+            'contact_number' => 'required',
             'country' => 'required',
+            'division_id' => 'required',
             'district_id' => 'required',
-            'thana' => 'required',
+            'upazila_id' => 'required',
+            'union_id' => 'required',
             'address' => 'required',
         ]);
 
         if ($checkValidation->fails()) {
             notify()->error($checkValidation->getMessageBag());
-            //notify()->error("Something Went Wrong");
             return redirect()->back();
         }
 
-        //Store Data
-        Order::create([
-            // 'customer_id' => $request->customer_id,
-            'receiver_name' => $request->name,
-            'receiver_email' => $request->email,
-            'receiver_mobile' => $request->number,
+        // Store Order
+        $order = Order::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'contact_number' => $request->contact_number,
             'country' => $request->country,
+            'division_id' => $request->division_id,
             'district_id' => $request->district_id,
-            'thana' => $request->thana,
-            'receiver_address' => $request->address,
-            'status' => $request->status,
+            'upazila_id' => $request->upazila_id,
+            'union_id' => $request->union_id,
+            'address' => $request->address,
             'payment_method' => $request->payment_method,
-            'payment_status' => $request->payment_status,
-            'order_number' => $request->order_number,
-            'total_amount' => $request->total_amount,
-            'total_discount' => $request->total_discount,
+            'subtotal' => $request->cart_subtotal,
+            'discount' => $request->cart_discount,
+            'total' => $request->cart_total,
         ]);
-        notify()->success("Order Created successfully.");
-        return redirect()->back();
+
+        // Store Order Details
+        $productNames = $request->input('product_name');
+        $quantities = $request->input('quantity');
+        $productPrices = $request->input('product_price');
+
+        foreach ($productNames as $index => $productName) {
+            $quantity = $quantities[$index];
+            $productPrice = $productPrices[$index];
+
+            $subtotal = $productPrice * $quantity;
+
+            Order_detail::create([
+                'order_id' => $order->id,
+                'product_name' => $productName,
+                'product_price' => $productPrice,
+                'quantity' => $quantity,
+                'subtotal' => $subtotal,
+                'discount_price' => $request->cart_discount, // Assuming the discount applies to all products equally
+                'image' => '', // Add if needed
+            ]);
+        }
+
+        session()->forget('basket');
+        session()->forget('cart_summary');
+
+        notify()->success('Order placed successfully!');
+        return redirect()->route('frontend.homepage');
     }
 }

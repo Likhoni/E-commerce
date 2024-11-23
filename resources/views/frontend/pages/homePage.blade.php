@@ -108,10 +108,6 @@
                                 </div>
                             </div> 
                         </div>
-
-                        <!--Add to Cart Button-->
-                        <div class="red_button add_to_cart_button">
-                        </div>
                     </div>
                     @endforeach
                 </div>

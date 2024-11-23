@@ -168,7 +168,7 @@
                             </div>
                             <div class="form-group">
                                 <label><strong>Contact Number *</strong></label>
-                                <input class="form-control" name="number" type="tel" placeholder="Mobile Number" required>
+                                <input class="form-control" name="contact_number" type="tel" placeholder="Mobile Number" required>
                             </div>
                             <div class="form-group">
                                 <label><strong>Country</strong></label>
@@ -192,10 +192,16 @@
                             </div>
 
                             <div class="form-group">
-                                <label><strong>Area/Thana/Upazilla *</strong></label>
-                                <select name="thana" id="area" class="form-control" required>
+                                <label><strong>Upazilla *</strong></label>
+                                <select name="upazila_id" id="area" class="form-control" required onchange="updateUnions()">
                                     <option value="">Select District First</option>
-                                    <!-- Upazilas will be populated dynamically based on selected District -->
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label><strong>Union *</strong></label>
+                                <select name="union_id" id="union" class="form-control" required>
+                                    <option value="">Select Upazilla First</option>
                                 </select>
                             </div>
 
@@ -222,27 +228,35 @@
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <div>
                                         <span>{{ $cartData['product_name'] }} (x {{ $cartData['quantity'] }})</span>
+                                        <input type="hidden" value="{{ $cartData['product_name'] }}" name="product_name[]">
                                     </div>
                                     <div>
                                         <span>
                                             ৳ {{ $cartData['product_price'] * $cartData['quantity'] }}
+                                            <input type="hidden" value="{{ $cartData['quantity'] }}" name="quantity[]">
+                                            <input type="hidden" value="{{ $cartData['product_price'] }}" name="product_price[]">
                                         </span>
                                     </div>
                                 </div>
                                 @endforeach
+
+
                                 <hr>
                                 <div class="d-flex justify-content-between">
                                     <h5>Sub-Total</h5>
                                     <h5>৳ {{ $cartSummary['subtotal'] }}</h5>
+                                    <input type="hidden" name="cart_subtotal" value="{{ $cartSummary['subtotal'] }}">
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <h5>Discount</h5>
                                     <h5>৳ {{ $cartSummary['discount'] }}</h5>
+                                    <input type="hidden" name="cart_discount" value="{{ $cartSummary['discount'] }}">
                                 </div>
                                 <hr>
                                 <div class="d-flex justify-content-between">
                                     <h5>Total Price</h5>
                                     <h5>৳ {{ $cartSummary['total'] }}</h5>
+                                    <input type="hidden" name="cart_total" value="{{ $cartSummary['total'] }}">
                                 </div>
                             </div>
 
@@ -265,6 +279,11 @@
                                         <img src="{{ url('/payment_logo/bkash.webp') }}" alt="bKash Logo" class="payment-logo">
                                     </label>
                                     <label class="payment-option">
+                                        <input type="radio" name="payment_method" value="nagad" required>
+                                        <span>Nagad Payment Gateway</span>
+                                        <img src="{{ url('/payment_logo/nagad.webp') }}" alt="nagad Logo" class="payment-logo">
+                                    </label>
+                                    <label class="payment-option">
                                         <input type="radio" name="payment_method" value="ebl_skypay" required>
                                         <span>EBL Skypay</span>
                                         <div class="payment-logos">
@@ -278,6 +297,8 @@
                                     </label>
                                 </div>
                             </div>
+
+
 
                             <!-- Submit Button -->
                             <div class="d-flex justify-content-center mt-3">
@@ -312,6 +333,7 @@
         // Pass the districts grouped by division from PHP to JS
         const districtsByDivision = @json($districts);
         const upazilasByDistrict = @json($upazilas);
+        const unionsByUpazilla = @json($unions);
 
         // Function to update the district dropdown when a division is selected
         function updateDistricts() {
@@ -361,6 +383,28 @@
             } else {
                 // If no district is selected, show the default "Select District First" text
                 areaSelect.innerHTML = '<option value="">Select District First</option>';
+            }
+        }
+
+        function updateUnions() {
+            const upazillaId = document.getElementById("area").value; // The upazilla dropdown
+            const unionSelect = document.getElementById("union"); // The union dropdown
+
+            // Clear previous options
+            unionSelect.innerHTML = '<option value="">Select Union</option>';
+
+            // If an upazilla is selected, populate the union dropdown
+            if (upazillaId && unionsByUpazilla[upazillaId]) {
+                const unions = unionsByUpazilla[upazillaId];
+                unions.forEach(union => {
+                    const option = document.createElement("option");
+                    option.value = union.id;
+                    option.textContent = union.name;
+                    unionSelect.appendChild(option);
+                });
+            } else {
+                // If no upazilla is selected, show the default "Select Upazilla First" text
+                unionSelect.innerHTML = '<option value="">Select Upazilla First</option>';
             }
         }
     </script>

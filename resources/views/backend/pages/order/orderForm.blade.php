@@ -17,24 +17,30 @@
                 <div class="col-md-6">
                     <h1><strong>Order Create Form </strong></h1><br>
 
-                    <input required name="customer_id" type="hidden" class="form-control" id="exampleFormControlInput1"
-                        value="{{ auth('customerGuard')->user()->id }}" placeholder="">
+                    <!-- <input required name="customer_id" type="hidden" class="form-control" id="exampleFormControlInput1"
+                        value="{{ auth('customerGuard')->user()->id }}" placeholder=""> -->
 
                     <div class="form-group">
-                        <label for="exampleFormControlInput1"><strong>Receiver Name</strong></label>
-                        <input required name="receiver_name" type="text" class="form-control"
+                        <label for="exampleFormControlInput1"><strong>First Name</strong></label>
+                        <input required name="first_name" type="text" class="form-control"
                             id="exampleFormControlInput1" value="" placeholder="">
                     </div><br>
 
                     <div class="form-group">
-                        <label for="exampleFormControlInput1"><strong>Receiver Email</strong></label>
-                        <input required name="receiver_email" type="email" class="form-control"
+                        <label for="exampleFormControlInput1"><strong>Last Name</strong></label>
+                        <input required name="last_name" type="text" class="form-control"
                             id="exampleFormControlInput1" value="" placeholder="">
                     </div><br>
 
                     <div class="form-group">
-                        <label for="exampleFormControlInput1"><strong>Receiver Mobile</strong></label>
-                        <input required name="receiver_mobile" type="tel" class="form-control"
+                        <label for="exampleFormControlInput1"><strong>Email</strong></label>
+                        <input required name="email" type="email" class="form-control"
+                            id="exampleFormControlInput1" value="" placeholder="">
+                    </div><br>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1"><strong>Contact Number</strong></label>
+                        <input required name="contact_number" type="tel" class="form-control"
                             id="exampleFormControlInput1" value="" placeholder="">
                     </div><br>
 
@@ -42,6 +48,16 @@
                         <label for="country">Country</label>
                         <input name="country" class="form-control" type="text" id="country" value="Bangladesh" readonly>
                     </div><br>
+
+                    <div class="form-group">
+                        <label><strong>Division *</strong></label>
+                        <select name="division_id" id="division" class="form-control" required onchange="updateDistricts()">
+                            <option value="">Select Division</option>
+                            @foreach($divisions as $data)
+                            <option value="{{ $data->id }}">{{ strtoupper($data->name) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
                     <div class="form-group">
                         <label for="district">District/City *</label>

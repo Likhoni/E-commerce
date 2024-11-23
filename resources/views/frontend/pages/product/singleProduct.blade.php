@@ -93,14 +93,12 @@
 
                         <!--Quantity Increase Decrease-->
                         <div class="quantity d-flex align-items-center">
-                            <form action="" class="d-flex align-items-center">
                                 <span class="me-2">Quantity:</span>
                                 <div class="quantity_selector d-flex align-items-center">
                                     <span class="minus me-2"><i class="fa fa-minus" aria-hidden="true"></i></span>
                                     <span id="quantity_value" class="me-2">1</span>
                                     <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
                                 </div>
-                            </form>
                         </div>
 
                         <div style="padding-top: 50px;" class="row">

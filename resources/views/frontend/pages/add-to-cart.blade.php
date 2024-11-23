@@ -7,6 +7,7 @@
             z-index: 1000000;
             margin-top: 5%;
         }
+
         .card-registration-2 {
             padding: 50px;
             border-radius: 15px;
@@ -16,6 +17,7 @@
         .right-section {
             border-radius: 15px;
             background-color: #f8f9fa;
+            padding: 10px;
         }
 
         .summary-box {
@@ -120,6 +122,35 @@
             margin-top: 10px;
         }
 
+        .strikethrough-red {
+            position: relative;
+            color: black;
+            display: inline-block;
+        }
+
+        .strikethrough-red::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: red;
+            transform: rotate(-15deg);
+            transform-origin: center;
+        }
+
+        /* Remove spinner buttons in number inputs */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+            /* For Firefox */
+        }
     </style>
     @notifyCss
 
@@ -163,11 +194,8 @@
                         @foreach ($myCart as $cartData)
                         <div class="row mb-4 d-flex justify-content-between align-items-center">
                             <div class="col-md-2">
-                                @if(!empty($cartData['images']))
-                                @foreach ($cartData['images'] as $imageUrl)
-                                <img style="height: 100px; width:100px" src="{{ url('/images/products/' . $imageUrl) }}" class="img-fluid rounded-3" alt="{{ $cartData['product_name'] }}">
-                                @break
-                                @endforeach
+                                @if(!empty($cartData['image']))
+                                <img style="height: 100px; width:100px" src="{{ url('/images/products/' .  $cartData['image']) }}" class="img-fluid rounded-3" alt="{{ $cartData['product_name'] }}">
                                 @else
                                 <img style="height: 100px; width:100px" src="{{ url('/images/products/default.png') }}" class="img-fluid rounded-3" alt="No image available">
                                 @endif
@@ -266,4 +294,5 @@
     @include('notify::components.notify')
     @notifyJs
 </body>
+
 </html>
