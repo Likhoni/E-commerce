@@ -6,54 +6,116 @@
         @if (checkPermission('order.form'))
             <div><a href="{{ route('order.form') }}" class="btn btn-primary">Add New Order</a></div>
         @endif
-        <table class="table">
+        <table class="data-table">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Receiver Name</th>
-                    <th scope="col">Receiver Email</th>
-                    <th scope="col">Receiver Mobile</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Contact Number</th>
                     <th scope="col">Country</th>
+                    <th scope="col">Division</th>
                     <th scope="col">District</th>
-                    <th scope="col">Thana</th>
+                    <th scope="col">Upazila</th>
+                    <th scope="col">Union</th>
                     <th scope="col">Address</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Sub Total</th>
+                    <th scope="col">Discount</th>
+                    <th scope="col">Total</th>
                     <th scope="col">Payment Method</th>
-                    <th scope="col">Payment Status</th>
-                    <th scope="col">Order Number</th>
-                    <th scope="col">Total Amount</th>
-                    <th scope="col">Total Discount</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($order as $data)
-                    <tr>
-                        <th>{{ $data->id }}</th>
-                        <td>{{ $data->receiver_name }}</td>
-                        <td>{{ $data->receiver_email }}</td>
-                        <td>{{ $data->receiver_mobile }}</td>
-                        <td>{{ $data->country }}</td>
-                        <td>{{ $data->district->name }}</td>
-                        <td>{{ $data->thana }}</td>
-                        <td>{{ $data->receiver_address }}</td>
-                        <td>{{ $data->status }}</td>
-                        <td>{{ $data->payment_method }}</td>
-                        <td>{{ $data->payment_status }}</td>
-                        <td>{{ $data->order_number }}</td>
-                        <td>{{ $data->total_amount }}</td>
-                        <td>{{ $data->total_discount }}</td>
-                        <td>
-                         @if (checkPermission('order.edit'))
-                            <a href="{{ route('order.edit', $data->id) }}" class="btn btn-success">Edit</a>
-                         @endif
-                         @if (checkPermission('order.delete'))
-                            <a href="{{ route('order.delete', $data->id) }}" class="btn btn-danger">Delete</a>
-                         @endif
-                        </td>
-                    </tr>
-                @endforeach
             </tbody>
         </table>
     </div>
 @endsection
+
+@push('js')
+<script type="text/javascript">
+    $(function() {
+        var table = $('.data-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('ajax.get.order.data') }}",
+            columns: [{
+                    data: 'id',
+                    name: 'id'
+                },
+                {
+                    data: 'first_name',
+                    name: 'first_name'
+                },
+                {
+                    data: 'last_name',
+                    name: 'last_name'
+                },
+                {
+                    data: 'email',
+                    name: 'email'
+                },
+                {
+                    data: 'contact_number',
+                    name: 'contact_number'
+                },
+                {
+                    data: 'country',
+                    name: 'country'
+                },
+                {
+                    data: 'division_name',
+                    name: 'division_name',
+                },               
+                {
+                    data: 'district_name',
+                    name: 'district_name',
+                },                
+                {
+                    data: 'upazila_name',
+                    name: 'upazila_name',
+                },
+                {
+                    data: 'union_name',
+                    name: 'union_name',
+                },                
+                {
+                    data: 'address',
+                    name: 'address',
+                },                
+                {
+                    data: 'subtotal',
+                    name: 'subtotal',
+                },                 
+                {
+                    data: 'discount',
+                    name: 'discount',
+                },                
+                {
+                    data: 'total',
+                    name: 'total',
+                },                                 
+                {
+                    data: 'payment_method',
+                    name: 'payment_method',
+                },                                
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                }
+            ]
+        });
+
+        // Delete functionality
+        $('.data-table').on('click', '.delete', function() {
+            var orderId = $(this).data('id');
+            if (confirm("Are you sure you want to delete this order?")) {
+                window.location.href = "{{ route('order.delete', '') }}/" + orderId;
+            }
+        });
+    });
+</script>
+@endpush

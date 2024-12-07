@@ -28,10 +28,9 @@ class FrontendHomeController extends Controller
 public function frontendHome() {
 
     $categories = Category::all();
-    $productImage = ProductImage::all();
     $products = Product::with('category')->get();
 
-    return view('frontend.pages.homePage', compact('categories', 'products', 'productImage'));
+    return view('frontend.pages.homePage', compact('categories', 'products'));
 }
 
 }

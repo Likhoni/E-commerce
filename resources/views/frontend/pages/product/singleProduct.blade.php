@@ -42,6 +42,12 @@
                         <div class="row">
                             <div class="col-lg-3 thumbnails_col order-lg-1 order-2">
                                 <div class="single_product_thumbnails">
+                                    <ul>
+                                        <li>
+                                            <img style="height: 135px; width: 200px;" src="/images/products/{{ $singleProduct->image}}" alt=""
+                                                data-image="/images/products/{{ $singleProduct->image }}">
+                                        </li>
+                                    </ul>
                                     @foreach ($singleProduct->images->take(3) as $image)
                                     <ul>
                                         <li>
@@ -49,13 +55,13 @@
                                                 data-image="/images/products/{{ $image->image_url }}">
                                         </li>
                                     </ul>
-                                    @endforeach
+                                    @endforeach            
                                 </div>
                             </div>
                             <div class="col-lg-9 image_col order-lg-2 order-1">
                                 <div class="single_product_image">
                                     <div class="single_product_image_background"
-                                        style="background-image:url('/images/products/{{ $singleProduct->images->first()->image_url}}'); height: 467px; width:450px;">
+                                        style="background-image:url('/images/products/{{ $singleProduct->image}}'); height: 467px; width:450px;">
                                     </div>
                                 </div>
                             </div>
@@ -87,14 +93,12 @@
 
                         <!--Quantity Increase Decrease-->
                         <div class="quantity d-flex align-items-center">
-                            <form action="" class="d-flex align-items-center">
                                 <span class="me-2">Quantity:</span>
                                 <div class="quantity_selector d-flex align-items-center">
                                     <span class="minus me-2"><i class="fa fa-minus" aria-hidden="true"></i></span>
                                     <span id="quantity_value" class="me-2">1</span>
                                     <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
                                 </div>
-                            </form>
                         </div>
 
                         <div style="padding-top: 50px;" class="row">

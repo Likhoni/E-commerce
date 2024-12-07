@@ -7,6 +7,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
+use Yajra\DataTables\Facades\DataTables;
 
 class OrderController extends Controller
 {
@@ -15,6 +16,37 @@ class OrderController extends Controller
     {
         $order = Order::all();
         return view('backend.pages.order.orderList', compact('order'));
+    }
+
+    public function ajaxDataTable()
+    {        
+        $data = Order::select('orders.*');
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('division_name', function ($row) {
+                return $row->division->name;
+            }) 
+            ->addColumn('district_name', function ($row) {
+                return $row->district->name;
+            })            
+            ->addColumn('upazila_name', function ($row) {
+                return $row->upazila->name;
+            })            
+            ->addColumn('union_name', function ($row) {
+                return $row->union->name;
+            })
+            ->addColumn('action', function ($row) {
+                $viewUrl = route('view.order.details', $row->id);
+                $editUrl = route('order.edit', $row->id);
+                $deleteUrl = route('order.delete', $row->id);
+
+                return '<a href="' . $viewUrl . '" class="view btn btn-primary btn-sm">Details</a>
+                        <a href="' . $editUrl . '" class="view btn btn-success btn-sm">Edit</a>
+                        <a href="javascript:void(0)" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm">Delete</a>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     //create
@@ -29,22 +61,23 @@ class OrderController extends Controller
         //dd(request()->all());
         //Validation
         $checkValidation = Validator::make($request->all(), [
-            'customer_id' => 'required',
-            'receiver_name' => 'required',
-            'receiver_email' => 'required',
-            'receiver_mobile' => 'required',
+            //'customer_id' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+            //'contact_number' => 'required',
             'country' => 'required',
+            'division_id' => 'required',
             'district_id' => 'required',
-            'thana' => 'required',
-            'receiver_address' => 'required',
-            'status' => 'required',
-            'payment_method' => 'required',
-            'payment_status' => 'required',
-            'total_amount' => 'required',
-            'total_discount' => 'required',
-             
+            'upazilla_id' => 'required',
+            'address' => 'required',
+            //'status' => 'required',
+            //'payment_method' => 'required',
+            //'payment_status' => 'required',
+            'total_price' => 'required',
+
         ]);
-        
+
         if ($checkValidation->fails()) {
             notify()->error($checkValidation->getMessageBag());
             //notify()->error("Something Went Wrong");
@@ -53,20 +86,20 @@ class OrderController extends Controller
 
         //Store Data
         Order::create([
-            'customer_id' => $request->customer_id,
-            'receiver_name' => $request->receiver_name,
-            'receiver_email' => $request->receiver_email,
-            'receiver_mobile' => $request->receiver_mobile,
+            //'customer_id' => $request->customer_id,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'contact_number' => $request->contact_number,
             'country' => $request->country,
+            'division_id' => $request->division_id,
             'district_id' => $request->district_id,
-            'thana' => $request->thana,
-            'receiver_address' => $request->receiver_address,
+            'upazilla_id' => $request->upazilla_id,
+            'address' => $request->address,
             'status' => $request->status,
             'payment_method' => $request->payment_method,
             'payment_status' => $request->payment_status,
-            'order_number' => $request->order_number,
-            'total_amount' => $request->total_amount,
-            'total_discount' => $request->total_discount,
+            'total_price' => $request->total_price,
         ]);
         notify()->success("Order Created successfully.");
         return redirect()->back();
@@ -97,12 +130,12 @@ class OrderController extends Controller
             'payment_status' => 'required',
             'total_amount' => 'required',
             'total_discount' => 'required',
-         ]);
-         if ($checkValidation->fails()) {
-             // notify()->error($checkValidation->getMessageBag());
-             notify()->error("Something Went Wrong");
-             return redirect()->back();
-         }
+        ]);
+        if ($checkValidation->fails()) {
+            // notify()->error($checkValidation->getMessageBag());
+            notify()->error("Something Went Wrong");
+            return redirect()->back();
+        }
         $updateOrder->update([
             'customer_id' => $request->customer_id,
             'receiver_name' => $request->receiver_name,
@@ -115,7 +148,7 @@ class OrderController extends Controller
             'status' => $request->status,
             'payment_method' => $request->payment_method,
             'payment_status' => $request->payment_status,
-            'order_number' => $request->order_number, 
+            'order_number' => $request->order_number,
             'total_amount' => $request->total_amount,
             'total_discount' => $request->total_discount,
         ]);

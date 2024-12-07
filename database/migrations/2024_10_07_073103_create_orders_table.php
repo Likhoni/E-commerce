@@ -13,20 +13,19 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('customer_id')->constrained()->restrictOnDelete();
-            $table->string('receiver_name');
-            $table->string('receiver_email');
-            $table->string('receiver_mobile');
+            //$table->foreignId('customer_id')->constrained()->restrictOnDelete();
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('email')->unique();
+            $table->string('contact_number')->nullable();
             $table->string('country')->default('bangladesh');
+            $table->foreignId('division_id')->constrained('divisions')->restrictOnDelete();
             $table->foreignId('district_id')->constrained('districts')->restrictOnDelete();
-            $table->string('thana');
-            $table->string('receiver_address');
-            $table->string('status')->nullable();
+            $table->foreignId('upazila_id')->constrained('upazilas')->restrictOnDelete();
+            $table->foreignId('union_id')->constrained('unions')->restrictOnDelete();
+            $table->string('address');
+            $table->decimal('amount');
             $table->string('payment_method')->nullable();
-            $table->string('payment_status')->nullable();
-            $table->string('order_number')->nullable();
-            $table->string('total_amount')->nullable();
-            $table->string('total_discount')->nullable();
             $table->timestamps();
         });
     }

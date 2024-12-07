@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
+use Yajra\DataTables\Facades\DataTables;
 
 class CategoryController extends Controller
 {
@@ -17,6 +18,37 @@ class CategoryController extends Controller
         $category = Category::with('parentCategory')->get();
         return view('backend.pages.category.categoryList', compact('category'));
     }
+
+    public function ajaxDataTable()
+    {
+
+        $data = Category::with('parentCategory')->select('categories.*');
+
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('parent_category', function ($row) {
+                return $row->parentCategory ? $row->parentCategory->category_name : 'N/A';
+            })
+            ->addColumn('category_image', function($row){
+                if ($row->category_image) {
+                    return '<img src="' . asset('images/categories/' . $row->category_image) . '" width="100" height="100" />';
+                }
+                return '<img src="' . asset('images/default.avif') . '" width="100" height="100" />';
+            })
+
+            ->addColumn('action', function ($row) {
+
+                $editUrl = route('category.edit', $row->id);
+                $deleteUrl = route('category.delete', $row->id);
+
+                return '<a href="' . $editUrl . '" class="view btn btn-primary btn-sm">Edit</a>
+                <a href="javascript:void(0)" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm">Delete</a>';
+            })
+            ->rawColumns(['category_image','action'])
+            ->make(true);
+    }
+
+
 
     //create
     public function categoryForm()
@@ -40,9 +72,8 @@ class CategoryController extends Controller
             return redirect()->back();
         }
 
-        $category_image= '';
-        if($request->hasFile('category_image'))
-        {
+        $category_image = '';
+        if ($request->hasFile('category_image')) {
             $category_image = date('YmdHis') . '.' . $request->file('category_image')->getClientOriginalExtension();
             $request->file('category_image')->storeAs('/categories', $category_image);
         }
@@ -63,7 +94,7 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
         $editCategory = Category::find($id);
-        return view('backend.pages.category.editCategory', compact('editCategory','categories'));
+        return view('backend.pages.category.editCategory', compact('editCategory', 'categories'));
     }
 
     //Update 

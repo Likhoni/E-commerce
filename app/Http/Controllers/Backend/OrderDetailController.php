@@ -108,4 +108,11 @@ class OrderDetailController extends Controller
             return redirect()->back();
         
     }
+
+    public function viewOrderDetails($id)
+    {
+        $details = Order_detail::where('order_id',$id)->get();
+        return view('backend.pages.orderDetail.viewOrderDetails',compact('details'));
+    }
+
 }

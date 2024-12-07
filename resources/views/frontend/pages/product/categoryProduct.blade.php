@@ -128,8 +128,8 @@
                                             <div class="product product_filter">
                                                 <div class="product_image">
                                                     <a href="{{route('frontend.single.product',$product->id )}}">
-                                                        <img style="height:200px; width:250px;" src="{{ url('images/products', $product->product_image) }}"
-                                                        alt="">
+                                                        <img style="height:200px; width:250px;" src="{{ url('images/products', $product->image) }}"
+                                                            alt="">
                                                     </a>
                                                 </div>
                                                 <div class="favorite favorite_left"></div>
@@ -140,12 +140,8 @@
                                                     <div class="product_price">TK.
                                                         {{ $product->product_price }}
                                                     </div>
-                                                    
+
                                                 </div>
-                                            </div>
-                                            <div class="red_button add_to_cart_button"><a
-                                                    href="{{ route('frontend.add.to.cart', $product->id) }}">add to
-                                                    cart</a>
                                             </div>
                                         </div>
                                         @endforeach
