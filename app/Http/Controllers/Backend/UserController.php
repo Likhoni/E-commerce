@@ -23,9 +23,10 @@ class UserController extends Controller
     public function adminDoLogin(Request $request)
     {
         $userLogin = $request->except('_token');
-
+        
         // $checkLogin=auth()->attempt($userLogin);(work in Laravel 10)
         $checkLogin = Auth::attempt($userLogin); //work in Laravel 11
+        // dd($request->$checkLogin);
         if ($checkLogin) {
             notify()->success("Sign In Successful.");
             return redirect()->route('homepage');

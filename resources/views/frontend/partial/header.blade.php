@@ -116,7 +116,7 @@
                                          @if ($category->childrenRecursive->isNotEmpty())
                                          <ul class="subcategory-menu">
                                              @php
-                                             // Define the recursive function to display child categories
+
                                              $displayChildren = function($children) use (&$displayChildren) {
                                              foreach ($children as $child) {
                                              echo '<li>';
@@ -135,7 +135,7 @@
                                                  echo '</li>';
                                              }
                                              };
-                                             // Call the function for the current category's children
+                                             
                                              $displayChildren($category->childrenRecursive);
                                              @endphp
                                          </ul>
