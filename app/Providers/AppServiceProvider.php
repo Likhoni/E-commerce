@@ -26,10 +26,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
         if (Schema::hasTable('categories')) {
-            $categories = Category::where('parent_id', null)
-                ->with('childrenRecursive') // Load nested children
-                ->get();
-            View::share('categories', $categories);
+            $parents = Category::with('child')->where('parent_id', null)->get();
+            View::share('parents', $parents);
         }
     }
 }
