@@ -24,7 +24,7 @@
             top: 0;
             left: -300px;
             /* Initially hidden off-screen */
-            width: 300px;
+            width: 500px;
             height: auto;
             background-color: #fff;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
@@ -51,12 +51,17 @@
 
         .slider-menu li {
             padding: 10px 0;
-            font-size: 16px;
-            border-bottom: 1px solid #f2f2f2;
+            font-size: 18px;
+            font-family: 'Roboto', sans-serif;
         }
 
         .slider-menu li:hover {
             padding: 20px;
+        }
+
+        .slider-menu ul li a:last-child {
+            font-weight: normal;
+            font-family: 'Roboto', sans-serif;
         }
 
         ul,
@@ -101,6 +106,33 @@
 
         .active {
             display: block;
+        }
+
+        li:not(:has(.nested))>.caret {
+            display: none;
+        }
+
+        .nested a {
+            text-decoration: none;
+            color: inherit;
+            /* Matches parent color */
+        }
+
+        .nested a:hover {
+            text-decoration: none;
+            /* Optional hover effect */
+            color: black;
+            /* Adjust to match your theme */
+        }
+
+        .slider-menu a {
+            color: black;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .slider-menu a:hover {
+            text-decoration: none;
         }
     </style>
     <!-- Top Navigation -->
@@ -159,7 +191,7 @@
                                         style="font-size: 40px; margin-top: 5px;"></i>
                                     @endif
                                     <span style="margin-left: 10px;">
-                                        {{ auth('customerGuard')->user()->FullName }}
+                                        {{ auth('customerGuard')->user()->first_name }}
 
                                     </span>
                                     <i class="fa fa-angle-down" style="margin-left: 5px;"></i>
@@ -204,14 +236,20 @@
                             <div class="slider-menu">
                                 @foreach($parents as $parent)
                                 <ul id="myUL">
-                                    <li>{{$parent->category_name}} <span class="caret"></span>
-                                        @if(count($parent->child)>0)
-                                        @include('frontend.partial.child', ['parent'=>$parent])
+                                    <li>
+                                        @if ($parent->child->isNotEmpty())
+                                        {{ $parent->category_name }} <span class="caret"></span>
+                                        @include('frontend.partial.child', ['parent' => $parent])
+                                        @else
+                                        <a href="">
+                                            {{ $parent->category_name }}
+                                        </a>
                                         @endif
                                     </li>
                                 </ul>
                                 @endforeach
                             </div>
+
                         </div>
                     </div>
                     <nav class="navbar">

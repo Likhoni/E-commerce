@@ -1,14 +1,14 @@
 <ul class="nested">
     @foreach($parent->child as $child)
-    @if(count($child->child)>0)
     <li>
-        {{$child->category_name}} <span class="caret"></span>
-        @include('frontend.partial.child',['parent'=>$child])
+        @if ($child->child->isNotEmpty())
+            {{ $child->category_name }} <span class="caret"></span>
+            @include('frontend.partial.child', ['parent' => $child])
+        @else
+            <a href="">
+                {{ $child->category_name }}
+            </a>
+        @endif
     </li>
-    @else
-    <li>
-        {{$child->category_name}} <span class="caret"></span>
-    </li>
-    @endif
     @endforeach
 </ul>

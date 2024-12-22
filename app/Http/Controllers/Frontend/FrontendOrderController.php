@@ -41,10 +41,12 @@ class FrontendOrderController extends Controller
             $myCart[$pId] = [
                 'product_id' => $product->id,
                 'product_name' => $product->product_name,
-                'product_price' => $product->product_price,
-                'discount_price' => $product->discount_price,
                 'quantity' => $requestedQuantity,
-                'subtotal' => $requestedQuantity * $product->product_price,
+                'product_price' => $product->product_price,
+                'subtotal' => $requestedQuantity * ($product->discount_price ?? $product->product_price),
+                'discount' => $product->discount,
+                'discount_price' => $product->discount_price,
+                'total_amount' => $product->total_amount,
                 'image' => $product->image,
             ];
 
@@ -56,7 +58,6 @@ class FrontendOrderController extends Controller
 
         return redirect()->back();
     }
-
 
     // View Cart
     public function viewCart()
@@ -80,6 +81,7 @@ class FrontendOrderController extends Controller
         $discount = 0;
         $total = 0;
         foreach ($myCart as $productId => $cartData) {
+            $product_id = $cartData['product_id'];
             $quantity = $cartData['quantity'];
             $originalPrice = $cartData['product_price'];
             $discountPrice = $cartData['discount_price'] ?? 0;
@@ -160,7 +162,6 @@ class FrontendOrderController extends Controller
         return view('frontend.pages.checkout', compact('divisions', 'districts', 'upazilas', 'unions', 'cartSummary', 'myCart'));
     }
 
-
     public function placeOrder(Request $request)
     {
         $checkValidation = Validator::make($request->all(), [
@@ -175,12 +176,12 @@ class FrontendOrderController extends Controller
             'union_id' => 'required',
             'address' => 'required',
         ]);
-
+    
         if ($checkValidation->fails()) {
             notify()->error($checkValidation->getMessageBag());
             return redirect()->back();
         }
-
+    
         // Store Order
         $order = Order::create([
             'first_name' => $request->first_name,
@@ -193,38 +194,35 @@ class FrontendOrderController extends Controller
             'upazila_id' => $request->upazila_id,
             'union_id' => $request->union_id,
             'address' => $request->address,
+            'amount' => $request->cart_total,
             'payment_method' => $request->payment_method,
-            'subtotal' => $request->cart_subtotal,
-            'discount' => $request->cart_discount,
-            'total' => $request->cart_total,
         ]);
-
-        // Store Order Details
-        $productNames = $request->input('product_name');
-        $quantities = $request->input('quantity');
-        $productPrices = $request->input('product_price');
-
-        foreach ($productNames as $index => $productName) {
-            $quantity = $quantities[$index];
-            $productPrice = $productPrices[$index];
-
-            $subtotal = $productPrice * $quantity;
-
-            Order_detail::create([
-                'order_id' => $order->id,
-                'product_name' => $productName,
-                'product_price' => $productPrice,
-                'quantity' => $quantity,
-                'subtotal' => $subtotal,
-                'discount_price' => $request->cart_discount, // Assuming the discount applies to all products equally
-                'image' => '', // Add if needed
-            ]);
+    
+        // Retrieve cart data from session
+        $cart = session()->get('basket', []);
+    
+        if (!empty($cart)) {
+            foreach ($cart as $cartItem) {
+                Order_detail::create([
+                    'product_id' => $cartItem['product_id'] ?? null,
+                    'order_id' => $order->id,
+                    'product_name' => $cartItem['product_name'] ?? null,
+                    'quantity' => $cartItem['quantity'] ?? 1,
+                    'product_price' => $cartItem['product_price'] ?? 0,
+                    'subtotal' => $cartItem['subtotal'] ?? 0,
+                    'discount' => $cartItem['discount'] ?? 0,
+                    'discount_price' => $cartItem['discount_price'] ?? 0,
+                    'image' => $cartItem['image'] ?? null,
+                ]);
+            }
         }
-
+    
+        // Clear cart data from session
         session()->forget('basket');
         session()->forget('cart_summary');
-
+    
         notify()->success('Order placed successfully!');
         return redirect()->route('frontend.homepage');
     }
+    
 }

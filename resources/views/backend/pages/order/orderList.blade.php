@@ -21,8 +21,6 @@
                     <th scope="col">Union</th>
                     <th scope="col">Address</th>
                     <th scope="col">Sub Total</th>
-                    <th scope="col">Discount</th>
-                    <th scope="col">Total</th>
                     <th scope="col">Payment Method</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -85,17 +83,9 @@
                     name: 'address',
                 },                
                 {
-                    data: 'subtotal',
-                    name: 'subtotal',
-                },                 
-                {
-                    data: 'discount',
-                    name: 'discount',
-                },                
-                {
-                    data: 'total',
-                    name: 'total',
-                },                                 
+                    data: 'amount',
+                    name: 'amount',
+                },                                                
                 {
                     data: 'payment_method',
                     name: 'payment_method',

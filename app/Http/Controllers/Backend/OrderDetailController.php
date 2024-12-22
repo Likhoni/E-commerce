@@ -111,6 +111,7 @@ class OrderDetailController extends Controller
 
     public function viewOrderDetails($id)
     {
+        
         $details = Order_detail::where('order_id',$id)->get();
         return view('backend.pages.orderDetail.viewOrderDetails',compact('details'));
     }

@@ -144,7 +144,7 @@
         @include('frontend.partial.header')
 
         <form action="{{ route('order.place') }}" method="post">
-            @csrf
+        @csrf
             <div class="container product_section_container">
                 <div class="row" style="padding-top:180px;">
 

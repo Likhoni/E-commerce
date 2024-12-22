@@ -16,7 +16,7 @@ return new class extends Migration
             //$table->foreignId('customer_id')->constrained()->restrictOnDelete();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('contact_number')->nullable();
             $table->string('country')->default('bangladesh');
             $table->foreignId('division_id')->constrained('divisions')->restrictOnDelete();

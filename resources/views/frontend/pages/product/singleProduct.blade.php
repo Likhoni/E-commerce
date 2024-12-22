@@ -7,6 +7,20 @@
             z-index: 1000000;
             margin-top: 5%;
         }
+
+        /* Remove the spinner for Chrome, Safari, Edge, Opera */
+        .quantity_selector input[type="number"]::-webkit-inner-spin-button,
+        .quantity_selector input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Remove the spinner for Firefox */
+        .quantity_selector input[type="number"] {
+            -moz-appearance: textfield;
+            /* Firefox-specific */
+            appearance: textfield;
+        }
     </style>
 
     @notifyCss
@@ -55,7 +69,7 @@
                                                 data-image="/images/products/{{ $image->image_url }}">
                                         </li>
                                     </ul>
-                                    @endforeach            
+                                    @endforeach
                                 </div>
                             </div>
                             <div class="col-lg-9 image_col order-lg-2 order-1">
@@ -93,20 +107,28 @@
 
                         <!--Quantity Increase Decrease-->
                         <div class="quantity d-flex align-items-center">
-                                <span class="me-2">Quantity:</span>
-                                <div class="quantity_selector d-flex align-items-center">
-                                    <span class="minus me-2"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                    <span id="quantity_value" class="me-2">1</span>
-                                    <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                </div>
+                            <span class="me-2">Quantity:</span>
+                            <div class="quantity_selector d-flex align-items-center">
+                                <button class="btn btn-outline-secondary btn-sm minus me-2" onclick="decreaseQuantity(event)">-</button>
+                                <input type="number" id="quantity_value" name="quantity" value="1" min="1" class="form-control form-control-sm text-center me-2" style="width: 50px;" readonly/>
+                                <button class="btn btn-outline-secondary btn-sm plus" onclick="increaseQuantity(event)">+</button>
+                            </div>
                         </div>
 
                         <div style="padding-top: 50px;" class="row">
+                            <form action="{{ route('frontend.add.to.cart', $singleProduct->id) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="quantity" id="selected_quantity" value="1">
+                                <button type="submit" class="btn btn-danger add_to_cart_button">Add to Cart</button>
+                            </form>
+                        </div>
+
+                        <!-- <div style="padding-top: 50px;" class="row">
                             <div class="red_button add_to_cart_button"><a href="{{ route('frontend.add.to.cart', $singleProduct->id) }}">add to cart</a></div>
                             <div class="buy_now_button"><a href="#" style="color:white">Buy Now </a></div>
                             <div class="product_favorite d-flex flex-column align-items-center justify-content-center">
                             </div>
-                        </div>
+                        </div> -->
 
 
                     </div>
@@ -294,6 +316,25 @@
     <script src="{{ url('frontend/plugins/jquery-ui-1.12.1.custom/jquery-ui.js') }}"></script>
     <script src="{{ url('frontend/js/single_custom.js') }}"></script>
 
+    <script>
+        const decreaseQuantity = (e) => {
+            e.preventDefault();
+            const input = document.getElementById('quantity_value');
+            const hiddenInput = document.getElementById('selected_quantity');
+            if (input.value > 1) {
+                input.value--;
+                hiddenInput.value = input.value;
+            }
+        };
+
+        const increaseQuantity = (e) => {
+            e.preventDefault();
+            const input = document.getElementById('quantity_value');
+            const hiddenInput = document.getElementById('selected_quantity');
+            input.value++;
+            hiddenInput.value = input.value;
+        };
+    </script>
     @include('notify::components.notify')
     @notifyJs
 </body>

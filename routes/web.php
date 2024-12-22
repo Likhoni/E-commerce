@@ -55,7 +55,7 @@ Route::group(['middleware' => 'changeLangMiddleware'], function () {
     Route::get('/single/product/{id}', [FrontendProductController::class, 'singleProduct'])->name('frontend.single.product');
 
     //Cart (View, Add, Update, Clear & Item Delete)
-    Route::get('/add-to-cart/{productId}', [FrontendOrderController::class, 'addCart'])->name('frontend.add.to.cart');
+    Route::post('/add-to-cart/{productId}', [FrontendOrderController::class, 'addCart'])->name('frontend.add.to.cart');
     Route::get('/view-cart', [FrontendOrderController::class, 'viewCart'])->name('frontend.view.cart');
     Route::post('/update-cart/{id}', [FrontendOrderController::class, 'updateCart'])->name('frontend.update.cart');
     Route::get('/clear-cart', [FrontendOrderController::class, 'clearCart'])->name('frontend.cart.clear');
