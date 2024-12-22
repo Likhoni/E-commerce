@@ -16,19 +16,19 @@ class CategoryController extends Controller
     //list
     public function categoryList()
     {
-        $category = Category::with('parentCategory')->get();
+        $category = Category::with('parent')->get();
         return view('backend.pages.category.categoryList', compact('category'));
     }
 
     public function ajaxDataTable()
     {
 
-        $data = Category::with('parentCategory')->select('categories.*');
+        $data = Category::with('parent')->select('categories.*');
 
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('parent_category', function ($row) {
-                return $row->parentCategory ? $row->parentCategory->category_name : 'N/A';
+                return $row->parent ? $row->parent->category_name : 'N/A';
             })
             ->addColumn('category_image', function($row){
                 if ($row->category_image) {

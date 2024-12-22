@@ -72,11 +72,6 @@
     <link rel="stylesheet" type="text/css" href="{{ url('frontend/styles/main_styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url('frontend/styles/responsive.css') }}">
 
-
-
-
-
-
 </head>
 
 <body>
@@ -97,7 +92,6 @@
     <script src="{{ url('frontend/plugins/Isotope/isotope.pkgd.min.js') }}"></script>
     <script src="{{ url('frontend/plugins/OwlCarousel2-2.2.1/owl.carousel.js') }}"></script>
     <script src="{{ url('frontend/js/custom.js') }}"></script>
-
 
     @include('notify::components.notify')
     @notifyJs

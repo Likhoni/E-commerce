@@ -22,7 +22,7 @@
                         <select name="parent_name" id="parent_name" class="form-control">
                             <option value="">None</option> <!-- Allows null selection -->
                             @if($editCategory->parent_id)
-                            <option value="{{ $editCategory->parent_id }}" selected>{{ $editCategory->parentCategory->category_name }}</option>
+                            <option value="{{ $editCategory->parent_id }}" selected>{{ $editCategory->parent->category_name }}</option>
                             @endif
                             @foreach ($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->category_name }}</option>

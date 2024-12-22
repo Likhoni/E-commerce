@@ -10,19 +10,14 @@ class Category extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function parentCategory()
+    public function parent()
     {
         return $this->hasOne(Category::class, 'id', 'parent_id');
     }
 
-    public function children()
+    public function child()
     {
         return $this->hasMany(Category::class, 'parent_id');
-    }
-    
-    public function childrenRecursive()
-    {
-        return $this->children()->with('childrenRecursive');
     }
     
     public function product()
