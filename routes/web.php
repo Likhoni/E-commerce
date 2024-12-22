@@ -7,6 +7,7 @@ use App\Http\Controllers\Frontend\FrontendHomeController;
 use App\Http\Controllers\Frontend\FrontendConatactController;
 use App\Http\Controllers\Frontend\FrontendOrderController;
 use App\Http\Controllers\Frontend\FrontendProductController;
+use App\Http\Controllers\Frontend\SocialMediaLoginController;
 use App\Http\Controllers\Frontend\MailController;
 
 use App\Http\Controllers\LocalizationController;
@@ -23,13 +24,14 @@ use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\OrderDetailController;
 use App\Http\Controllers\Backend\DiscountController;
 
-
-
-
 // //Frontend Or Website
 
 //Add Middleware For Language Change
 Route::group(['middleware' => 'changeLangMiddleware'], function () {
+
+    //Login with Github
+    Route::get('/social/login/{provider}',[SocialMediaLoginController::class,'socialLogin'])->name('social.login');
+    Route::get('/sociallogin/callback',[SocialMediaLoginController::class,'callback'])->name('social.callback');
 
     //Localization
     Route::get('/change/lang/{lang_name}', [LocalizationController::class, 'changeLang'])->name('change.language');

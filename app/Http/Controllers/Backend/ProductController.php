@@ -8,8 +8,10 @@ use App\Models\Category;
 use App\Models\Group;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
 use Yajra\DataTables\Facades\DataTables;
@@ -90,15 +92,14 @@ class ProductController extends Controller
 
         if ($checkValidation->fails()) {
             // notify()->error($checkValidation->getMessageBag());
+            Log::error('Product not created');
             notify()->error("Something Went Wrong");
             return redirect()->back();
         }
 
-        $image = '';
-        if ($request->hasFile('image')) {
-            $image = date('YmdHis') . '.' . $request->file('image')->getClientOriginalExtension();
-            $request->file('image')->storeAs('/products', $image);
-        }
+
+        $image=FileUploadService::fileUpload($request->file('image'), '/products');
+
 
         $product = Product::create([
             'product_name' => $request->product_name,
@@ -123,6 +124,7 @@ class ProductController extends Controller
                     'image_url' => $imageName
                 ]);
             }
+            Log::alert('Product Created');
         }
         notify()->success("Product Created Successfully.");
         return redirect()->back();
