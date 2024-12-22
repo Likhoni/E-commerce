@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
 use Yajra\DataTables\Facades\DataTables;
@@ -85,6 +86,8 @@ class CategoryController extends Controller
             'category_image' => $category_image,
             'discount' => $request->discount
         ]);
+
+        Log::alert('Category Created');
         notify()->success("Category Created Successfully.");
         return redirect()->back();
     }

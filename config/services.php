@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'github' => [
+        'client_id' => env('GITHUB_ID','Iv23lijhEIg5uF9NQ9jO'),
+        'client_secret' => env('GITHUB_SECRET','e295c4b5dcb29404a3329cf20520bd6057303d02'),
+        'redirect' => env('GITHUB_REDIRECT', 'http://127.0.0.1:8000/sociallogin/callback'),
+    ],
+
+
 ];

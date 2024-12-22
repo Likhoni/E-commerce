@@ -7,6 +7,7 @@ use App\Mail\SendMail;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -31,6 +32,7 @@ class FrontendCustomerController extends Controller
         ]);
         if ($checkValidation->fails()) {
             notify()->error($checkValidation->getMessageBag());
+            Log::error($checkValidation->getMessageBag());
             return redirect()->back();
         }
 
@@ -75,6 +77,8 @@ class FrontendCustomerController extends Controller
         ]);
 
         $customerInput = $request->except('_token');
+
+        //Another Way
         // $customerInput = 
         // [
         //     'email' => $request->email,
@@ -87,6 +91,7 @@ class FrontendCustomerController extends Controller
         //     notify()->error("Invalid Credentials.");
         //     return redirect()->back();
         // }
+        
         if ($checkLogin) {
             $customer = auth('customerGuard')->user();
             
@@ -101,6 +106,7 @@ class FrontendCustomerController extends Controller
                 return view('frontend.pages.customer.otp',compact('email'));
             }
         } else {
+            Log::error('Invalid Crenditials');
             notify()->error("Invalid Credentials.");
             return redirect()->back();
         }
