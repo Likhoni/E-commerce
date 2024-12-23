@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Frontend\FrontendCustomerController;
 use App\Http\Controllers\Frontend\FrontendHomeController;
-use App\Http\Controllers\Frontend\FrontendConatactController;
+use App\Http\Controllers\Frontend\FrontendContactController;
 use App\Http\Controllers\Frontend\FrontendOrderController;
 use App\Http\Controllers\Frontend\FrontendProductController;
 use App\Http\Controllers\Frontend\SocialMediaLoginController;
@@ -82,7 +82,7 @@ Route::group(['middleware' => 'changeLangMiddleware'], function () {
         Route::get('/sign-out', [FrontendCustomerController::class, 'frontendSignOut'])->name('frontend.sign.out');
 
         //Contact For Customer
-        Route::get('/contact-us', [FrontendConatactController::class, 'frontendContactUs'])->name('frontend.contact.us');
+        Route::get('/contact-us', [FrontendContactController::class, 'frontendContactUs'])->name('frontend.contact.us');
     });
 });
 
@@ -134,12 +134,15 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/brand/update/{id}', [BrandController::class, 'brandUpdate'])->name('brand.update');
         Route::get('/brand/delete/{id}', [BrandController::class, 'brandDelete'])->name('brand.delete');
 
-        //Product(Index, Create, Edit, View, Update, Delete & Set Alert For Stock)
+        //Product(Index, Create, Edit, Export, Import, View, Update, Delete & Set Alert For Stock)
         Route::get('/product/list', [ProductController::class, 'productList'])->name('product.list');
         Route::get('get/product/data-table', [ProductController::class, 'ajaxDataTable'])->name('ajax.get.product.data');
         Route::get('/product/form', [ProductController::class, 'productForm'])->name('product.form');
         Route::post('/submit/product/form', [ProductController::class, 'SubmitProductForm'])->name('submit.product.form');
 
+        Route::get('/product/export', [ProductController::class, 'productExport'])->name('product.export');
+        Route::post('/product/import', [ProductController::class, 'productImport'])->name('product.import');
+        
         Route::get('/product/view/{id}', [ProductController::class, 'productView'])->name('product.view');
         Route::get('/product/edit/{id}', [ProductController::class, 'productEdit'])->name('product.edit');
         Route::put('/product/update/{id}', [ProductController::class, 'productUpdate'])->name('product.update');
@@ -153,26 +156,16 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('/customer/delete/{id}', [CustomerController::class, 'customerDelete'])->name('customer.delete');
 
-        //Order(Index, Create, Edit, View, Update & Delete)
+        //Order(Index, Create, Edit, Order Details View, Update & Delete)
         Route::get('/order/list', [OrderController::class, 'orderList'])->name('order.list');
         Route::get('get/order/data-table', [OrderController::class, 'ajaxDataTable'])->name('ajax.get.order.data');
         Route::get('/order/form', [OrderController::class, 'orderForm'])->name('order.form');
         Route::post('/submit/order/form', [OrderController::class, 'SubmitOrderForm'])->name('submit.order.form');
 
-        Route::get('/order/view/{id}', [OrderController::class, 'orderView'])->name('order.view');
+        Route::get('/view/order-details/{id}', [OrderController::class, 'viewOrderDetails'])->name('view.order.details');
         Route::get('/order/edit/{id}', [OrderController::class, 'orderEdit'])->name('order.edit');
         Route::put('/order/update/{id}', [OrderController::class, 'orderUpdate'])->name('order.update');
         Route::get('/order/delete/{id}', [OrderController::class, 'orderDelete'])->name('order.delete');
-
-        //Order Details
-        Route::get('/order-detail/list', [OrderDetailController::class, 'orderDetailList'])->name('order.detail.list');
-        Route::get('/order-detail/form', [OrderDetailController::class, 'orderDetailForm'])->name('order.detail.form');
-        Route::post('/submit/order-detail/form', [OrderDetailController::class, 'SubmitOrderDetailForm'])->name('submit.order.detail.form');
-        
-        Route::get('/view/order-details/{id}', [OrderDetailController::class, 'viewOrderDetails'])->name('view.order.details');
-        Route::get('/order-detail/edit/{id}', [OrderDetailController::class, 'orderDetailEdit'])->name('order.detail.edit');
-        Route::put('/order-detail/update/{id}', [OrderDetailController::class, 'orderDetailUpdate'])->name('order.detail.update');
-        Route::get('/order-detail/delete/{id}', [OrderDetailController::class, 'orderDetailDelete'])->name('order.detail.delete');
 
         //Role
         Route::get('/role/list', [RoleController::class, 'roleList'])->name('role.list');

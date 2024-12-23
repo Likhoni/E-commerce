@@ -82,7 +82,7 @@
 
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1"><strong>Description</strong></label>
-                        <input required name="description" type="text" class="form-control" id=""
+                        <input name="description" type="text" class="form-control" id=""
                             placeholder="">
                     </div><br>
 

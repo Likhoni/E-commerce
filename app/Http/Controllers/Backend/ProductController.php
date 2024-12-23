@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Exports\ProductsExport;
 use App\Http\Controllers\Controller;
+use App\Imports\ProductsImport;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Group;
@@ -13,11 +15,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 use Throwable;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
-{
+{ 
     //list
     public function productList()
     {
@@ -69,18 +72,15 @@ class ProductController extends Controller
     //create
     public function productForm()
     {
-        $varCategory = Category::all();
+        $varCategory = Category::doesntHave('child')->get();
         $varGroup = Group::all();
         $varBrand = Brand::all();
         return view('backend.pages.product.productForm', compact('varCategory', 'varGroup', 'varBrand'));
     }
 
-
-
     //store
     public function SubmitProductForm(Request $request)
     {
-        // dd($request->all());
         $checkValidation = Validator::make($request->all(), [
             'product_name' => 'required',
             'product_quantity' => ['required', 'numeric', 'min:1'],
@@ -237,5 +237,27 @@ class ProductController extends Controller
     {
         session()->put('alert', $request->alert_quantity);
         return redirect()->back();
+    }
+
+    public function productExport()
+    {
+        return Excel::download(new ProductsExport,'product_'.date('Y-m-d').'.xlsx');
+    }
+
+    public function productImport(Request $request)
+    {
+        // dd($request->all());
+        try
+        {
+            Excel::import(new ProductsImport, $request->file('file'));
+            notify()->success('Product Imported Successfully.');
+            return redirect()->route('product.list');
+
+        }catch(\Exception $ex){
+           Log::info($ex);
+           notify()->error($ex->getMessage());
+           return redirect()->route('product.list');
+        }
+          
     }
 }

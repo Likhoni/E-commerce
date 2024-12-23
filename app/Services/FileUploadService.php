@@ -7,12 +7,13 @@ class FileUploadService
 
     public static function fileUpload($file, $path ){
 
-        $image = '';
+        $image = null;
         
         if ($file) {
-            $image = date('YmdHis') . '.' . $file->getClientOriginalExtension();
-            $file('image')->storeAs('/products', $image);
+            $imageName = date('YmdHis') . '.' . $file->getClientOriginalExtension();
+            $file->storeAs($path, $imageName);
         }
+        return $imageName;
     }
 
 }

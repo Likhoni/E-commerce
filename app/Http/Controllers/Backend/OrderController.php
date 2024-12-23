@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Order_detail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
@@ -19,20 +20,20 @@ class OrderController extends Controller
     }
 
     public function ajaxDataTable()
-    {        
+    {
         $data = Order::select('orders.*');
 
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('division_name', function ($row) {
                 return $row->division->name;
-            }) 
+            })
             ->addColumn('district_name', function ($row) {
                 return $row->district->name;
-            })            
+            })
             ->addColumn('upazila_name', function ($row) {
                 return $row->upazila->name;
-            })            
+            })
             ->addColumn('union_name', function ($row) {
                 return $row->union->name;
             })
@@ -154,6 +155,12 @@ class OrderController extends Controller
         ]);
         notify()->success("Order Updated Successfully.");
         return redirect()->route('order.list');
+    }
+
+    public function viewOrderDetails($id)
+    {
+        $details = Order_detail::where('order_id', $id)->get();
+        return view('backend.pages.orderDetail.viewOrderDetails', compact('details'));
     }
 
     //Delete

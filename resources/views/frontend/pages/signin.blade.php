@@ -26,15 +26,17 @@
                                         style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px;">
                                 </div>
 
-                                <a class="btn btn-Primary" href="{{route('social.login', 'github' )}}">Login with Github</a>
-                                <a class="btn btn-success" href="{{route('social.login', 'facebook' )}}">Login with Facebook</a>
-
                             </div>
                             <div style="margin-top: 20px; text-align: center;">
                                 <button type="submit"
                                     style="padding: 10px 20px; background-color: #e74c3c; color: white; text-transform: uppercase; text-decoration: none; border-radius: 5px; border: none;">
                                     Log In
                                 </button>
+                            </div>
+                            <br>
+                            <div style="text-align: center;">
+                                <a class="btn btn-dark" href="{{route('social.login', 'github' )}}">Login with Github</a>
+                                <a class="btn btn-primary" href="{{route('social.login', 'facebook' )}}">Login with Facebook</a>
                             </div>
                         </form>
 

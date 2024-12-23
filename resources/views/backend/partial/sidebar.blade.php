@@ -61,14 +61,7 @@
                         Order
                     </a>
                 @endif
-                @if (checkPermission('order.detail.list'))
-                    <a class="nav-link collapsed" href="{{ route('order.detail.list') }}">
-                        <div class="sb-nav-link-icon" style="color: #e83e8c;">
-                            <i class="fas fa-info-circle"></i>
-                        </div>
-                        Order Details
-                    </a>
-                @endif
+                
                     <a class="nav-link collapsed" href="#">
                         <div class="sb-nav-link-icon">
                             <i class="fas fa-credit-card" style="color: #4CAF50;"></i>

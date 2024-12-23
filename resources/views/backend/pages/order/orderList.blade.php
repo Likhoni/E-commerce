@@ -6,6 +6,7 @@
         @if (checkPermission('order.form'))
             <div><a href="{{ route('order.form') }}" class="btn btn-primary">Add New Order</a></div>
         @endif
+        <br>
         <table class="data-table">
             <thead>
                 <tr>
