@@ -3,9 +3,11 @@
 namespace App\Imports;
 
 use App\Models\Product;
+use App\Models\ProductImage;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ProductsImport implements ToModel
+class ProductsImport implements ToModel,WithHeadingRow
 {
     /**
     * @param array $row
@@ -14,19 +16,29 @@ class ProductsImport implements ToModel
     */
     public function model(array $row)
     {
-        return new Product([
+        $product = Product::create([
             'id'=> $row['id'],
-            'product_name'=> $row['product_name'],
-            'product_price'=> $row['product_price'],
+            'product_name'=> $row['name'],
+            'group_id'=> $row['group'],
+            'category_id'=> $row['catgeory'],
+            'brand_id'=> $row['brand'],
+            'product_quantity'=> $row['quantity'],
+            'product_price'=> $row['price'],
+            'discount'=> $row['discount'],
+            'discount_price'=> $row['discount_price'],
+            'image'=> $row['image'],
+            'product_description'=> $row['description'],
         ]);
-    }
-
-    public function rules():array
-    {
-        return
-        [
-           'product_name'  => 'required', 
-           'product_price'  => 'required', 
-        ];
+        if(!empty($row['product_images'])){
+            $imageUrls = explode(',', $row['product_images']);
+            foreach($imageUrls as $imageUrl)
+            {
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'image_url' => trim($imageUrl)
+                ]);
+            }
+        }
+        return $product;
     }
 }

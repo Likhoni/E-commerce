@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -89,11 +90,7 @@ class UserController extends Controller
             return redirect()->back();
         }
 
-        $image = '';
-        if ($request->hasFile('image')) {
-            $image = date('YmdHis') . '.' . $request->file('image')->getClientOriginalExtension();
-            $request->file('image')->storeAs('/users', $image);
-        }
+        $image=FileUploadService::fileUpload($request->file('image'), '/users');
 
         //Store Data
         User::create([
@@ -139,8 +136,7 @@ class UserController extends Controller
 
         $image = $updateUser->image;
         if ($request->hasFile('image')) {
-            $image = date('YmdHis') . '.' . $request->file('image')->getClientOriginalExtension();
-            $request->file('image')->storeAs('/users', $image);
+            $image = FileUploadService::fileUpload($request->file('image'), '/users');
             File::delete('images/users/' . $updateUser->image);
         }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -75,11 +76,7 @@ class BrandController extends Controller
             return redirect()->back();
         }
 
-        $brand_image = '';
-        if ($request->hasFile('brand_image')) {
-            $brand_image = date('YmdHis') . '.' . $request->file('brand_image')->getClientOriginalExtension();
-            $request->file('brand_image')->storeAs('/brands', $brand_image);
-        }
+        $brand_image=FileUploadService::fileUpload($request->file('brand_image'), '/brands');
 
         //Store Data
         Brand::create([
@@ -118,12 +115,8 @@ class BrandController extends Controller
         }
 
         $brand_image = $updateBrand->brand_image;
-
         if ($request->hasFile('brand_image')) {
-
-            $brand_image = date('YmdHis') . '.' . $request->file('brand_image')->getClientOriginalExtension();
-
-            $request->file('brand_image')->storeAs('/brands', $brand_image);
+            $brand_image = FileUploadService::fileUpload($request->file('brand_image'), '/brands');
             File::delete('images/brands/' . $updateBrand->brand_image);
         }
 

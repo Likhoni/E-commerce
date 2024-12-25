@@ -7,7 +7,7 @@ class FileUploadService
 
     public static function fileUpload($file, $path ){
 
-        $image = null;
+        $imageName = null;
         
         if ($file) {
             $imageName = date('YmdHis') . '.' . $file->getClientOriginalExtension();

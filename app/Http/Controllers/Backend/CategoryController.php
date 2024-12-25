@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -73,11 +74,7 @@ class CategoryController extends Controller
             return redirect()->back();
         }
 
-        $category_image = '';
-        if ($request->hasFile('category_image')) {
-            $category_image = date('YmdHis') . '.' . $request->file('category_image')->getClientOriginalExtension();
-            $request->file('category_image')->storeAs('/categories', $category_image);
-        }
+        $category_image=FileUploadService::fileUpload($request->file('category_image'), '/categories');
 
         //Store Data
         Category::create([
@@ -116,12 +113,8 @@ class CategoryController extends Controller
         }
 
         $category_image = $updateCategory->category_image;
-
         if ($request->hasFile('category_image')) {
-
-            $category_image = date('YmdHis') . '.' . $request->file('category_image')->getClientOriginalExtension();
-
-            $request->file('category_image')->storeAs('/categories', $category_image);
+            $category_image = FileUploadService::fileUpload($request->file('category_image'), '/categories');
             File::delete('images/categories/' . $updateCategory->category_image);
         }
 

@@ -29,8 +29,7 @@
 
                 <!-- Dropdown Menu -->
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">View Profile</a></li>
-                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                    <li><a href="{{route('user.list')}}" class="dropdown-item" href="#!">View Profile</a></li>
                     <li>
                         <hr class="dropdown-divider" />
                     </li>

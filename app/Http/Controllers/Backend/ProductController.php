@@ -20,7 +20,7 @@ use Throwable;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
-{ 
+{
     //list
     public function productList()
     {
@@ -98,7 +98,7 @@ class ProductController extends Controller
         }
 
 
-        $image=FileUploadService::fileUpload($request->file('image'), '/products');
+        $image = FileUploadService::fileUpload($request->file('image'), '/products');
 
 
         $product = Product::create([
@@ -171,8 +171,7 @@ class ProductController extends Controller
         // Handle main product image update
         $image = $updateProduct->image;
         if ($request->hasFile('image')) {
-            $image = date('YmdHis') . '.' . $request->file('image')->getClientOriginalExtension();
-            $request->file('image')->storeAs('/products', $image);
+            $image = FileUploadService::fileUpload($request->file('image'), '/products');
             File::delete('images/products/' . $updateProduct->image);
         }
 
@@ -241,23 +240,20 @@ class ProductController extends Controller
 
     public function productExport()
     {
-        return Excel::download(new ProductsExport,'product_'.date('Y-m-d').'.xlsx');
+        return Excel::download(new ProductsExport, 'product_' . date('Y-m-d') . '.xlsx');
     }
 
     public function productImport(Request $request)
     {
         // dd($request->all());
-        try
-        {
+        try {
             Excel::import(new ProductsImport, $request->file('file'));
             notify()->success('Product Imported Successfully.');
             return redirect()->route('product.list');
-
-        }catch(\Exception $ex){
-           Log::info($ex);
-           notify()->error($ex->getMessage());
-           return redirect()->route('product.list');
+        } catch (\Exception $ex) {
+            Log::info($ex);
+            notify()->error($ex->getMessage());
+            return redirect()->route('product.list');
         }
-          
     }
 }

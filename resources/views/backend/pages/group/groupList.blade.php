@@ -13,6 +13,7 @@
                 <th scope="col">Id </th>
                 <th scope="col">Group Name</th>
                 <th scope="col">Parent Group</th>
+                <th scope="col">Group Slug</th>
                 <th scope="col">Group Image</th>
                 <th scope="col">Discount</th>
                 <th scope="col">Status</th>
@@ -46,6 +47,10 @@
                     data: 'parent_group',
                     name: 'parent_group'
                 },
+                {
+                    data: 'slug',
+                    name: 'slug'
+                },                
                 {
                     data: 'group_image',
                     name: 'group_image',

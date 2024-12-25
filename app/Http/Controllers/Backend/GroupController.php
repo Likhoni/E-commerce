@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Group;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -71,21 +72,27 @@ class GroupController extends Controller
             return redirect()->back();
         }
 
-        $group_image = '';
-        if ($request->hasFile('group_image')) {
-            $group_image = date('YmdHis') . '.' . $request->file('group_image')->getClientOriginalExtension();
-            $request->file('group_image')->storeAs('/groups', $group_image);
-        }
+        $group_image=FileUploadService::fileUpload($request->file('group_image'), '/groups');
 
         //Store Data
-        Group::create([
-            'group_name' => $request->group_name,
-            'parent_id' => $request->parent_name,
-            'group_image' => $group_image,
-            'discount' => $request->discount,
-            'status' => $request->status
-        ]);
-        notify()->success("Group Created Successfully.");
+        try{
+            Group::create([
+                'group_name' => $request->group_name,
+                'slug'=>str()->slug($request->group_name),
+                'parent_id' => $request->parent_name,
+                'group_image' => $group_image,
+                'discount' => $request->discount,
+                'status' => $request->status
+            ]);
+
+            notify()->success("Group Created Successfully.");
+            return redirect()->back();
+
+        }catch(Throwable $e){
+
+            notify()->error($e->getMessage());
+            return redirect()->back();
+        }
         return redirect()->back();
     }
 
@@ -113,12 +120,8 @@ class GroupController extends Controller
         }
 
         $group_image = $updateGroup->group_image;
-
         if ($request->hasFile('group_image')) {
-
-            $group_image = date('YmdHis') . '.' . $request->file('group_image')->getClientOriginalExtension();
-
-            $request->file('group_image')->storeAs('/groups', $group_image);
+            $group_image = FileUploadService::fileUpload($request->file('group_image'), '/groups');
             File::delete('images/groups/' . $updateGroup->group_image);
         }
 
