@@ -7,6 +7,7 @@
             <div><a href="{{ route('category.form') }}" class="btn btn-primary">Add New Category</a></div>
         @endif
         <br>
+        <h1>{{$title}}</h1>
         <table class="data-table">
             <thead>
                 <tr>

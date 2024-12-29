@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Services\FileUploadService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -17,8 +18,16 @@ class CategoryController extends Controller
     //list
     public function categoryList()
     {
-        $category = Category::with('parent')->get();
-        return view('backend.pages.category.categoryList', compact('category'));
+        if(Cache::get('category'))
+        {
+            $title="Data From Cache";
+            $category=Cache::get('category');
+        }else{
+            $title="Data From Database";
+            $category = Category::with('parent')->get();
+            Cache::put('category',$category);
+        }
+        return view('backend.pages.category.categoryList', compact('category', 'title'));
     }
 
     public function ajaxDataTable()
@@ -83,8 +92,7 @@ class CategoryController extends Controller
             'category_image' => $category_image,
             'discount' => $request->discount
         ]);
-
-        Log::alert('Category Created');
+        Cache::forget('category');
         notify()->success("Category Created Successfully.");
         return redirect()->back();
     }
